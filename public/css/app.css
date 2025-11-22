@@ -1,0 +1,69 @@
+:root {
+    --cg-primary: #8c5ff7;
+    --cg-primary-soft: #f2ecff;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1f2937;
+}
+
+.navbar-brand .brand-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--cg-primary-soft);
+    color: var(--cg-primary);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.brand-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--cg-primary-soft);
+    color: var(--cg-primary);
+    font-size: 1.35rem;
+}
+
+.stat-card {
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 16px;
+    background: #fff;
+}
+
+.quick-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: var(--cg-primary-soft);
+    font-size: 1.1rem;
+}
+
+.badge.bg-soft-primary { background: var(--cg-primary-soft); color: var(--cg-primary); }
+.badge.bg-soft-success { background: #e6f6ef; color: #16a34a; }
+.badge.bg-soft-warning { background: #fff4e5; color: #f59e0b; }
+
+.btn-primary {
+    background: linear-gradient(120deg, #8c5ff7, #6f8df6);
+    border: none;
+    box-shadow: 0 10px 30px rgba(140, 95, 247, 0.25);
+}
+
+.btn-outline-secondary {
+    border-color: #d1d5db;
+    color: #374151;
+}
+
+.table > :not(caption) > * > * {
+    padding: 1rem 1rem;
+}
