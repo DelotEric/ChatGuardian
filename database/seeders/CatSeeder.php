@@ -18,7 +18,7 @@ class CatSeeder extends Seeder
             [
                 'name' => 'Moka',
                 'sex' => 'female',
-                'status' => 'fostered',
+                'status' => 'foster',
                 'vaccinated' => true,
                 'vaccinated_at' => now()->subMonths(2),
                 'notes' => 'Très sociable, aime les enfants.',
@@ -47,7 +47,7 @@ class CatSeeder extends Seeder
             [
                 'name' => 'Oreo',
                 'sex' => 'male',
-                'status' => 'fostered',
+                'status' => 'foster',
                 'notes' => 'Craintif, progrès constants.',
                 'stay' => ['family_email' => 'moreau@example.test', 'started_at' => Carbon::now()->subWeeks(1)],
             ],

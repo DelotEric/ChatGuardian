@@ -26,6 +26,9 @@
 @if(session('error'))
     <div class="alert alert-warning">{{ session('error') }}</div>
 @endif
+@if($errors->any())
+    <div class="alert alert-danger">{{ $errors->first() }}</div>
+@endif
 
 <div class="row g-4">
     <div class="col-lg-5">
@@ -172,10 +175,6 @@
                     </form>
                 @endif
 
-                @if($errors->any())
-                    <div class="alert alert-danger">{{ $errors->first() }}</div>
-                @endif
-
                 <div class="row g-3">
                     @forelse($cat->photos as $photo)
                         <div class="col-md-4">
@@ -206,6 +205,147 @@
                     @endforelse
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 mt-4">
+    <div class="card-body">
+        @php($totalVetCosts = $cat->vetRecords->sum('amount'))
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2 class="h6 text-uppercase text-muted mb-0">Suivi vétérinaire</h2>
+                <p class="text-muted small mb-0">Interventions, soins et pièces jointes</p>
+            </div>
+            <div class="text-end">
+                <span class="badge bg-soft-primary text-primary me-2">{{ $cat->vetRecords->count() }} visite(s)</span>
+                <span class="badge bg-soft-success text-success">Total {{ number_format($totalVetCosts, 2, ',', ' ') }} €</span>
+            </div>
+        </div>
+
+        @if(in_array($role, ['admin', 'benevole']))
+            <div class="border rounded p-3 bg-light mb-3">
+                <h3 class="h6 fw-semibold mb-2">Ajouter une visite</h3>
+                <form class="row g-3" method="POST" action="{{ route('cats.vet-records.store', $cat) }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="col-md-3">
+                        <label class="form-label">Date</label>
+                        <input type="date" name="visit_date" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Clinique / vétérinaire</label>
+                        <input type="text" name="clinic_name" class="form-control" placeholder="Nom ou ville">
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label">Motif</label>
+                        <input type="text" name="reason" class="form-control" required placeholder="Vaccin, contrôle, soins...">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Montant (€)</label>
+                        <input type="number" step="0.01" min="0" name="amount" class="form-control" placeholder="0.00">
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label">Notes</label>
+                        <input type="text" name="notes" class="form-control" placeholder="Diagnostic, traitement, rappel...">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Document (PDF, image)</label>
+                        <input type="file" name="document" class="form-control" accept=".pdf,image/*">
+                        <small class="text-muted">4 Mo max.</small>
+                    </div>
+                    <div class="col-12 text-end">
+                        <button class="btn btn-primary" type="submit">Enregistrer la visite</button>
+                    </div>
+                </form>
+            </div>
+        @endif
+
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Motif</th>
+                        <th>Clinique</th>
+                        <th class="text-end">Montant</th>
+                        <th>Document</th>
+                        <th>Notes</th>
+                        @if(in_array($role, ['admin', 'benevole']))
+                            <th class="text-end">Actions</th>
+                        @endif
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($cat->vetRecords->sortByDesc('visit_date') as $record)
+                        <tr>
+                            <td>{{ $record->visit_date?->format('d/m/Y') }}</td>
+                            <td class="fw-semibold">{{ $record->reason }}</td>
+                            <td>{{ $record->clinic_name ?? '—' }}</td>
+                            <td class="text-end">{{ number_format($record->amount, 2, ',', ' ') }} €</td>
+                            <td>
+                                @if($record->document_path)
+                                    <a class="text-decoration-none" href="{{ Storage::url($record->document_path) }}" target="_blank">Voir</a>
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
+                            </td>
+                            <td>{{ $record->notes ?? '—' }}</td>
+                            @if(in_array($role, ['admin', 'benevole']))
+                                <td class="text-end">
+                                    <button class="btn btn-sm btn-outline-primary me-1" type="button" data-bs-toggle="collapse" data-bs-target="#vet-edit-{{ $record->id }}">Modifier</button>
+                                    <form class="d-inline" method="POST" action="{{ route('cats.vet-records.destroy', [$cat, $record]) }}" onsubmit="return confirm('Supprimer cette visite ?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                    </form>
+                                </td>
+                            @endif
+                        </tr>
+                        @if(in_array($role, ['admin', 'benevole']))
+                            <tr class="collapse bg-light" id="vet-edit-{{ $record->id }}">
+                                <td colspan="7" class="p-3">
+                                    <form class="row g-3 align-items-end" method="POST" action="{{ route('cats.vet-records.update', [$cat, $record]) }}" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PATCH')
+                                        <div class="col-md-2">
+                                            <label class="form-label">Date</label>
+                                            <input type="date" name="visit_date" class="form-control form-control-sm" value="{{ optional($record->visit_date)->format('Y-m-d') }}" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Clinique</label>
+                                            <input type="text" name="clinic_name" class="form-control form-control-sm" value="{{ $record->clinic_name }}" placeholder="Nom ou ville">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Motif</label>
+                                            <input type="text" name="reason" class="form-control form-control-sm" value="{{ $record->reason }}" required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label class="form-label">Montant (€)</label>
+                                            <input type="number" step="0.01" min="0" name="amount" class="form-control form-control-sm" value="{{ $record->amount }}">
+                                        </div>
+        
+                                        <div class="col-md-4">
+                                            <label class="form-label">Notes</label>
+                                            <input type="text" name="notes" class="form-control form-control-sm" value="{{ $record->notes }}" placeholder="Médicaments, rappel...">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Document (remplacer)</label>
+                                            <input type="file" name="document" class="form-control form-control-sm" accept=".pdf,image/*">
+                                        </div>
+                                        <div class="col-md-2 ms-auto text-end">
+                                            <button class="btn btn-sm btn-primary" type="submit">Mettre à jour</button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endif
+                    @empty
+                        <tr>
+                            <td colspan="{{ in_array($role, ['admin', 'benevole']) ? 7 : 6 }}" class="text-center text-muted py-3">Aucune visite enregistrée.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

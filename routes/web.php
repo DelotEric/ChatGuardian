@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CatController;
+use App\Http\Controllers\CatVetRecordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DonorController;
@@ -42,6 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cats/{cat}/photos/{photo}', [CatController::class, 'destroyPhoto'])->name('cats.photos.destroy');
     Route::post('/cats/{cat}/stays', [CatController::class, 'storeStay'])->name('cats.stays.store');
     Route::post('/cats/{cat}/stays/{stay}/close', [CatController::class, 'closeStay'])->name('cats.stays.close');
+    Route::post('/cats/{cat}/vet-records', [CatVetRecordController::class, 'store'])->name('cats.vet-records.store');
+    Route::patch('/cats/{cat}/vet-records/{vetRecord}', [CatVetRecordController::class, 'update'])->name('cats.vet-records.update');
+    Route::delete('/cats/{cat}/vet-records/{vetRecord}', [CatVetRecordController::class, 'destroy'])->name('cats.vet-records.destroy');
 
     Route::get('/foster-families', [FosterFamilyController::class, 'index'])->name('foster-families.index');
     Route::post('/foster-families', [FosterFamilyController::class, 'store'])->name('foster-families.store');
