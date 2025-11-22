@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteers.store');
     Route::patch('/volunteers/{volunteer}', [VolunteerController::class, 'update'])->name('volunteers.update');
     Route::delete('/volunteers/{volunteer}', [VolunteerController::class, 'destroy'])->name('volunteers.destroy');
+    Route::get('/volunteers/export', [VolunteerController::class, 'export'])->name('volunteers.export');
 
     Route::get('/cats', [CatController::class, 'index'])->name('cats.index');
     Route::get('/cats/export', [CatController::class, 'export'])->name('cats.export');
@@ -75,6 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/foster-families', [FosterFamilyController::class, 'store'])->name('foster-families.store');
     Route::patch('/foster-families/{family}', [FosterFamilyController::class, 'update'])->name('foster-families.update');
     Route::delete('/foster-families/{family}', [FosterFamilyController::class, 'destroy'])->name('foster-families.destroy');
+    Route::get('/foster-families/export', [FosterFamilyController::class, 'export'])->name('foster-families.export');
     Route::get('/foster-families/{family}/contract', [PdfController::class, 'fosterContract'])->name('foster-families.contract');
     Route::get('/cats/{cat}/adoptions/{adoption}/contract', [PdfController::class, 'adoptionContract'])->name('cats.adoptions.contract');
 

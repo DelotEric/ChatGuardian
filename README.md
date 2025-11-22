@@ -52,6 +52,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Recherche globale : barre de recherche dans la navigation (connecté) pour retrouver rapidement chats, familles, bénévoles et donateurs.
 - Fiche PDF par chat + export CSV complet des chats (statut, santé, séjours, adoption) pour partager ou sauvegarder les dossiers.
 - Journal d'activités : traçabilité des actions clés (création/édition de chat, séjours, visites véto, dons, reçus envoyés) visible sur le dashboard et la fiche chat.
+- Export CSV des bénévoles et des familles d'accueil pour diffuser facilement listes et coordonnées.
 - Rappels de suivi par chat : création/édition/suppression de rappels (vaccins, suivi adoption, visites véto) avec tableau dédié sur la fiche chat, cartes sur le dashboard et données démo.
 - Vue consolidée des rappels : écran `/reminders` (admin/bénévole) avec filtres statut/échéance/type, actions de clôture et lien direct vers chaque fiche chat, plus maquette statique `public/reminders.html`.
 - Envoi d'un email récapitulatif des rappels (aujourd'hui, 7 prochains jours ou en retard) pour les admins et bénévoles depuis `/reminders`.
@@ -155,6 +156,9 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
    - Accès : `/activities` (admin/bénévole) avec filtres (action, sujet, utilisateur, période)
    - Export CSV filtré : `/activities/export`
    - Maquette statique : `public/activities.html`
+28. Exporter les listes bénévoles et familles d'accueil (admin) :
+   - Bénévoles : bouton **Exporter CSV** depuis `/volunteers` (fichier `benevoles_YYYYMMDD_HHMMSS.csv`)
+   - Familles d'accueil : bouton **Exporter CSV** depuis `/foster-families` (fichier `familles_accueil_YYYYMMDD_HHMMSS.csv`)
 
 Le dashboard affiche également les dépenses vétérinaires et le nombre de visites du mois, ainsi qu'un aperçu des dernières visites enregistrées.
 

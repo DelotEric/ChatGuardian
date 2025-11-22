@@ -6,7 +6,10 @@
         <p class="text-muted mb-1">Réseau de soutien</p>
         <h1 class="h4 fw-bold">Bénévoles</h1>
     </div>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#volunteerModal">Ajouter</button>
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary" href="{{ route('volunteers.export') }}">Exporter CSV</a>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#volunteerModal">Ajouter</button>
+    </div>
 </div>
 
 @if(session('status'))

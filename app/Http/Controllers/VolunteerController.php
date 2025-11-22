@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Volunteer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\View\View;
 
 class VolunteerController extends Controller
@@ -70,5 +71,35 @@ class VolunteerController extends Controller
         $volunteer->delete();
 
         return redirect()->route('volunteers.index')->with('status', 'Bénévole supprimé.');
+    }
+
+    public function export(): StreamedResponse
+    {
+        $this->authorizeRoles('admin');
+
+        $filename = 'benevoles_' . now()->format('Ymd_His') . '.csv';
+
+        return response()->streamDownload(function () {
+            $handle = fopen('php://output', 'wb');
+            fputcsv($handle, ['Prénom', 'Nom', 'Email', 'Téléphone', 'Ville/zone', 'Disponibilités', 'Compétences', 'Statut', 'Créé le']);
+
+            Volunteer::orderBy('last_name')->chunk(200, function ($volunteers) use ($handle) {
+                foreach ($volunteers as $volunteer) {
+                    fputcsv($handle, [
+                        $volunteer->first_name,
+                        $volunteer->last_name,
+                        $volunteer->email,
+                        $volunteer->phone,
+                        $volunteer->city,
+                        $volunteer->availability,
+                        $volunteer->skills,
+                        $volunteer->is_active ? 'Actif' : 'Inactif',
+                        optional($volunteer->created_at)->format('Y-m-d'),
+                    ]);
+                }
+            });
+
+            fclose($handle);
+        }, $filename, ['Content-Type' => 'text/csv']);
     }
 }

@@ -8,7 +8,10 @@
         <h1 class="h4 fw-bold">Familles d'accueil</h1>
     </div>
     @if($role === 'admin')
-        <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#familyForm">Ajouter</button>
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-secondary" href="{{ route('foster-families.export') }}">Exporter CSV</a>
+            <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#familyForm">Ajouter</button>
+        </div>
     @endif
 </div>
 
