@@ -22,6 +22,25 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - `public/js/app.js` : point d'entrée JS (placeholder)
 - `routes/web.php` : exemples de routes si intégré dans un squelette Laravel
 
+### Nouveautés
+- Carte Leaflet intégrée sur la page "Points de nourrissage" (affiche les marqueurs depuis la base)
+- Génération d'un PDF de contrat de famille d'accueil (barryvdh/laravel-dompdf)
+
+### Intégration rapide
+1. Installer Laravel et les dépendances PDF :
+   ```bash
+   composer require barryvdh/laravel-dompdf
+   ```
+2. Lancer les migrations puis les pages :
+   ```bash
+   php artisan migrate
+   php artisan serve
+   ```
+3. Tester la génération de contrat :
+   - Créer au moins une famille d'accueil via `/foster-families`
+   - Télécharger le PDF : `/foster-families/{id}/contract`
+4. Visualiser les points de nourrissage avec Leaflet : `/feeding-points`
+
 ## Prochaines étapes suggérées
 1. Installer un vrai projet Laravel (Composer) et brancher ces vues sur l'auth Laravel.
 2. Ajouter les migrations + modèles pour les bénévoles, chats, familles, dons.

@@ -73,4 +73,70 @@
         <p class="text-muted">Aucun point de nourrissage pour l'instant.</p>
     @endforelse
 </div>
+
+<div class="card shadow-sm border-0 mt-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <p class="text-muted mb-1">Cartographie</p>
+                <h2 class="h5 fw-semibold mb-0">Carte des points de nourrissage</h2>
+            </div>
+            <span class="badge bg-soft-primary text-primary">Leaflet</span>
+        </div>
+        <div id="feedingMap" class="map-container"></div>
+    </div>
+</div>
 @endsection
+
+@push('styles')
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+>
+@endpush
+
+@push('scripts')
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const map = L.map('feedingMap');
+        const points = @json($feedingPoints->map(fn($p) => [
+            'name' => $p->name,
+            'lat' => $p->latitude,
+            'lng' => $p->longitude,
+            'volunteers' => $p->volunteers->pluck('full_name'),
+        ])->values());
+
+        const fallback = [46.2276, 2.2137]; // centre France
+
+        if (points.length) {
+            const bounds = L.latLngBounds(points.map(p => [p.lat, p.lng]));
+            map.fitBounds(bounds.pad(0.2));
+        } else {
+            map.setView(fallback, 5);
+        }
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        points.forEach(point => {
+            const marker = L.marker([point.lat, point.lng]).addTo(map);
+            const volunteerList = point.volunteers.length
+                ? `<ul class="mb-0 ps-3">${point.volunteers.map(v => `<li>${v}</li>`).join('')}</ul>`
+                : '<p class="mb-0 text-muted">Aucun bénévole associé</p>';
+
+            marker.bindPopup(`
+                <div class="fw-semibold mb-1">${point.name}</div>
+                ${volunteerList}
+            `);
+        });
+    });
+</script>
+@endpush

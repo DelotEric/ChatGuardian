@@ -62,6 +62,7 @@
                         <th>Capacité</th>
                         <th>Ville</th>
                         <th>Chats accueillis</th>
+                        <th>Contrat</th>
                         <th>Statut</th>
                     </tr>
                 </thead>
@@ -72,6 +73,11 @@
                             <td>{{ $family->capacity }}</td>
                             <td>{{ $family->city ?? '—' }}</td>
                             <td>{{ $family->stays_count }}</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-primary" href="{{ route('foster-families.contract', $family) }}">
+                                    PDF
+                                </a>
+                            </td>
                             <td>
                                 <span class="badge {{ $family->is_active ? 'bg-soft-success text-success' : 'bg-soft-secondary text-muted' }}">
                                     {{ $family->is_active ? 'Active' : 'Suspendue' }}

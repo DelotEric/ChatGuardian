@@ -4,6 +4,7 @@ use App\Http\Controllers\CatController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FeedingPointController;
 use App\Http\Controllers\FosterFamilyController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\VolunteerController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,7 @@ Route::post('/cats', [CatController::class, 'store'])->name('cats.store');
 
 Route::get('/foster-families', [FosterFamilyController::class, 'index'])->name('foster-families.index');
 Route::post('/foster-families', [FosterFamilyController::class, 'store'])->name('foster-families.store');
+Route::get('/foster-families/{family}/contract', [PdfController::class, 'fosterContract'])->name('foster-families.contract');
 
 Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
 Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
