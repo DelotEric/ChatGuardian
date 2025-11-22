@@ -39,4 +39,36 @@ class VolunteerController extends Controller
 
         return redirect()->route('volunteers.index')->with('status', 'Bénévole ajouté avec succès.');
     }
+
+    public function update(Request $request, Volunteer $volunteer): RedirectResponse
+    {
+        $this->authorizeRoles('admin');
+
+        $data = $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:50'],
+            'city' => ['nullable', 'string', 'max:120'],
+            'availability' => ['nullable', 'string', 'max:255'],
+            'skills' => ['nullable', 'string'],
+            'is_active' => ['sometimes', 'boolean'],
+        ]);
+
+        $data['is_active'] = $request->boolean('is_active');
+
+        $volunteer->update($data);
+
+        return redirect()->route('volunteers.index')->with('status', 'Bénévole mis à jour.');
+    }
+
+    public function destroy(Volunteer $volunteer): RedirectResponse
+    {
+        $this->authorizeRoles('admin');
+
+        $volunteer->feedingPoints()->detach();
+        $volunteer->delete();
+
+        return redirect()->route('volunteers.index')->with('status', 'Bénévole supprimé.');
+    }
 }

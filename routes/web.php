@@ -27,6 +27,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/volunteers', [VolunteerController::class, 'index'])->name('volunteers.index');
     Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteers.store');
+    Route::patch('/volunteers/{volunteer}', [VolunteerController::class, 'update'])->name('volunteers.update');
+    Route::delete('/volunteers/{volunteer}', [VolunteerController::class, 'destroy'])->name('volunteers.destroy');
 
     Route::get('/cats', [CatController::class, 'index'])->name('cats.index');
     Route::post('/cats', [CatController::class, 'store'])->name('cats.store');
@@ -39,14 +41,20 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/foster-families', [FosterFamilyController::class, 'index'])->name('foster-families.index');
     Route::post('/foster-families', [FosterFamilyController::class, 'store'])->name('foster-families.store');
+    Route::patch('/foster-families/{family}', [FosterFamilyController::class, 'update'])->name('foster-families.update');
+    Route::delete('/foster-families/{family}', [FosterFamilyController::class, 'destroy'])->name('foster-families.destroy');
     Route::get('/foster-families/{family}/contract', [PdfController::class, 'fosterContract'])->name('foster-families.contract');
 
     Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
     Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
+    Route::patch('/donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
+    Route::delete('/donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
     Route::post('/donors', [DonationController::class, 'createDonor'])->name('donors.store');
     Route::get('/donations/export', [DonationController::class, 'exportCsv'])->name('donations.export');
     Route::get('/donations/{donation}/receipt', [PdfController::class, 'donationReceipt'])->name('donations.receipt');
 
     Route::get('/feeding-points', [FeedingPointController::class, 'index'])->name('feeding-points.index');
     Route::post('/feeding-points', [FeedingPointController::class, 'store'])->name('feeding-points.store');
+    Route::patch('/feeding-points/{feedingPoint}', [FeedingPointController::class, 'update'])->name('feeding-points.update');
+    Route::delete('/feeding-points/{feedingPoint}', [FeedingPointController::class, 'destroy'])->name('feeding-points.destroy');
 });

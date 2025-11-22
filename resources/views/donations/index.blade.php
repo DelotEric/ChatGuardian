@@ -99,9 +99,67 @@
                                 @endif
                             </td>
                             <td class="text-end">
-                                <a class="btn btn-sm btn-outline-primary" href="{{ route('donations.receipt', $donation) }}">PDF</a>
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ route('donations.receipt', $donation) }}">PDF</a>
+                                    <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDonation{{ $donation->id }}">Modifier</button>
+                                    <form method="POST" action="{{ route('donations.destroy', $donation) }}" onsubmit="return confirm('Supprimer ce don ?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
+                        <div class="modal fade" id="editDonation{{ $donation->id }}" tabindex="-1" aria-labelledby="editDonationLabel{{ $donation->id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editDonationLabel{{ $donation->id }}">Modifier le don</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form class="row g-3 px-3 pb-3" method="POST" action="{{ route('donations.update', $donation) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <div class="col-md-6 mt-3">
+                                            <label class="form-label">Donateur</label>
+                                            <select name="donor_id" class="form-select" required>
+                                                @foreach($donors as $donor)
+                                                    <option value="{{ $donor->id }}" @selected($donor->id === $donation->donor_id)>{{ $donor->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mt-3">
+                                            <label class="form-label">Montant (€)</label>
+                                            <input name="amount" type="number" step="0.01" min="0" class="form-control" value="{{ $donation->amount }}" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Date</label>
+                                            <input name="donated_at" type="date" class="form-control" value="{{ optional($donation->donated_at)->format('Y-m-d') }}" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Paiement</label>
+                                            <select name="payment_method" class="form-select" required>
+                                                @foreach(['card' => 'Carte', 'transfer' => 'Virement', 'cash' => 'Espèces', 'check' => 'Chèque'] as $value => $label)
+                                                    <option value="{{ $value }}" @selected($donation->payment_method === $value)>{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">N° reçu</label>
+                                            <input name="receipt_number" type="text" class="form-control" value="{{ $donation->receipt_number }}" placeholder="Optionnel">
+                                        </div>
+                                        <div class="col-md-6 form-check mt-4">
+                                            <input class="form-check-input" type="checkbox" value="1" name="is_receipt_sent" id="receipt_sent_{{ $donation->id }}" {{ $donation->is_receipt_sent ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="receipt_sent_{{ $donation->id }}">Reçu envoyé</label>
+                                        </div>
+                                        <div class="col-12 text-end">
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                                            <button class="btn btn-primary" type="submit">Mettre à jour</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     @empty
                         <tr>
                             <td colspan="6" class="text-center text-muted py-4">Aucun don enregistré.</td>

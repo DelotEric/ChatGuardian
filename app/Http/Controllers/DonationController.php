@@ -45,6 +45,35 @@ class DonationController extends Controller
         return redirect()->route('donations.index')->with('status', 'Don enregistré.');
     }
 
+    public function update(Request $request, Donation $donation): RedirectResponse
+    {
+        $this->authorizeRoles('admin');
+
+        $data = $request->validate([
+            'donor_id' => ['required', 'exists:donors,id'],
+            'amount' => ['required', 'numeric', 'min:0'],
+            'donated_at' => ['required', 'date'],
+            'payment_method' => ['required', 'string', 'max:50'],
+            'receipt_number' => ['nullable', 'string', 'max:120'],
+            'is_receipt_sent' => ['sometimes', 'boolean'],
+        ]);
+
+        $data['is_receipt_sent'] = $request->boolean('is_receipt_sent');
+
+        $donation->update($data);
+
+        return redirect()->route('donations.index')->with('status', 'Don mis à jour.');
+    }
+
+    public function destroy(Donation $donation): RedirectResponse
+    {
+        $this->authorizeRoles('admin');
+
+        $donation->delete();
+
+        return redirect()->route('donations.index')->with('status', 'Don supprimé.');
+    }
+
     public function exportCsv(): \Symfony\Component\HttpFoundation\StreamedResponse
     {
         $this->authorizeRoles('admin');

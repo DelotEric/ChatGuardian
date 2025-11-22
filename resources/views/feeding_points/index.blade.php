@@ -71,6 +71,59 @@
                             <span class="badge bg-soft-secondary text-muted">{{ $volunteer->full_name }}</span>
                         @endforeach
                     </div>
+                    @if($role === 'admin')
+                        <div class="mt-3 d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editFeeding{{ $point->id }}">Modifier</button>
+                            <form method="POST" action="{{ route('feeding-points.destroy', $point) }}" onsubmit="return confirm('Supprimer ce point ?');">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                            </form>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editFeeding{{ $point->id }}" tabindex="-1" aria-labelledby="editFeedingLabel{{ $point->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editFeedingLabel{{ $point->id }}">Modifier {{ $point->name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form class="row g-3 px-3 pb-3" method="POST" action="{{ route('feeding-points.update', $point) }}">
+                        @csrf
+                        @method('PATCH')
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">Nom</label>
+                            <input type="text" name="name" class="form-control" value="{{ $point->name }}" required>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="form-label">Latitude</label>
+                            <input type="number" step="0.0000001" name="latitude" class="form-control" value="{{ $point->latitude }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Longitude</label>
+                            <input type="number" step="0.0000001" name="longitude" class="form-control" value="{{ $point->longitude }}" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Description</label>
+                            <textarea name="description" class="form-control" rows="2">{{ $point->description }}</textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Bénévoles assignés</label>
+                            <select name="volunteer_ids[]" class="form-select" multiple>
+                                @foreach($volunteers as $volunteer)
+                                    <option value="{{ $volunteer->id }}" @selected($point->volunteers->contains($volunteer->id))>{{ $volunteer->full_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-12 text-end">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <button class="btn btn-primary" type="submit">Mettre à jour</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

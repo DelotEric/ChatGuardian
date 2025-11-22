@@ -24,6 +24,7 @@
                         <th>Zone</th>
                         <th>Disponibilités</th>
                         <th>Statut</th>
+                        <th class="text-end">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,10 +39,76 @@
                                     {{ $volunteer->is_active ? 'Actif' : 'Inactif' }}
                                 </span>
                             </td>
+                            <td class="text-end">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editVolunteer{{ $volunteer->id }}">
+                                        Modifier
+                                    </button>
+                                    <form method="POST" action="{{ route('volunteers.destroy', $volunteer) }}" onsubmit="return confirm('Supprimer ce bénévole ?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
+                        <div class="modal fade" id="editVolunteer{{ $volunteer->id }}" tabindex="-1" aria-labelledby="editVolunteerLabel{{ $volunteer->id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editVolunteerLabel{{ $volunteer->id }}">Modifier {{ $volunteer->full_name }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form method="POST" action="{{ route('volunteers.update', $volunteer) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <div class="modal-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Prénom</label>
+                                                    <input name="first_name" type="text" class="form-control" value="{{ $volunteer->first_name }}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Nom</label>
+                                                    <input name="last_name" type="text" class="form-control" value="{{ $volunteer->last_name }}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Email</label>
+                                                    <input name="email" type="email" class="form-control" value="{{ $volunteer->email }}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Téléphone</label>
+                                                    <input name="phone" type="text" class="form-control" value="{{ $volunteer->phone }}">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Ville / zone</label>
+                                                    <input name="city" type="text" class="form-control" value="{{ $volunteer->city }}">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Disponibilités</label>
+                                                    <input name="availability" type="text" class="form-control" value="{{ $volunteer->availability }}">
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label">Compétences</label>
+                                                    <textarea name="skills" class="form-control" rows="2">{{ $volunteer->skills }}</textarea>
+                                                </div>
+                                                <div class="col-12 form-check">
+                                                    <input class="form-check-input" type="checkbox" value="1" name="is_active" id="is_active_{{ $volunteer->id }}" {{ $volunteer->is_active ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="is_active_{{ $volunteer->id }}">Actif</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">Aucun bénévole encore ajouté.</td>
+                            <td colspan="6" class="text-center text-muted py-4">Aucun bénévole encore ajouté.</td>
                         </tr>
                     @endforelse
                 </tbody>

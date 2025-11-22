@@ -32,6 +32,8 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Galerie photo par chat avec téléversement (3 Mo max par image, 3 photos par profil) et suppression
 - Gestion des séjours : ajout d'un passage en famille d'accueil et clôture avec résultat/notes
 - Édition complète d'une fiche chat (statut, santé) et mise à jour du statut directement lors de l'ajout ou la clôture d'un séjour
+- Édition/suppression des bénévoles, familles d'accueil, dons et points de nourrissage via formulaires préremplis (modals) et
+  contrôles de rôle admin
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
