@@ -6,7 +6,10 @@
         <p class="text-muted mb-1">Financement</p>
         <h1 class="h4 fw-bold">Dons & reçus</h1>
     </div>
-    <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#donationForm">Enregistrer</button>
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary" href="{{ route('donations.export') }}">Exporter CSV</a>
+        <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#donationForm">Enregistrer</button>
+    </div>
 </div>
 
 @if(session('status'))
@@ -30,7 +33,7 @@
             <div class="col-md-4">
                 <label class="form-label">Donateur</label>
                 <select name="donor_id" class="form-select" required>
-                    @foreach(\App\Models\Donor::orderBy('name')->get() as $donor)
+                    @foreach($donors as $donor)
                         <option value="{{ $donor->id }}">{{ $donor->name }}</option>
                     @endforeach
                 </select>
@@ -78,6 +81,7 @@
                         <th>Date</th>
                         <th>Paiement</th>
                         <th>Reçu</th>
+                        <th class="text-end">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,10 +98,13 @@
                                     <span class="badge bg-soft-secondary text-muted">À générer</span>
                                 @endif
                             </td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ route('donations.receipt', $donation) }}">PDF</a>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">Aucun don enregistré.</td>
+                            <td colspan="6" class="text-center text-muted py-4">Aucun don enregistré.</td>
                         </tr>
                     @endforelse
                 </tbody>

@@ -25,6 +25,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 ### Nouveautés
 - Carte Leaflet intégrée sur la page "Points de nourrissage" (affiche les marqueurs depuis la base)
 - Génération d'un PDF de contrat de famille d'accueil (barryvdh/laravel-dompdf)
+- Reçus fiscaux en PDF pour chaque don et export CSV des dons/donateurs
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -39,7 +40,11 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 3. Tester la génération de contrat :
    - Créer au moins une famille d'accueil via `/foster-families`
    - Télécharger le PDF : `/foster-families/{id}/contract`
-4. Visualiser les points de nourrissage avec Leaflet : `/feeding-points`
+4. Générer un reçu fiscal PDF :
+   - Enregistrer un don via `/donations`
+   - Télécharger le reçu : `/donations/{id}/receipt`
+5. Exporter un CSV des dons : `/donations/export`
+6. Visualiser les points de nourrissage avec Leaflet : `/feeding-points`
 
 ## Prochaines étapes suggérées
 1. Installer un vrai projet Laravel (Composer) et brancher ces vues sur l'auth Laravel.

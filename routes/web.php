@@ -24,6 +24,8 @@ Route::get('/foster-families/{family}/contract', [PdfController::class, 'fosterC
 Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
 Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
 Route::post('/donors', [DonationController::class, 'createDonor'])->name('donors.store');
+Route::get('/donations/export', [DonationController::class, 'exportCsv'])->name('donations.export');
+Route::get('/donations/{donation}/receipt', [PdfController::class, 'donationReceipt'])->name('donations.receipt');
 
 Route::get('/feeding-points', [FeedingPointController::class, 'index'])->name('feeding-points.index');
 Route::post('/feeding-points', [FeedingPointController::class, 'store'])->name('feeding-points.store');

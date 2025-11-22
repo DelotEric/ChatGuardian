@@ -18,7 +18,9 @@ class DonationController extends Controller
             ->whereYear('donated_at', now()->year)
             ->sum('amount');
 
-        return view('donations.index', compact('donations', 'totalMonth'));
+        $donors = Donor::orderBy('name')->get();
+
+        return view('donations.index', compact('donations', 'totalMonth', 'donors'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -37,6 +39,37 @@ class DonationController extends Controller
         Donation::create($data);
 
         return redirect()->route('donations.index')->with('status', 'Don enregistré.');
+    }
+
+    public function exportCsv(): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $filename = 'donations-' . now()->format('Ymd-His') . '.csv';
+
+        $callback = function () {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['Donateur', 'Email', 'Montant', 'Date', 'Paiement', 'N° reçu', 'Reçu envoyé']);
+
+            Donation::with('donor')->orderBy('donated_at', 'desc')->chunk(200, function ($donations) use ($handle) {
+                foreach ($donations as $donation) {
+                    fputcsv($handle, [
+                        optional($donation->donor)->name,
+                        optional($donation->donor)->email,
+                        number_format($donation->amount, 2, '.', ''),
+                        optional($donation->donated_at)->format('Y-m-d'),
+                        $donation->payment_method,
+                        $donation->receipt_number,
+                        $donation->is_receipt_sent ? 'oui' : 'non',
+                    ]);
+                }
+            });
+
+            fclose($handle);
+        };
+
+        return response()->stream($callback, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
     }
 
     public function createDonor(Request $request): RedirectResponse
