@@ -23,14 +23,34 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('volunteers.index') }}">Bénévoles</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('cats.index') }}">Chats</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('foster-families.index') }}">Familles d'accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('donations.index') }}">Dons</a></li>
-                    <li class="nav-item">
-                        <a class="btn btn-outline-primary ms-lg-3" href="/login">Connexion</a>
-                    </li>
+                    @auth
+                        <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Accueil</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('volunteers.index') }}">Bénévoles</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('cats.index') }}">Chats</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('foster-families.index') }}">Familles d'accueil</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('donations.index') }}">Dons</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                                <span class="avatar-placeholder me-2">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                                <span class="small">{{ auth()->user()->name }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li class="px-3 py-2 text-muted small">Rôle : {{ auth()->user()->role }}</li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button class="dropdown-item text-danger" type="submit">Déconnexion</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @endauth
+                    @guest
+                        <li class="nav-item">
+                            <a class="btn btn-outline-primary ms-lg-3" href="{{ route('login') }}">Connexion</a>
+                        </li>
+                    @endguest
                 </ul>
             </div>
         </div>

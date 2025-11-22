@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CatController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonationController;
@@ -9,24 +10,29 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\VolunteerController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', DashboardController::class)->name('dashboard');
-Route::view('/login', 'auth.login')->name('login');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.perform');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('/volunteers', [VolunteerController::class, 'index'])->name('volunteers.index');
-Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteers.store');
+Route::middleware('auth')->group(function () {
+    Route::get('/', DashboardController::class)->name('dashboard');
 
-Route::get('/cats', [CatController::class, 'index'])->name('cats.index');
-Route::post('/cats', [CatController::class, 'store'])->name('cats.store');
+    Route::get('/volunteers', [VolunteerController::class, 'index'])->name('volunteers.index');
+    Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteers.store');
 
-Route::get('/foster-families', [FosterFamilyController::class, 'index'])->name('foster-families.index');
-Route::post('/foster-families', [FosterFamilyController::class, 'store'])->name('foster-families.store');
-Route::get('/foster-families/{family}/contract', [PdfController::class, 'fosterContract'])->name('foster-families.contract');
+    Route::get('/cats', [CatController::class, 'index'])->name('cats.index');
+    Route::post('/cats', [CatController::class, 'store'])->name('cats.store');
 
-Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
-Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
-Route::post('/donors', [DonationController::class, 'createDonor'])->name('donors.store');
-Route::get('/donations/export', [DonationController::class, 'exportCsv'])->name('donations.export');
-Route::get('/donations/{donation}/receipt', [PdfController::class, 'donationReceipt'])->name('donations.receipt');
+    Route::get('/foster-families', [FosterFamilyController::class, 'index'])->name('foster-families.index');
+    Route::post('/foster-families', [FosterFamilyController::class, 'store'])->name('foster-families.store');
+    Route::get('/foster-families/{family}/contract', [PdfController::class, 'fosterContract'])->name('foster-families.contract');
 
-Route::get('/feeding-points', [FeedingPointController::class, 'index'])->name('feeding-points.index');
-Route::post('/feeding-points', [FeedingPointController::class, 'store'])->name('feeding-points.store');
+    Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
+    Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
+    Route::post('/donors', [DonationController::class, 'createDonor'])->name('donors.store');
+    Route::get('/donations/export', [DonationController::class, 'exportCsv'])->name('donations.export');
+    Route::get('/donations/{donation}/receipt', [PdfController::class, 'donationReceipt'])->name('donations.receipt');
+
+    Route::get('/feeding-points', [FeedingPointController::class, 'index'])->name('feeding-points.index');
+    Route::post('/feeding-points', [FeedingPointController::class, 'store'])->name('feeding-points.store');
+});

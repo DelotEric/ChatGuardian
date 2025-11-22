@@ -37,18 +37,23 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
    php artisan migrate
    php artisan serve
    ```
-3. Alimenter la base avec un jeu de données démo :
+3. Alimenter la base avec un jeu de données démo (inclut 3 utilisateurs de rôle admin/bénévole/famille) :
    ```bash
    php artisan db:seed
    ```
-4. Tester la génération de contrat :
+   Identifiants prêts à l'emploi :
+   - admin@chatguardian.test / **password** (admin)
+   - benevole@chatguardian.test / **password** (bénévole)
+   - famille@chatguardian.test / **password** (famille d'accueil)
+4. Se connecter via `/login` puis accéder au tableau de bord `/` (toutes les routes sont protégées par auth).
+5. Tester la génération de contrat :
    - Créer au moins une famille d'accueil via `/foster-families`
    - Télécharger le PDF : `/foster-families/{id}/contract`
-5. Générer un reçu fiscal PDF :
+6. Générer un reçu fiscal PDF :
    - Enregistrer un don via `/donations`
    - Télécharger le reçu : `/donations/{id}/receipt`
-6. Exporter un CSV des dons : `/donations/export`
-7. Visualiser les points de nourrissage avec Leaflet : `/feeding-points`
+7. Exporter un CSV des dons : `/donations/export`
+8. Visualiser les points de nourrissage avec Leaflet : `/feeding-points`
 
 Le dashboard (`/`) s'appuie désormais sur les statistiques réelles (chats par statut, dons du mois, familles, bénévoles, points de nourrissage) et affiche les derniers chats/dons ajoutés.
 

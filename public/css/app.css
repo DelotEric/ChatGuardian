@@ -75,3 +75,15 @@ body {
     overflow: hidden;
     border: 1px solid #f0f0f0;
 }
+
+.avatar-placeholder {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--cg-primary-soft);
+    color: var(--cg-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
