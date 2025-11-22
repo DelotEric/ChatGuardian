@@ -9,6 +9,7 @@ use App\Models\FosterFamily;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\View\View;
 
 class CatController extends Controller
@@ -30,6 +31,61 @@ class CatController extends Controller
         $families = FosterFamily::query()->where('is_active', true)->orderBy('name')->get();
 
         return view('cats.show', compact('cat', 'families'));
+    }
+
+    public function export(): StreamedResponse
+    {
+        $this->authorizeRoles(['admin', 'benevole']);
+
+        $filename = 'cats-' . now()->format('Ymd-His') . '.csv';
+
+        $callback = function () {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, [
+                'Nom',
+                'Statut',
+                'Sexe',
+                'Naissance',
+                'Stérilisé',
+                'Date stérilisation',
+                'Vacciné',
+                'Date vaccination',
+                'FIV',
+                'FELV',
+                'Famille actuelle',
+                'Date adoption',
+            ]);
+
+            Cat::with(['currentStay.fosterFamily', 'adoption'])
+                ->orderBy('name')
+                ->chunk(200, function ($cats) use ($handle) {
+                    foreach ($cats as $cat) {
+                        $currentFamily = optional($cat->currentStay?->fosterFamily)->name;
+
+                        fputcsv($handle, [
+                            $cat->name,
+                            $cat->status,
+                            $cat->sex,
+                            optional($cat->birthdate)->format('Y-m-d'),
+                            $cat->sterilized ? 'oui' : 'non',
+                            optional($cat->sterilized_at)->format('Y-m-d'),
+                            $cat->vaccinated ? 'oui' : 'non',
+                            optional($cat->vaccinated_at)->format('Y-m-d'),
+                            $cat->fiv_status,
+                            $cat->felv_status,
+                            $currentFamily,
+                            optional($cat->adoption)->adopted_at?->format('Y-m-d'),
+                        ]);
+                    }
+                });
+
+            fclose($handle);
+        };
+
+        return response()->stream($callback, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
     }
 
     public function store(Request $request): RedirectResponse

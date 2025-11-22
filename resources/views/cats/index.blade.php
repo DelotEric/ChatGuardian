@@ -7,9 +7,12 @@
         <p class="text-muted mb-1">Suivi des félins</p>
         <h1 class="h4 fw-bold">Chats</h1>
     </div>
-    @if(in_array($role, ['admin', 'benevole']))
-        <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#catForm">Ajouter</button>
-    @endif
+    <div class="d-flex align-items-center gap-2">
+        @if(in_array($role, ['admin', 'benevole']))
+            <a class="btn btn-outline-secondary" href="{{ route('cats.export') }}">Exporter CSV</a>
+            <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#catForm">Ajouter</button>
+        @endif
+    </div>
 </div>
 
 @if(session('status'))

@@ -16,7 +16,12 @@
         </div>
     </div>
 
-    <div class="col-12">
+    <div class="d-flex align-items-center gap-2">
+        <a class="btn btn-outline-secondary btn-sm" href="{{ route('cats.profile', $cat) }}">📄 Fiche PDF</a>
+    </div>
+</div>
+
+<div class="col-12">
         <div class="card shadow-sm border-0 h-100">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">

@@ -49,6 +49,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Export CSV des visites vétérinaires par chat (admin/bénévole) et KPIs dédiés sur le tableau de bord (coûts et visites du mois + dernières visites).
 - Gestion des adoptions : enregistrement d'un adoptant, génération du contrat PDF, mise à jour du statut du chat et KPIs/dernières adoptions sur le dashboard.
 - Recherche globale : barre de recherche dans la navigation (connecté) pour retrouver rapidement chats, familles, bénévoles et donateurs.
+- Fiche PDF par chat + export CSV complet des chats (statut, santé, séjours, adoption) pour partager ou sauvegarder les dossiers.
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -124,6 +125,10 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 20. Lancer une recherche transversale :
    - Utiliser la barre de recherche dans le header (connecté)
    - Saisir un nom (chat, famille, bénévole, donateur) puis valider pour voir les résultats agrégés
+21. Exporter la base chats :
+   - Bouton **Exporter CSV** depuis `/cats` (admin/bénévole)
+22. Télécharger la fiche PDF d'un chat :
+   - Bouton **Fiche PDF** sur la fiche `/cats/{id}` (admin/bénévole/famille) ou accès direct `/cats/{id}/profile.pdf`
 
 Le dashboard affiche également les dépenses vétérinaires et le nombre de visites du mois, ainsi qu'un aperçu des dernières visites enregistrées.
 

@@ -54,4 +54,19 @@ class PdfController extends Controller
 
         return $pdf->download("contrat-adoption-{$adoption->id}.pdf");
     }
+
+    public function catProfile(Cat $cat): Response
+    {
+        $this->authorizeRoles(['admin', 'benevole', 'famille']);
+
+        $cat->load(['photos', 'stays.fosterFamily', 'vetRecords', 'adoption', 'currentStay.fosterFamily']);
+
+        $pdf = Pdf::loadView('pdf.cat_profile', [
+            'cat' => $cat,
+            'today' => now()->format('d/m/Y'),
+            'organization' => $this->organization(),
+        ])->setPaper('a4');
+
+        return $pdf->download('fiche-chat-' . $cat->id . '.pdf');
+    }
 }
