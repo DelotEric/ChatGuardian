@@ -11,7 +11,10 @@
         <h1 class="h3 mb-0">Agenda des rappels & visites véto</h1>
         <p class="text-muted">Visualisez en un coup d'œil tous les rappels planifiés et les visites vétérinaires des chats.</p>
     </div>
-    <a href="{{ route('reminders.index') }}" class="btn btn-outline-primary"><i class="bi bi-list-check me-1"></i> Liste des rappels</a>
+    <div class="btn-group">
+        <a href="{{ route('reminders.index') }}" class="btn btn-outline-primary"><i class="bi bi-list-check me-1"></i> Liste des rappels</a>
+        <a href="{{ route('calendar.export') }}" class="btn btn-primary"><i class="bi bi-download me-1"></i> Exporter (ICS)</a>
+    </div>
 </div>
 
 <div class="row g-4 mb-4">

@@ -35,7 +35,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::get('/search', SearchController::class)->name('search');
-    Route::get('/calendar', CalendarController::class)->name('calendar');
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
+    Route::get('/calendar/export', [CalendarController::class, 'exportIcs'])->name('calendar.export');
 
     Route::get('/volunteers', [VolunteerController::class, 'index'])->name('volunteers.index');
     Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteers.store');
