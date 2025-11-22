@@ -42,6 +42,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
   contrôles de rôle admin
 - Module stocks : inventaire des fournitures (cartes d'alerte, tableau, formulaires d'ajout/édition/suppression) et page HTML de
   démonstration
+- Alerte email stocks faibles : bouton sur la page stocks, commande `stocks:alert` (planifiée à 06h50) pour prévenir les admins/bénévoles
 - Administration des utilisateurs : création/édition/suppression des comptes et rôles (admin, bénévole, famille) et maquette HTML dédiée
 - Dashboard enrichi : graphiques Chart.js pour la répartition des statuts des chats et l'évolution mensuelle des dons (données réelles)
 - Profil association éditable : page `/settings/organization` (admin) pour saisir coordonnées/SIRET/IBAN/BIC, injectés automatiquement dans les reçus fiscaux PDF, contrats et emails + maquette statique `public/settings.html`.
@@ -147,6 +148,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 26. Automatiser l'envoi du récapitulatif des rappels :
    - Commande manuelle : `php artisan reminders:digest today|week|overdue`
    - Planification incluse : la commande `reminders:digest today` est programmée chaque jour à 07h via le scheduler Laravel (voir `app/Console/Kernel.php`).
+   - Alerte stocks faibles : la commande `stocks:alert` est planifiée à 06h50 pour prévenir les admins/bénévoles si des articles passent sous seuil.
    - Activer le scheduler côté serveur : tâche cron toutes les minutes `* * * * * php /chemin/vers/artisan schedule:run >> /dev/null 2>&1`.
 
 Le dashboard affiche également les dépenses vétérinaires et le nombre de visites du mois, ainsi qu'un aperçu des dernières visites enregistrées.

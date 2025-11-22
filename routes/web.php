@@ -98,6 +98,7 @@ Route::get('/donations/{donation}/receipt', [PdfController::class, 'donationRece
     Route::post('/stocks', [StockItemController::class, 'store'])->name('stocks.store');
     Route::patch('/stocks/{stockItem}', [StockItemController::class, 'update'])->name('stocks.update');
     Route::delete('/stocks/{stockItem}', [StockItemController::class, 'destroy'])->name('stocks.destroy');
+    Route::post('/stocks/alert', [StockItemController::class, 'sendAlert'])->name('stocks.alert');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');

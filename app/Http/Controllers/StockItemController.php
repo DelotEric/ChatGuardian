@@ -1,11 +1,12 @@
 <?php
 
-namespace App\\Http\\Controllers;
+namespace App\Http\Controllers;
 
-use App\\Models\\StockItem;
-use Illuminate\\Http\\RedirectResponse;
-use Illuminate\\Http\\Request;
-use Illuminate\\View\\View;
+use App\Models\StockItem;
+use App\Services\StockAlertService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class StockItemController extends Controller
 {
@@ -53,6 +54,23 @@ class StockItemController extends Controller
         $stockItem->delete();
 
         return redirect()->route('stocks.index')->with('status', 'Article supprimé.');
+    }
+
+    public function sendAlert(StockAlertService $service): RedirectResponse
+    {
+        $this->authorizeRoles('admin');
+
+        [$itemsCount, $sentCount] = $service->send();
+
+        if ($itemsCount === 0) {
+            return redirect()->route('stocks.index')->with('status', 'Aucun article sous le seuil, aucune alerte envoyée.');
+        }
+
+        if ($sentCount === 0) {
+            return redirect()->route('stocks.index')->with('status', 'Articles à réapprovisionner, mais aucun destinataire email configuré.');
+        }
+
+        return redirect()->route('stocks.index')->with('status', "Alerte envoyée à {$sentCount} destinataire(s) pour {$itemsCount} article(s) faible(s).");
     }
 
     private function validateData(Request $request): array

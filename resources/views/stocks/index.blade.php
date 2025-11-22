@@ -7,7 +7,13 @@
             <p class="text-muted mb-0">Suivi des croquettes, litière, médicaments et matériel.</p>
         </div>
         @if(auth()->user()->role === 'admin')
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createItemModal">+ Ajouter</button>
+            <div class="d-flex gap-2">
+                <form method="POST" action="{{ route('stocks.alert') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger">Alerte stocks faibles</button>
+                </form>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createItemModal">+ Ajouter</button>
+            </div>
         @endif
     </div>
 
