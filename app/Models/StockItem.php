@@ -24,8 +24,15 @@ class StockItem extends Model
         'restock_threshold' => 'integer',
     ];
 
+    protected $appends = ['is_low'];
+
     public function isLow(): bool
     {
         return $this->quantity <= $this->restock_threshold;
+    }
+
+    public function getIsLowAttribute(): bool
+    {
+        return $this->isLow();
     }
 }

@@ -60,7 +60,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Agenda centralisé : page `/calendar` (admin/bénévole) avec vue FullCalendar des rappels et visites véto, navigation rapide (aujourd'hui, mois précédent/suivant) et liste des 10 prochains événements, plus maquette statique `public/calendar.html` et export ICS.
 - Commande Artisan `reminders:digest` et planification quotidienne à 07h pour envoyer automatiquement le récapitulatif des rappels.
 - Journal d'activités dédié : écran `/activities` (admin/bénévole) avec filtres, pagination et export CSV, plus maquette statique `public/activities.html`.
-- API JSON légère protégée par clé (`X-Api-Key`) pour exposer le dashboard, les chats, les points de nourrissage et les rappels.
+- API JSON légère protégée par clé (`X-Api-Key`) pour exposer le dashboard, les chats, dons/donateurs, familles d'accueil, points de nourrissage, stocks, bénévoles et rappels.
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -182,8 +182,15 @@ Pour exposer quelques données aux usages mobiles ou automatisations légères :
    - `GET /api/dashboard` : métriques clés, histogramme des dons, rappels à venir, journal récent.
    - `GET /api/cats` : liste paginée des chats avec statut, séjours en cours, rappels ouverts.
    - `GET /api/cats/{id}` : fiche détaillée (photos, séjours, visites véto, rappels).
+   - `GET /api/donations` : dons paginés avec donateur et statut d'envoi du reçu.
+   - `GET /api/donations/{id}` : détail d'un don (donateur, montant, reçu PDF prêt à être généré côté backoffice).
+   - `GET /api/donors` : liste paginée des donateurs avec nombre de dons et total donné (`?search=nom/email`).
+   - `GET /api/donors/{id}` : fiche d'un donateur avec ses 20 derniers dons et totaux.
    - `GET /api/feeding-points` : points de nourrissage avec coordonnées et bénévoles associés.
+   - `GET /api/foster-families` : familles d'accueil avec capacité, chats en cours et capacité restante (`?active_only=1`).
    - `GET /api/reminders` : rappels en attente (stats retard/du jour/semaine + liste chronologique).
+   - `GET /api/stocks` : inventaire complet ou uniquement les articles sous seuil (`?low_only=1`) avec flag `is_low` calculé.
+   - `GET /api/volunteers` : bénévoles paginés, villes/compétences et points de nourrissage associés (`?active_only=1`).
 
 Les routes API utilisent un middleware simple pour refuser les requêtes sans clé ou avec clé invalide.
 
