@@ -10,6 +10,7 @@ use App\Http\Controllers\FeedingPointController;
 use App\Http\Controllers\FosterFamilyController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\StockItemController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
 use Illuminate\Support\Facades\Route;
 
@@ -69,4 +70,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/stocks', [StockItemController::class, 'store'])->name('stocks.store');
     Route::patch('/stocks/{stockItem}', [StockItemController::class, 'update'])->name('stocks.update');
     Route::delete('/stocks/{stockItem}', [StockItemController::class, 'destroy'])->name('stocks.destroy');
+
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 });

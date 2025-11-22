@@ -40,6 +40,7 @@
                             <li class="nav-item"><a class="nav-link" href="{{ route('stocks.index') }}">Stocks</a></li>
                         @endif
                         @if($role === 'admin')
+                            <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">Utilisateurs</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('donors.index') }}">Donateurs</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('donations.index') }}">Dons</a></li>
                         @endif

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGuardian — Utilisateurs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(145deg, #f7faff 0%, #eef4ff 45%, #f7f0ff 100%); }
+        .card-soft { border: none; border-radius: 16px; background: rgba(255,255,255,0.94); box-shadow: 0 18px 40px rgba(99,102,241,0.12); backdrop-filter: blur(6px); }
+        .sidebar { border-radius: 16px; background: #fff; border: 1px solid #eef2ff; }
+        .sidebar a { color: #374151; text-decoration: none; padding: 10px 14px; border-radius: 12px; display: flex; align-items: center; gap: 10px; }
+        .sidebar a.active, .sidebar a:hover { background: var(--cg-primary-soft); color: #4c1d95; font-weight: 600; }
+        .badge-soft { background: #eef2ff; color: #4338ca; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container py-4 py-lg-5">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                <div class="sidebar p-3 p-lg-4 shadow-sm h-100">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="brand-circle me-2">🐾</div>
+                        <div>
+                            <p class="text-muted small mb-0">Admin</p>
+                            <strong>ChatGuardian</strong>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="/admin-home.html"><span>🏠</span> Accueil</a>
+                        <a href="/chats.html"><span>🐈</span> Chats</a>
+                        <a href="/foster-families.html"><span>🏡</span> Familles d'accueil</a>
+                        <a href="/volunteers.html"><span>🤝</span> Bénévoles</a>
+                        <a href="/donations.html"><span>💝</span> Dons</a>
+                        <a href="/feeding-points.html"><span>📍</span> Points de nourrissage</a>
+                        <a href="/stocks.html"><span>📦</span> Stocks</a>
+                        <a class="active" href="#"><span>🛡️</span> Utilisateurs</a>
+                    </div>
+                    <div class="mt-4 p-3 rounded-3" style="background: var(--cg-primary-soft);">
+                        <p class="mb-1 fw-semibold">Sécurité</p>
+                        <p class="mb-2 small text-muted">Réinitialisez un mot de passe en quelques clics.</p>
+                        <button class="btn btn-primary w-100">Envoyer un lien</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+                    <div>
+                        <p class="text-muted mb-1">Paramètres</p>
+                        <h1 class="h3 fw-bold mb-2">Utilisateurs & rôles</h1>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge badge-soft">Total : 12</span>
+                            <small class="text-muted">Admins 3 · Bénévoles 6 · Familles 3</small>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 mt-3 mt-md-0">
+                        <button class="btn btn-outline-secondary">Export</button>
+                        <button class="btn btn-primary">Créer un compte</button>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="card card-soft p-3">
+                            <p class="text-muted mb-1 small">Admins</p>
+                            <p class="h4 mb-1">3</p>
+                            <small class="text-muted">Accès complet</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-soft p-3">
+                            <p class="text-muted mb-1 small">Bénévoles</p>
+                            <p class="h4 mb-1">6</p>
+                            <small class="text-muted">Lecture + actions terrain</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-soft p-3">
+                            <p class="text-muted mb-1 small">Familles</p>
+                            <p class="h4 mb-1">3</p>
+                            <small class="text-muted">Consultation limitée</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-soft p-4 shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h5 mb-0">Liste des comptes</h2>
+                        <span class="text-muted small">12 entrées</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Rôle</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-semibold">Alice Martin</td>
+                                    <td class="text-muted">alice@chatguardian.test</td>
+                                    <td><span class="badge bg-primary">Admin</span></td>
+                                    <td class="text-end"><button class="btn btn-sm btn-outline-secondary">Éditer</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold">Bruno Lefèvre</td>
+                                    <td class="text-muted">bruno@chatguardian.test</td>
+                                    <td><span class="badge bg-success">Bénévole</span></td>
+                                    <td class="text-end"><button class="btn btn-sm btn-outline-secondary">Éditer</button></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-semibold">Camille Lopez</td>
+                                    <td class="text-muted">camille@chatguardian.test</td>
+                                    <td><span class="badge bg-warning text-dark">Famille</span></td>
+                                    <td class="text-end"><button class="btn btn-sm btn-outline-secondary">Éditer</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

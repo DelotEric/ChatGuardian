@@ -18,6 +18,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - `resources/views/donors/index.blade.php` : gestion des donateurs
 - `resources/views/feeding_points/index.blade.php` : points de nourrissage avec bénévoles
 - `resources/views/stocks/index.blade.php` : suivi des stocks (croquettes, litière, soins, matériel)
+- `resources/views/users/index.blade.php` : gestion des comptes utilisateurs (admin-only)
 - `database/migrations/*.php` : tables chats, familles, séjours, bénévoles, dons, donateurs, points de nourrissage
 - `database/migrations/2024_01_01_000008_create_cat_photos_table.php` : photos associées aux chats (max 3)
 - `database/migrations/2024_01_01_000009_create_stock_items_table.php` : articles de stock avec seuil de réappro
@@ -40,6 +41,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
   contrôles de rôle admin
 - Module stocks : inventaire des fournitures (cartes d'alerte, tableau, formulaires d'ajout/édition/suppression) et page HTML de
   démonstration
+- Administration des utilisateurs : création/édition/suppression des comptes et rôles (admin, bénévole, famille) et maquette HTML dédiée
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -97,6 +99,9 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 15. Suivre les stocks (admin/bénévole en lecture, admin en édition) :
    - Ouvrir l'inventaire : `/stocks`
    - Ajouter ou éditer un article avec quantité/unité, seuil d'alerte, localisation et notes
+16. Gérer les utilisateurs (admin) :
+   - Liste et métriques : `/users`
+   - Créer un compte avec rôle, modifier email/nom/role, réinitialiser le mot de passe, supprimer un autre compte
 
 Le dashboard (`/`) s'appuie désormais sur les statistiques réelles (chats par statut, dons du mois, familles, bénévoles, points de nourrissage) et affiche les derniers chats/dons ajoutés.
 
