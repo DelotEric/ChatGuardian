@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CatController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\DonorController;
 use App\Http\Controllers\FeedingPointController;
 use App\Http\Controllers\FosterFamilyController;
 use App\Http\Controllers\PdfController;
@@ -49,9 +50,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
     Route::patch('/donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
     Route::delete('/donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
-    Route::post('/donors', [DonationController::class, 'createDonor'])->name('donors.store');
     Route::get('/donations/export', [DonationController::class, 'exportCsv'])->name('donations.export');
     Route::get('/donations/{donation}/receipt', [PdfController::class, 'donationReceipt'])->name('donations.receipt');
+
+    Route::get('/donors', [DonorController::class, 'index'])->name('donors.index');
+    Route::post('/donors', [DonorController::class, 'store'])->name('donors.store');
+    Route::patch('/donors/{donor}', [DonorController::class, 'update'])->name('donors.update');
+    Route::delete('/donors/{donor}', [DonorController::class, 'destroy'])->name('donors.destroy');
 
     Route::get('/feeding-points', [FeedingPointController::class, 'index'])->name('feeding-points.index');
     Route::post('/feeding-points', [FeedingPointController::class, 'store'])->name('feeding-points.store');

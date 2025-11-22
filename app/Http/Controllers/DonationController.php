@@ -107,20 +107,4 @@ class DonationController extends Controller
         ]);
     }
 
-    public function createDonor(Request $request): RedirectResponse
-    {
-        $this->authorizeRoles('admin');
-
-        $donorData = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['nullable', 'email', 'max:255'],
-            'address' => ['nullable', 'string', 'max:255'],
-            'city' => ['nullable', 'string', 'max:120'],
-            'postal_code' => ['nullable', 'string', 'max:20'],
-        ]);
-
-        $donor = Donor::create($donorData);
-
-        return redirect()->back()->with('status', 'Donateur ajouté : ' . $donor->name);
-    }
 }

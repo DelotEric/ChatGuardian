@@ -15,6 +15,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - `resources/views/cats/show.blade.php` : fiche chat détaillée (identité, séjours, galerie photos)
 - `resources/views/foster_families/index.blade.php` : familles d'accueil
 - `resources/views/donations/index.blade.php` : dons et reçus
+- `resources/views/donors/index.blade.php` : gestion des donateurs
 - `resources/views/feeding_points/index.blade.php` : points de nourrissage avec bénévoles
 - `database/migrations/*.php` : tables chats, familles, séjours, bénévoles, dons, donateurs, points de nourrissage
 - `database/migrations/2024_01_01_000008_create_cat_photos_table.php` : photos associées aux chats (max 3)
@@ -28,6 +29,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Carte Leaflet intégrée sur la page "Points de nourrissage" (affiche les marqueurs depuis la base)
 - Génération d'un PDF de contrat de famille d'accueil (barryvdh/laravel-dompdf)
 - Reçus fiscaux en PDF pour chaque don et export CSV des dons/donateurs
+- Écran dédié aux donateurs (création, édition, suppression protégée si dons liés)
 - Réinitialisation de mot de passe Laravel (envoi d'email + formulaire de nouveau mot de passe)
 - Galerie photo par chat avec téléversement (3 Mo max par image, 3 photos par profil) et suppression
 - Gestion des séjours : ajout d'un passage en famille d'accueil et clôture avec résultat/notes
