@@ -6,6 +6,7 @@ use App\Http\Controllers\CatController;
 use App\Http\Controllers\CatAdoptionController;
 use App\Http\Controllers\CatReminderController;
 use App\Http\Controllers\CatVetRecordController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DonorController;
@@ -34,6 +35,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
     Route::get('/search', SearchController::class)->name('search');
+    Route::get('/calendar', CalendarController::class)->name('calendar');
 
     Route::get('/volunteers', [VolunteerController::class, 'index'])->name('volunteers.index');
     Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteers.store');

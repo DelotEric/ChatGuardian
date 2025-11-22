@@ -43,6 +43,9 @@
                             <li class="nav-item"><a class="nav-link" href="{{ route('foster-families.index') }}">Familles d'accueil</a></li>
                         @endif
                         @if(in_array($role, ['admin', 'benevole']))
+                            <li class="nav-item"><a class="nav-link" href="{{ route('calendar') }}">Agenda</a></li>
+                        @endif
+                        @if(in_array($role, ['admin', 'benevole']))
                             <li class="nav-item"><a class="nav-link" href="{{ route('reminders.index') }}">Rappels</a></li>
                         @endif
                         @if(in_array($role, ['admin', 'benevole']))
