@@ -75,7 +75,16 @@
                 <h5 class="mb-1">Rappels</h5>
                 <p class="text-muted small mb-0">Filtrer par statut, échéance ou type d'action.</p>
             </div>
-            <div>
+            <div class="d-flex align-items-center gap-2">
+                <form method="POST" action="{{ route('reminders.send_digest') }}" class="d-flex align-items-center gap-2">
+                    @csrf
+                    <select name="range" class="form-select form-select-sm">
+                        <option value="week">7 prochains jours</option>
+                        <option value="today">Aujourd'hui</option>
+                        <option value="overdue">En retard</option>
+                    </select>
+                    <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="bi bi-envelope"></i> Envoyer par email</button>
+                </form>
                 <a href="{{ route('cats.index') }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus"></i> Ajouter depuis une fiche chat</a>
             </div>
         </div>

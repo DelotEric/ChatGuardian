@@ -53,6 +53,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Journal d'activités : traçabilité des actions clés (création/édition de chat, séjours, visites véto, dons, reçus envoyés) visible sur le dashboard et la fiche chat.
 - Rappels de suivi par chat : création/édition/suppression de rappels (vaccins, suivi adoption, visites véto) avec tableau dédié sur la fiche chat, cartes sur le dashboard et données démo.
 - Vue consolidée des rappels : écran `/reminders` (admin/bénévole) avec filtres statut/échéance/type, actions de clôture et lien direct vers chaque fiche chat, plus maquette statique `public/reminders.html`.
+- Envoi d'un email récapitulatif des rappels (aujourd'hui, 7 prochains jours ou en retard) pour les admins et bénévoles depuis `/reminders`.
 - Agenda centralisé : page `/calendar` (admin/bénévole) avec vue FullCalendar des rappels et visites véto, navigation rapide (aujourd'hui, mois précédent/suivant) et liste des 10 prochains événements, plus maquette statique `public/calendar.html` et export ICS.
 
 ### Intégration rapide
@@ -139,6 +140,9 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 24. Planifier des rappels :
    - Ouvrir une fiche chat puis utiliser le formulaire « Programmer un rappel » (admin/bénévole)
    - Suivre les rappels en attente via la section dédiée sur la fiche ou la carte « Rappels à venir » du dashboard
+25. Envoyer un email récapitulatif des rappels (admin/bénévole) :
+   - Aller sur `/reminders`, choisir la plage (7 prochains jours, aujourd'hui ou en retard)
+   - Cliquer sur **Envoyer par email** pour diffuser le récap aux admins/bénévoles disposant d'un email
 
 Le dashboard affiche également les dépenses vétérinaires et le nombre de visites du mois, ainsi qu'un aperçu des dernières visites enregistrées.
 

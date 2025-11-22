@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cats/{cat}/vet-records/{vetRecord}', [CatVetRecordController::class, 'destroy'])->name('cats.vet-records.destroy');
     Route::get('/cats/{cat}/vet-records/export', [CatVetRecordController::class, 'export'])->name('cats.vet-records.export');
 
+    Route::post('/reminders/send-digest', [ReminderController::class, 'sendDigest'])->name('reminders.send_digest');
     Route::get('/reminders', [ReminderController::class, 'index'])->name('reminders.index');
 
     Route::get('/foster-families', [FosterFamilyController::class, 'index'])->name('foster-families.index');
