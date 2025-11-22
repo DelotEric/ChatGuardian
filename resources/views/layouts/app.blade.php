@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatGuardian - Prototype</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +24,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
+                    @auth
+                        <form class="d-flex me-lg-3 mb-2 mb-lg-0" action="{{ route('search') }}" method="GET">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                <input type="search" name="q" class="form-control" placeholder="Rechercher..." value="{{ request('q') }}" required>
+                            </div>
+                        </form>
+                    @endauth
                     @auth
                         @php $role = auth()->user()->role; @endphp
                         <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Accueil</a></li>
@@ -73,6 +82,12 @@
     </header>
 
     <main class="container py-4">
+        @if(session('status'))
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {{ session('status') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
         @yield('content')
     </main>
 

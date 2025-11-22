@@ -53,6 +53,17 @@ body {
 .badge.bg-soft-success { background: #e6f6ef; color: #16a34a; }
 .badge.bg-soft-warning { background: #fff4e5; color: #f59e0b; }
 
+.icon-circle {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    border: 1px solid #ececec;
+}
+
 .btn-primary {
     background: linear-gradient(120deg, #8c5ff7, #6f8df6);
     border: none;

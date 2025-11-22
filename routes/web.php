@@ -12,6 +12,7 @@ use App\Http\Controllers\FeedingPointController;
 use App\Http\Controllers\FosterFamilyController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VolunteerController;
@@ -30,6 +31,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/', DashboardController::class)->name('dashboard');
+    Route::get('/search', SearchController::class)->name('search');
 
     Route::get('/volunteers', [VolunteerController::class, 'index'])->name('volunteers.index');
     Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteers.store');
