@@ -52,6 +52,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Fiche PDF par chat + export CSV complet des chats (statut, santé, séjours, adoption) pour partager ou sauvegarder les dossiers.
 - Journal d'activités : traçabilité des actions clés (création/édition de chat, séjours, visites véto, dons, reçus envoyés) visible sur le dashboard et la fiche chat.
 - Rappels de suivi par chat : création/édition/suppression de rappels (vaccins, suivi adoption, visites véto) avec tableau dédié sur la fiche chat, cartes sur le dashboard et données démo.
+- Vue consolidée des rappels : écran `/reminders` (admin/bénévole) avec filtres statut/échéance/type, actions de clôture et lien direct vers chaque fiche chat, plus maquette statique `public/reminders.html`.
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :

@@ -193,7 +193,7 @@
                     @endforelse
                 </div>
                 <div class="text-end mt-2">
-                    <a class="btn btn-sm btn-outline-primary" href="/cats">Ouvrir les fiches chats</a>
+                    <a class="btn btn-sm btn-outline-primary" href="{{ route('reminders.index') }}">Voir tous les rappels</a>
                 </div>
             </div>
         </div>
