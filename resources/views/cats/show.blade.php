@@ -31,7 +31,13 @@
     <div class="col-lg-5">
         <div class="card shadow-sm border-0 h-100">
             <div class="card-body">
-                <h2 class="h6 text-uppercase text-muted mb-3">Identité & santé</h2>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h6 text-uppercase text-muted mb-0">Identité & santé</h2>
+                    @if(in_array($role, ['admin', 'benevole']))
+                        <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#editCatForm">Modifier</button>
+                    @endif
+                </div>
+
                 <div class="d-flex flex-wrap gap-3">
                     <div>
                         <p class="text-muted small mb-1">Sexe</p>
@@ -59,6 +65,81 @@
                     <p class="text-muted small mb-1">Notes</p>
                     <p class="mb-0">{{ $cat->notes ?: '—' }}</p>
                 </div>
+
+                @if(in_array($role, ['admin', 'benevole']))
+                    <div id="editCatForm" class="collapse mt-4">
+                        <hr>
+                        <h3 class="h6 fw-semibold mb-3">Mettre à jour le profil</h3>
+                        <form class="row g-3" method="POST" action="{{ route('cats.update', $cat) }}">
+                            @csrf
+                            @method('PATCH')
+                            <div class="col-md-6">
+                                <label class="form-label">Nom</label>
+                                <input type="text" name="name" class="form-control" value="{{ old('name', $cat->name) }}" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Sexe</label>
+                                <select name="sex" class="form-select" required>
+                                    <option value="male" @selected($cat->sex === 'male')>Mâle</option>
+                                    <option value="female" @selected($cat->sex === 'female')>Femelle</option>
+                                    <option value="unknown" @selected($cat->sex === 'unknown')>Inconnu</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Naissance</label>
+                                <input type="date" name="birthdate" class="form-control" value="{{ old('birthdate', optional($cat->birthdate)->format('Y-m-d')) }}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Statut</label>
+                                <select name="status" class="form-select" required>
+                                    <option value="free" @selected($cat->status === 'free')>Libre</option>
+                                    <option value="foster" @selected($cat->status === 'foster')>En famille d'accueil</option>
+                                    <option value="adopted" @selected($cat->status === 'adopted')>Adopté</option>
+                                    <option value="deceased" @selected($cat->status === 'deceased')>Décédé</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Stérilisé</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" name="sterilized" id="editSterilized" @checked($cat->sterilized)>
+                                    <label class="form-check-label" for="editSterilized">Oui</label>
+                                </div>
+                                <input type="date" name="sterilized_at" class="form-control mt-1" value="{{ old('sterilized_at', optional($cat->sterilized_at)->format('Y-m-d')) }}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Vacciné</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" name="vaccinated" id="editVaccinated" @checked($cat->vaccinated)>
+                                    <label class="form-check-label" for="editVaccinated">Oui</label>
+                                </div>
+                                <input type="date" name="vaccinated_at" class="form-control mt-1" value="{{ old('vaccinated_at', optional($cat->vaccinated_at)->format('Y-m-d')) }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">FIV</label>
+                                <select name="fiv_status" class="form-select">
+                                    <option value="unknown" @selected($cat->fiv_status === 'unknown')>Inconnu</option>
+                                    <option value="positive" @selected($cat->fiv_status === 'positive')>Positif</option>
+                                    <option value="negative" @selected($cat->fiv_status === 'negative')>Négatif</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">FELV</label>
+                                <select name="felv_status" class="form-select">
+                                    <option value="unknown" @selected($cat->felv_status === 'unknown')>Inconnu</option>
+                                    <option value="positive" @selected($cat->felv_status === 'positive')>Positif</option>
+                                    <option value="negative" @selected($cat->felv_status === 'negative')>Négatif</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Notes</label>
+                                <textarea name="notes" class="form-control" rows="3" placeholder="Observations, soins, comportement...">{{ old('notes', $cat->notes) }}</textarea>
+                            </div>
+                            <div class="col-12 text-end">
+                                <button class="btn btn-primary" type="submit">Enregistrer</button>
+                            </div>
+                        </form>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
@@ -169,6 +250,15 @@
                             <input type="text" name="outcome" class="form-control" placeholder="Adopté, remis en liberté...">
                         </div>
                         <div class="col-md-6">
+                            <label class="form-label">Mettre à jour le statut du chat</label>
+                            <select name="next_status" class="form-select">
+                                <option value="foster" selected>En famille d'accueil</option>
+                                <option value="adopted">Adopté</option>
+                                <option value="free">Libre</option>
+                                <option value="deceased">Décédé</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
                             <label class="form-label">Notes</label>
                             <textarea name="notes" class="form-control" rows="2" placeholder="Comportement, soins, observations..."></textarea>
                         </div>
@@ -209,6 +299,12 @@
                                             @csrf
                                             <input type="date" name="ended_at" value="{{ now()->format('Y-m-d') }}" class="form-control form-control-sm w-auto">
                                             <input type="text" name="outcome" class="form-control form-control-sm w-auto" placeholder="Résultat">
+                                            <select name="next_status" class="form-select form-select-sm w-auto">
+                                                <option value="foster">En famille</option>
+                                                <option value="adopted">Adopté</option>
+                                                <option value="free">Libre</option>
+                                                <option value="deceased">Décédé</option>
+                                            </select>
                                             <button class="btn btn-sm btn-outline-primary" type="submit">Clore</button>
                                         </form>
                                     @else

@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cats', [CatController::class, 'index'])->name('cats.index');
     Route::post('/cats', [CatController::class, 'store'])->name('cats.store');
+    Route::patch('/cats/{cat}', [CatController::class, 'update'])->name('cats.update');
     Route::get('/cats/{cat}', [CatController::class, 'show'])->name('cats.show');
     Route::post('/cats/{cat}/photos', [CatController::class, 'storePhotos'])->name('cats.photos.store');
     Route::delete('/cats/{cat}/photos/{photo}', [CatController::class, 'destroyPhoto'])->name('cats.photos.destroy');

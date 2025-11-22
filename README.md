@@ -31,6 +31,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Réinitialisation de mot de passe Laravel (envoi d'email + formulaire de nouveau mot de passe)
 - Galerie photo par chat avec téléversement (3 Mo max par image, 3 photos par profil) et suppression
 - Gestion des séjours : ajout d'un passage en famille d'accueil et clôture avec résultat/notes
+- Édition complète d'une fiche chat (statut, santé) et mise à jour du statut directement lors de l'ajout ou la clôture d'un séjour
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -77,8 +78,12 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
     - Téléverser jusqu'à 3 images, supprimer au besoin
 12. Enregistrer un séjour et le clôturer :
    - Dans la fiche chat, choisir une famille active, la date d'entrée/sortie, résultat et notes
-   - Clore un séjour en cours directement depuis le tableau (date de sortie + résultat)
-13. Réinitialiser un mot de passe :
+   - Mettre à jour le statut du chat (libre, en famille, adopté, décédé) en même temps
+   - Clore un séjour en cours directement depuis le tableau (date de sortie + résultat + statut final)
+13. Modifier une fiche chat :
+   - Dans la section « Identité & santé », bouton « Modifier » pour mettre à jour le profil
+   - Champs couverts : nom, sexe, date de naissance, statut, stérilisation, vaccination, FIV/FELV, notes
+14. Réinitialiser un mot de passe :
    - Demander un lien : `/forgot-password`
    - Ouvrir le lien reçu, saisir le nouveau mot de passe : `/reset-password/{token}`
 

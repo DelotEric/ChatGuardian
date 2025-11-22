@@ -40,7 +40,7 @@ class CatController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'sex' => ['required', 'in:male,female,unknown'],
             'birthdate' => ['nullable', 'date'],
-            'status' => ['required', 'string', 'max:50'],
+            'status' => ['required', 'in:free,foster,adopted,deceased'],
             'sterilized' => ['sometimes', 'boolean'],
             'sterilized_at' => ['nullable', 'date'],
             'vaccinated' => ['sometimes', 'boolean'],
@@ -58,6 +58,32 @@ class CatController extends Controller
         return redirect()->route('cats.index')->with('status', 'Chat créé.');
     }
 
+    public function update(Request $request, Cat $cat): RedirectResponse
+    {
+        $this->authorizeRoles(['admin', 'benevole']);
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'sex' => ['required', 'in:male,female,unknown'],
+            'birthdate' => ['nullable', 'date'],
+            'status' => ['required', 'in:free,foster,adopted,deceased'],
+            'sterilized' => ['sometimes', 'boolean'],
+            'sterilized_at' => ['nullable', 'date'],
+            'vaccinated' => ['sometimes', 'boolean'],
+            'vaccinated_at' => ['nullable', 'date'],
+            'fiv_status' => ['required', 'in:unknown,positive,negative'],
+            'felv_status' => ['required', 'in:unknown,positive,negative'],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $data['sterilized'] = $request->boolean('sterilized');
+        $data['vaccinated'] = $request->boolean('vaccinated');
+
+        $cat->update($data);
+
+        return back()->with('status', 'Profil du chat mis à jour.');
+    }
+
     public function storeStay(Request $request, Cat $cat): RedirectResponse
     {
         $this->authorizeRoles(['admin', 'benevole']);
@@ -68,9 +94,14 @@ class CatController extends Controller
             'ended_at' => ['nullable', 'date', 'after_or_equal:started_at'],
             'outcome' => ['nullable', 'string', 'max:255'],
             'notes' => ['nullable', 'string'],
+            'next_status' => ['nullable', 'in:free,foster,adopted,deceased'],
         ]);
 
         $cat->stays()->create($data);
+
+        $cat->update([
+            'status' => $data['next_status'] ?? 'foster',
+        ]);
 
         return back()->with('status', 'Séjour enregistré.');
     }
@@ -83,9 +114,14 @@ class CatController extends Controller
         $data = $request->validate([
             'ended_at' => ['required', 'date', 'after_or_equal:' . $stay->started_at->format('Y-m-d')],
             'outcome' => ['nullable', 'string', 'max:255'],
+            'next_status' => ['nullable', 'in:free,foster,adopted,deceased'],
         ]);
 
         $stay->update($data);
+
+        if ($data['next_status'] ?? false) {
+            $cat->update(['status' => $data['next_status']]);
+        }
 
         return back()->with('status', 'Séjour clôturé.');
     }
