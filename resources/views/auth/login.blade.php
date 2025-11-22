@@ -34,7 +34,7 @@
                     <div class="mb-3">
                         <div class="d-flex justify-content-between align-items-center">
                             <label for="password" class="form-label mb-0">Mot de passe</label>
-                            <span class="small text-muted">Fonction "mot de passe oublié" à brancher</span>
+                            <a href="{{ route('password.request') }}" class="small">Mot de passe oublié ?</a>
                         </div>
                         <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
                     </div>

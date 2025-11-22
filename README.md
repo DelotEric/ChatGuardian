@@ -26,6 +26,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Carte Leaflet intégrée sur la page "Points de nourrissage" (affiche les marqueurs depuis la base)
 - Génération d'un PDF de contrat de famille d'accueil (barryvdh/laravel-dompdf)
 - Reçus fiscaux en PDF pour chaque don et export CSV des dons/donateurs
+- Réinitialisation de mot de passe Laravel (envoi d'email + formulaire de nouveau mot de passe)
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -45,15 +46,26 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
    - admin@chatguardian.test / **password** (admin)
    - benevole@chatguardian.test / **password** (bénévole)
    - famille@chatguardian.test / **password** (famille d'accueil)
-4. Se connecter via `/login` puis accéder au tableau de bord `/` (toutes les routes sont protégées par auth).
-5. Tester la génération de contrat :
+4. Configurer l'envoi d'emails pour la réinitialisation de mot de passe (Mailhog/SMTP) dans `.env` :
+   ```bash
+   MAIL_MAILER=smtp
+   MAIL_HOST=mailhog # ou votre serveur SMTP
+   MAIL_PORT=1025    # ou 587/465 selon le fournisseur
+   MAIL_FROM_ADDRESS=no-reply@chatguardian.test
+   MAIL_FROM_NAME="ChatGuardian"
+   ```
+5. Se connecter via `/login` puis accéder au tableau de bord `/` (toutes les routes sont protégées par auth).
+6. Tester la génération de contrat :
    - Créer au moins une famille d'accueil via `/foster-families`
    - Télécharger le PDF : `/foster-families/{id}/contract`
-6. Générer un reçu fiscal PDF :
+7. Générer un reçu fiscal PDF :
    - Enregistrer un don via `/donations`
    - Télécharger le reçu : `/donations/{id}/receipt`
-7. Exporter un CSV des dons : `/donations/export`
-8. Visualiser les points de nourrissage avec Leaflet : `/feeding-points`
+8. Exporter un CSV des dons : `/donations/export`
+9. Visualiser les points de nourrissage avec Leaflet : `/feeding-points`
+10. Réinitialiser un mot de passe :
+   - Demander un lien : `/forgot-password`
+   - Ouvrir le lien reçu, saisir le nouveau mot de passe : `/reset-password/{token}`
 
 Le dashboard (`/`) s'appuie désormais sur les statistiques réelles (chats par statut, dons du mois, familles, bénévoles, points de nourrissage) et affiche les derniers chats/dons ajoutés.
 
