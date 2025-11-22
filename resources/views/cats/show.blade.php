@@ -132,9 +132,54 @@
 <div class="card shadow-sm border-0 mt-4">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="h6 text-uppercase text-muted mb-0">Historique des séjours</h2>
+            <div>
+                <h2 class="h6 text-uppercase text-muted mb-0">Historique des séjours</h2>
+                <p class="text-muted small mb-0">Suivi des familles d'accueil et des sorties</p>
+            </div>
             <span class="text-muted small">{{ $cat->stays->count() }} séjour(s)</span>
         </div>
+
+        @if(in_array($role, ['admin', 'benevole']))
+            <div class="border rounded p-3 bg-light mb-3">
+                <h3 class="h6 fw-semibold mb-2">Enregistrer un nouveau séjour</h3>
+                @if($families->isEmpty())
+                    <p class="text-muted small mb-0">Aucune famille active. Ajoutez-en d'abord depuis l'onglet Familles d'accueil.</p>
+                @else
+                    <form class="row g-3" method="POST" action="{{ route('cats.stays.store', $cat) }}">
+                        @csrf
+                        <div class="col-md-4">
+                            <label class="form-label">Famille d'accueil</label>
+                            <select name="foster_family_id" class="form-select" required>
+                                <option value="">Choisir...</option>
+                                @foreach($families as $family)
+                                    <option value="{{ $family->id }}">{{ $family->name }} (capacité {{ $family->capacity }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date d'entrée</label>
+                            <input type="date" name="started_at" class="form-control" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date de sortie</label>
+                            <input type="date" name="ended_at" class="form-control" placeholder="Optionnel">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Résultat / statut de sortie</label>
+                            <input type="text" name="outcome" class="form-control" placeholder="Adopté, remis en liberté...">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Notes</label>
+                            <textarea name="notes" class="form-control" rows="2" placeholder="Comportement, soins, observations..."></textarea>
+                        </div>
+                        <div class="col-12 text-end">
+                            <button class="btn btn-primary" type="submit">Ajouter le séjour</button>
+                        </div>
+                    </form>
+                @endif
+            </div>
+        @endif
+
         <div class="table-responsive">
             <table class="table align-middle mb-0">
                 <thead class="table-light">
@@ -143,19 +188,38 @@
                         <th>Début</th>
                         <th>Fin</th>
                         <th>Résultat</th>
+                        <th>Notes</th>
+                        @if(in_array($role, ['admin', 'benevole']))
+                            <th class="text-end">Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($cat->stays as $stay)
+                    @forelse($cat->stays->sortByDesc('started_at') as $stay)
                         <tr>
                             <td>{{ $stay->fosterFamily->name ?? '—' }}</td>
                             <td>{{ $stay->started_at?->format('d/m/Y') ?? '—' }}</td>
                             <td>{{ $stay->ended_at?->format('d/m/Y') ?? 'En cours' }}</td>
                             <td>{{ $stay->outcome ?? '—' }}</td>
+                            <td>{{ $stay->notes ?? '—' }}</td>
+                            @if(in_array($role, ['admin', 'benevole']))
+                                <td class="text-end">
+                                    @if(!$stay->ended_at)
+                                        <form class="d-flex gap-2 align-items-center justify-content-end flex-wrap" method="POST" action="{{ route('cats.stays.close', [$cat, $stay]) }}">
+                                            @csrf
+                                            <input type="date" name="ended_at" value="{{ now()->format('Y-m-d') }}" class="form-control form-control-sm w-auto">
+                                            <input type="text" name="outcome" class="form-control form-control-sm w-auto" placeholder="Résultat">
+                                            <button class="btn btn-sm btn-outline-primary" type="submit">Clore</button>
+                                        </form>
+                                    @else
+                                        <span class="badge bg-soft-success text-success">Clôturé</span>
+                                    @endif
+                                </td>
+                            @endif
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center text-muted py-3">Pas encore de séjour enregistré.</td>
+                            <td colspan="{{ in_array($role, ['admin', 'benevole']) ? 6 : 5 }}" class="text-center text-muted py-3">Pas encore de séjour enregistré.</td>
                         </tr>
                     @endforelse
                 </tbody>

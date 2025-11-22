@@ -30,6 +30,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Reçus fiscaux en PDF pour chaque don et export CSV des dons/donateurs
 - Réinitialisation de mot de passe Laravel (envoi d'email + formulaire de nouveau mot de passe)
 - Galerie photo par chat avec téléversement (3 Mo max par image, 3 photos par profil) et suppression
+- Gestion des séjours : ajout d'un passage en famille d'accueil et clôture avec résultat/notes
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -74,7 +75,10 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 11. Charger des photos pour un chat (admin ou bénévole) :
     - Ouvrir la fiche : `/cats/{id}`
     - Téléverser jusqu'à 3 images, supprimer au besoin
-12. Réinitialiser un mot de passe :
+12. Enregistrer un séjour et le clôturer :
+   - Dans la fiche chat, choisir une famille active, la date d'entrée/sortie, résultat et notes
+   - Clore un séjour en cours directement depuis le tableau (date de sortie + résultat)
+13. Réinitialiser un mot de passe :
    - Demander un lien : `/forgot-password`
    - Ouvrir le lien reçu, saisir le nouveau mot de passe : `/reset-password/{token}`
 

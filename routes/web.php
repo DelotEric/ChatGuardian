@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/cats/{cat}', [CatController::class, 'show'])->name('cats.show');
     Route::post('/cats/{cat}/photos', [CatController::class, 'storePhotos'])->name('cats.photos.store');
     Route::delete('/cats/{cat}/photos/{photo}', [CatController::class, 'destroyPhoto'])->name('cats.photos.destroy');
+    Route::post('/cats/{cat}/stays', [CatController::class, 'storeStay'])->name('cats.stays.store');
+    Route::post('/cats/{cat}/stays/{stay}/close', [CatController::class, 'closeStay'])->name('cats.stays.close');
 
     Route::get('/foster-families', [FosterFamilyController::class, 'index'])->name('foster-families.index');
     Route::post('/foster-families', [FosterFamilyController::class, 'store'])->name('foster-families.store');

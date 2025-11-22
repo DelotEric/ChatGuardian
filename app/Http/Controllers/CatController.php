@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Cat;
 use App\Models\CatPhoto;
+use App\Models\CatStay;
+use App\Models\FosterFamily;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -25,8 +27,9 @@ class CatController extends Controller
         $this->authorizeRoles(['admin', 'benevole', 'famille']);
 
         $cat->load(['photos', 'stays.fosterFamily']);
+        $families = FosterFamily::query()->where('is_active', true)->orderBy('name')->get();
 
-        return view('cats.show', compact('cat'));
+        return view('cats.show', compact('cat', 'families'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -53,6 +56,38 @@ class CatController extends Controller
         Cat::create($data);
 
         return redirect()->route('cats.index')->with('status', 'Chat créé.');
+    }
+
+    public function storeStay(Request $request, Cat $cat): RedirectResponse
+    {
+        $this->authorizeRoles(['admin', 'benevole']);
+
+        $data = $request->validate([
+            'foster_family_id' => ['required', 'exists:foster_families,id'],
+            'started_at' => ['required', 'date'],
+            'ended_at' => ['nullable', 'date', 'after_or_equal:started_at'],
+            'outcome' => ['nullable', 'string', 'max:255'],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $cat->stays()->create($data);
+
+        return back()->with('status', 'Séjour enregistré.');
+    }
+
+    public function closeStay(Request $request, Cat $cat, CatStay $stay): RedirectResponse
+    {
+        $this->authorizeRoles(['admin', 'benevole']);
+        abort_unless($stay->cat_id === $cat->id, 404);
+
+        $data = $request->validate([
+            'ended_at' => ['required', 'date', 'after_or_equal:' . $stay->started_at->format('Y-m-d')],
+            'outcome' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $stay->update($data);
+
+        return back()->with('status', 'Séjour clôturé.');
     }
 
     public function storePhotos(Request $request, Cat $cat): RedirectResponse
