@@ -46,6 +46,20 @@
                 <div class="row g-3 mb-3">
                     <div class="col-12 col-md-3">
                         <div class="stat-card">
+                            <p class="text-muted mb-1">Soins véto (mois)</p>
+                            <p class="h4 mb-0">{{ number_format($metrics['vet_month'], 2, ',', ' ') }} €</p>
+                            <small class="text-muted">dépensés</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <div class="stat-card">
+                            <p class="text-muted mb-1">Visites véto (mois)</p>
+                            <p class="h4 mb-0">{{ $metrics['vet_visits_month'] }}</p>
+                            <small class="text-muted">enregistrées</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <div class="stat-card">
                             <p class="text-muted mb-1">Articles de stock</p>
                             <p class="h4 mb-0">{{ $metrics['stock_items'] }}</p>
                             <small class="text-muted">inventaire suivi</small>
@@ -220,6 +234,38 @@
                                     </tr>
                                 @empty
                                     <tr><td colspan="3" class="text-center text-muted py-4">Aucun don enregistré.</td></tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-5">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h3 class="h6 fw-semibold mb-0">Dernières visites véto</h3>
+                        <a href="/cats" class="btn btn-sm btn-outline-secondary">Voir les fiches</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Chat</th>
+                                    <th>Motif</th>
+                                    <th class="text-end">Montant</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($recentVetRecords as $record)
+                                    <tr>
+                                        <td class="fw-semibold">{{ optional($record->cat)->name ?? 'Chat inconnu' }}</td>
+                                        <td class="text-muted">{{ \Illuminate\Support\Str::limit($record->reason, 40) }}</td>
+                                        <td class="text-end">{{ number_format($record->amount, 2, ',', ' ') }} €</td>
+                                    </tr>
+                                @empty
+                                    <tr><td colspan="3" class="text-center text-muted py-4">Aucune visite enregistrée.</td></tr>
                                 @endforelse
                             </tbody>
                         </table>

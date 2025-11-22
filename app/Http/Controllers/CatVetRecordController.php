@@ -6,6 +6,7 @@ use App\Models\Cat;
 use App\Models\CatVetRecord;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\Storage;
 
 class CatVetRecordController extends Controller
@@ -74,5 +75,35 @@ class CatVetRecordController extends Controller
         $vetRecord->delete();
 
         return back()->with('status', 'Visite supprimée.');
+    }
+
+    public function export(Cat $cat): StreamedResponse
+    {
+        $this->authorizeRoles(['admin', 'benevole']);
+
+        $filename = 'chat-' . $cat->id . '-visites-veterinaires.csv';
+
+        return response()->streamDownload(function () use ($cat) {
+            $handle = fopen('php://output', 'w');
+
+            fputcsv($handle, ['Chat', 'Date', 'Motif', 'Clinique', 'Montant (€)', 'Notes']);
+
+            $cat->vetRecords()
+                ->orderByDesc('visit_date')
+                ->each(function (CatVetRecord $record) use ($handle, $cat) {
+                    fputcsv($handle, [
+                        $cat->name,
+                        optional($record->visit_date)->format('Y-m-d'),
+                        $record->reason,
+                        $record->clinic_name,
+                        number_format($record->amount, 2, '.', ''),
+                        $record->notes,
+                    ]);
+                });
+
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
     }
 }

@@ -220,6 +220,11 @@
             <div class="text-end">
                 <span class="badge bg-soft-primary text-primary me-2">{{ $cat->vetRecords->count() }} visite(s)</span>
                 <span class="badge bg-soft-success text-success">Total {{ number_format($totalVetCosts, 2, ',', ' ') }} €</span>
+                @if(in_array($role, ['admin', 'benevole']))
+                    <div class="mt-2">
+                        <a class="btn btn-sm btn-outline-secondary" href="{{ route('cats.vet-records.export', $cat) }}">📄 Export CSV</a>
+                    </div>
+                @endif
             </div>
         </div>
 

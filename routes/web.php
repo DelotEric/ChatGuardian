@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/cats/{cat}/vet-records', [CatVetRecordController::class, 'store'])->name('cats.vet-records.store');
     Route::patch('/cats/{cat}/vet-records/{vetRecord}', [CatVetRecordController::class, 'update'])->name('cats.vet-records.update');
     Route::delete('/cats/{cat}/vet-records/{vetRecord}', [CatVetRecordController::class, 'destroy'])->name('cats.vet-records.destroy');
+    Route::get('/cats/{cat}/vet-records/export', [CatVetRecordController::class, 'export'])->name('cats.vet-records.export');
 
     Route::get('/foster-families', [FosterFamilyController::class, 'index'])->name('foster-families.index');
     Route::post('/foster-families', [FosterFamilyController::class, 'store'])->name('foster-families.store');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cat;
+use App\Models\CatVetRecord;
 use App\Models\Donation;
 use App\Models\FeedingPoint;
 use App\Models\FosterFamily;
@@ -27,6 +28,12 @@ class DashboardController extends Controller
             'donations_month' => Donation::whereMonth('donated_at', now()->month)
                 ->whereYear('donated_at', now()->year)
                 ->sum('amount'),
+            'vet_month' => CatVetRecord::whereMonth('visit_date', now()->month)
+                ->whereYear('visit_date', now()->year)
+                ->sum('amount'),
+            'vet_visits_month' => CatVetRecord::whereMonth('visit_date', now()->month)
+                ->whereYear('visit_date', now()->year)
+                ->count(),
             'feeding_points' => FeedingPoint::count(),
             'stock_items' => StockItem::count(),
             'stock_low' => StockItem::whereColumn('quantity', '<=', 'restock_threshold')->count(),
@@ -34,6 +41,7 @@ class DashboardController extends Controller
 
         $recentCats = Cat::latest()->take(6)->get();
         $recentDonations = Donation::with('donor')->latest('donated_at')->take(6)->get();
+        $recentVetRecords = CatVetRecord::with('cat')->latest('visit_date')->take(5)->get();
 
         $months = collect(range(5, 0))->map(fn ($i) => Date::now()->startOfMonth()->subMonths($i));
         $donationsByMonth = Donation::selectRaw('DATE_FORMAT(donated_at, "%Y-%m") as month, SUM(amount) as total')
@@ -55,6 +63,7 @@ class DashboardController extends Controller
             'catTotals' => $catTotals,
             'recentCats' => $recentCats,
             'recentDonations' => $recentDonations,
+            'recentVetRecords' => $recentVetRecords,
             'donationChart' => $donationChart,
             'organization' => $this->organization(),
         ]);

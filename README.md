@@ -46,6 +46,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Dashboard enrichi : graphiques Chart.js pour la répartition des statuts des chats et l'évolution mensuelle des dons (données réelles)
 - Profil association éditable : page `/settings/organization` (admin) pour saisir coordonnées/SIRET/IBAN/BIC, injectés automatiquement dans les reçus fiscaux PDF, contrats et emails + maquette statique `public/settings.html`.
 - Suivi vétérinaire par chat : visites, coûts, notes et pièces jointes (PDF/image) avec formulaire d'ajout/édition/suppression depuis la fiche.
+- Export CSV des visites vétérinaires par chat (admin/bénévole) et KPIs dédiés sur le tableau de bord (coûts et visites du mois + dernières visites).
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -113,6 +114,9 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
    - Ouvrir une fiche chat : `/cats/{id}`
    - Renseigner la date, le motif, le montant et (optionnel) un document PDF ou une photo (admin/bénévole)
    - Modifier ou supprimer une visite via le tableau dédié
+   - Exporter l'historique des visites en CSV : bouton **Export CSV** dans la section santé
+
+Le dashboard affiche également les dépenses vétérinaires et le nombre de visites du mois, ainsi qu'un aperçu des dernières visites enregistrées.
 
 Le dashboard (`/`) s'appuie désormais sur les statistiques réelles (chats par statut, dons du mois, familles, bénévoles, points de nourrissage) et affiche les derniers chats/dons ajoutés.
 
