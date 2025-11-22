@@ -11,6 +11,8 @@ class CatController extends Controller
 {
     public function index(): View
     {
+        $this->authorizeRoles(['admin', 'benevole', 'famille']);
+
         $cats = Cat::query()->with('currentStay')->latest()->paginate(10);
 
         return view('cats.index', compact('cats'));
@@ -18,6 +20,8 @@ class CatController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $this->authorizeRoles(['admin', 'benevole']);
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'sex' => ['required', 'in:male,female,unknown'],

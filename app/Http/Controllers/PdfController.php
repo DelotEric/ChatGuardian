@@ -11,6 +11,8 @@ class PdfController extends Controller
 {
     public function fosterContract(FosterFamily $family): Response
     {
+        $this->authorizeRoles('admin');
+
         $pdf = Pdf::loadView('pdf.foster_contract', [
             'family' => $family,
             'today' => now()->format('d/m/Y'),
@@ -21,6 +23,8 @@ class PdfController extends Controller
 
     public function donationReceipt(Donation $donation): Response
     {
+        $this->authorizeRoles('admin');
+
         $pdf = Pdf::loadView('pdf.donation_receipt', [
             'donation' => $donation->load('donor'),
             'today' => now()->format('d/m/Y'),

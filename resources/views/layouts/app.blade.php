@@ -24,11 +24,21 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
                     @auth
+                        @php $role = auth()->user()->role; @endphp
                         <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Accueil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('volunteers.index') }}">Bénévoles</a></li>
+                        @if($role === 'admin')
+                            <li class="nav-item"><a class="nav-link" href="{{ route('volunteers.index') }}">Bénévoles</a></li>
+                        @endif
                         <li class="nav-item"><a class="nav-link" href="{{ route('cats.index') }}">Chats</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('foster-families.index') }}">Familles d'accueil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('donations.index') }}">Dons</a></li>
+                        @if(in_array($role, ['admin', 'benevole']))
+                            <li class="nav-item"><a class="nav-link" href="{{ route('foster-families.index') }}">Familles d'accueil</a></li>
+                        @endif
+                        @if(in_array($role, ['admin', 'benevole']))
+                            <li class="nav-item"><a class="nav-link" href="{{ route('feeding-points.index') }}">Points de nourrissage</a></li>
+                        @endif
+                        @if($role === 'admin')
+                            <li class="nav-item"><a class="nav-link" href="{{ route('donations.index') }}">Dons</a></li>
+                        @endif
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
                                 <span class="avatar-placeholder me-2">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>

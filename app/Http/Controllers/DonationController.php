@@ -12,6 +12,8 @@ class DonationController extends Controller
 {
     public function index(): View
     {
+        $this->authorizeRoles('admin');
+
         $donations = Donation::query()->with('donor')->latest('donated_at')->paginate(10);
         $totalMonth = Donation::query()
             ->whereMonth('donated_at', now()->month)
@@ -25,6 +27,8 @@ class DonationController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $this->authorizeRoles('admin');
+
         $data = $request->validate([
             'donor_id' => ['required', 'exists:donors,id'],
             'amount' => ['required', 'numeric', 'min:0'],
@@ -43,6 +47,8 @@ class DonationController extends Controller
 
     public function exportCsv(): \Symfony\Component\HttpFoundation\StreamedResponse
     {
+        $this->authorizeRoles('admin');
+
         $filename = 'donations-' . now()->format('Ymd-His') . '.csv';
 
         $callback = function () {
@@ -74,6 +80,8 @@ class DonationController extends Controller
 
     public function createDonor(Request $request): RedirectResponse
     {
+        $this->authorizeRoles('admin');
+
         $donorData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],

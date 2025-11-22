@@ -11,6 +11,8 @@ class FosterFamilyController extends Controller
 {
     public function index(): View
     {
+        $this->authorizeRoles('admin');
+
         $families = FosterFamily::query()->withCount('stays')->latest()->paginate(10);
 
         return view('foster_families.index', compact('families'));
@@ -18,6 +20,8 @@ class FosterFamilyController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $this->authorizeRoles('admin');
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],

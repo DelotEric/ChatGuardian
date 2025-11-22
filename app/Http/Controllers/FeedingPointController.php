@@ -12,6 +12,8 @@ class FeedingPointController extends Controller
 {
     public function index(): View
     {
+        $this->authorizeRoles(['admin', 'benevole']);
+
         $feedingPoints = FeedingPoint::with('volunteers')->latest()->get();
         $volunteers = Volunteer::query()->orderBy('first_name')->get();
 
@@ -20,6 +22,8 @@ class FeedingPointController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $this->authorizeRoles('admin');
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'latitude' => ['required', 'numeric'],

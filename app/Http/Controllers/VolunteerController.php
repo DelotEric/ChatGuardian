@@ -11,6 +11,8 @@ class VolunteerController extends Controller
 {
     public function index(): View
     {
+        $this->authorizeRoles('admin');
+
         $volunteers = Volunteer::query()->latest()->paginate(10);
 
         return view('volunteers.index', compact('volunteers'));
@@ -18,6 +20,8 @@ class VolunteerController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $this->authorizeRoles('admin');
+
         $data = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],

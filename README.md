@@ -57,6 +57,18 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 
 Le dashboard (`/`) s'appuie désormais sur les statistiques réelles (chats par statut, dons du mois, familles, bénévoles, points de nourrissage) et affiche les derniers chats/dons ajoutés.
 
+### Rôles et accès (prototype)
+
+Les utilisateurs de démonstration disposent d'un champ `role` simple. Les pages et actions clés sont filtrées côté contrôleur et dans la navigation :
+
+| Rôle       | Accès principaux                                    |
+|------------|-----------------------------------------------------|
+| admin      | Dashboard, chats (création), bénévoles, familles, dons, reçus PDF, export CSV, points de nourrissage (création) |
+| benevole   | Dashboard, chats (création), familles (lecture), points de nourrissage (lecture), carte Leaflet                |
+| famille    | Dashboard, liste des chats (lecture)               |
+
+Les contrôleurs appellent `authorizeRoles()` pour renvoyer un 403 si le rôle ne correspond pas. Les liens de navigation et les actions rapides s'ajustent en conséquence.
+
 ## Prochaines étapes suggérées
 1. Installer un vrai projet Laravel (Composer) et brancher ces vues sur l'auth Laravel.
 2. Ajouter les migrations + modèles pour les bénévoles, chats, familles, dons.
