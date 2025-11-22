@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Organization;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class OrganizationController extends Controller
@@ -35,10 +37,16 @@ class OrganizationController extends Controller
             'iban' => ['nullable', 'string', 'max:190'],
             'bic' => ['nullable', 'string', 'max:190'],
             'website' => ['nullable', 'string', 'max:190'],
+            'api_token' => ['nullable', 'string', 'max:190'],
         ]);
+
+        if ($request->boolean('regenerate_api_token')) {
+            $data['api_token'] = Str::random(40);
+        }
 
         $organization = $this->organization();
         $organization->update($data);
+        Cache::forget('api_token');
 
         return redirect()->route('settings.organization')->with('status', 'Profil association mis à jour.');
     }

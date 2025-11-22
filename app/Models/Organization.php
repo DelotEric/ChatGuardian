@@ -22,6 +22,7 @@ class Organization extends Model
         'iban',
         'bic',
         'website',
+        'api_token',
     ];
 
     public static function defaults(): array
@@ -39,6 +40,7 @@ class Organization extends Model
             'iban' => 'FR76 3000 4000 5000 6000 7000 890',
             'bic' => 'BNPAFRPP',
             'website' => 'https://chatguardian.test',
+            'api_token' => 'demo-api-key',
         ];
     }
 }

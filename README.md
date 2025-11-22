@@ -61,6 +61,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Commande Artisan `reminders:digest` et planification quotidienne à 07h pour envoyer automatiquement le récapitulatif des rappels.
 - Journal d'activités dédié : écran `/activities` (admin/bénévole) avec filtres, pagination et export CSV, plus maquette statique `public/activities.html`.
 - API JSON légère protégée par clé (`X-Api-Key`) pour exposer le dashboard, les chats, dons/donateurs, familles d'accueil, points de nourrissage, stocks, bénévoles et rappels.
+- Clé API configurable depuis les paramètres de l'association (bouton de régénération) pour sécuriser rapidement les intégrations.
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -174,10 +175,11 @@ Le dashboard (`/`) s'appuie désormais sur les statistiques réelles (chats par 
 
 Pour exposer quelques données aux usages mobiles ou automatisations légères :
 
-1. Définir une clé dans votre `.env` :
+1. Définir une clé dans votre `.env` (fallback) ou la configurer dans **Association > Profil** (champ "Clé API") :
    ```env
    API_TOKEN=demo-api-key
    ```
+   La valeur enregistrée côté association est prioritaire et peut être régénérée depuis l'interface.
 2. Appeler les endpoints en envoyant l'en-tête `X-Api-Key: <votre_clé>` (ou le paramètre `api_token` en secours) :
    - `GET /api/dashboard` : métriques clés, histogramme des dons, rappels à venir, journal récent.
    - `GET /api/cats` : liste paginée des chats avec statut, séjours en cours, rappels ouverts.

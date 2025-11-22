@@ -68,6 +68,14 @@
                             <input type="text" name="website" class="form-control" value="{{ old('website', $organization->website) }}">
                         </div>
                         <div class="col-md-6">
+                            <label class="form-label">Clé API (intégrations)</label>
+                            <div class="input-group">
+                                <input type="text" name="api_token" class="form-control" value="{{ old('api_token', $organization->api_token) }}" placeholder="demo-api-key">
+                                <button class="btn btn-outline-secondary" type="submit" name="regenerate_api_token" value="1">Regénérer</button>
+                            </div>
+                            <small class="text-muted">Utilisée par les endpoints `/api/*` sécurisés (en-tête <code>X-Api-Key</code> ou paramètre <code>api_token</code>).</small>
+                        </div>
+                        <div class="col-md-6">
                             <label class="form-label">IBAN</label>
                             <input type="text" name="iban" class="form-control" value="{{ old('iban', $organization->iban) }}">
                         </div>

@@ -77,6 +77,14 @@
                                 <label class="form-label">BIC</label>
                                 <input type="text" class="form-control" value="BNPAFRPP">
                             </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Clé API (intégrations)</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="demo-api-key">
+                                    <button class="btn btn-outline-secondary" type="button">Regénérer</button>
+                                </div>
+                                <small class="text-muted">À utiliser sur les endpoints `/api/*` via l'en-tête <code>X-Api-Key</code>.</small>
+                            </div>
                             <div class="col-12 text-end">
                                 <button class="btn btn-outline-secondary me-2" type="button">Annuler</button>
                                 <button class="btn btn-primary" type="button">Enregistrer</button>

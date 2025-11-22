@@ -9,6 +9,15 @@ class OrganizationSeeder extends Seeder
 {
     public function run(): void
     {
-        Organization::firstOrCreate(['name' => 'ChatGuardian'], Organization::defaults());
+        $organization = Organization::first();
+
+        if (!$organization) {
+            Organization::create(Organization::defaults());
+            return;
+        }
+
+        if (!$organization->api_token) {
+            $organization->update(['api_token' => Organization::defaults()['api_token']]);
+        }
     }
 }
