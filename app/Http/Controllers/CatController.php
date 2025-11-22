@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cat;
 use App\Models\CatPhoto;
 use App\Models\CatStay;
+use App\Models\ActivityLog;
 use App\Models\FosterFamily;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,8 +30,14 @@ class CatController extends Controller
 
         $cat->load(['photos', 'stays.fosterFamily', 'vetRecords', 'adoption']);
         $families = FosterFamily::query()->where('is_active', true)->orderBy('name')->get();
+        $activities = ActivityLog::query()
+            ->where('subject_type', Cat::class)
+            ->where('subject_id', $cat->id)
+            ->latest()
+            ->limit(10)
+            ->get();
 
-        return view('cats.show', compact('cat', 'families'));
+        return view('cats.show', compact('cat', 'families', 'activities'));
     }
 
     public function export(): StreamedResponse
@@ -109,7 +116,9 @@ class CatController extends Controller
         $data['sterilized'] = $request->boolean('sterilized');
         $data['vaccinated'] = $request->boolean('vaccinated');
 
-        Cat::create($data);
+        $cat = Cat::create($data);
+
+        $this->logActivity('cat.created', $cat, 'Chat ajouté au registre.');
 
         return redirect()->route('cats.index')->with('status', 'Chat créé.');
     }
@@ -137,6 +146,8 @@ class CatController extends Controller
 
         $cat->update($data);
 
+        $this->logActivity('cat.updated', $cat, 'Profil mis à jour.');
+
         return back()->with('status', 'Profil du chat mis à jour.');
     }
 
@@ -153,11 +164,13 @@ class CatController extends Controller
             'next_status' => ['nullable', 'in:free,foster,adopted,deceased'],
         ]);
 
-        $cat->stays()->create($data);
+        $stay = $cat->stays()->create($data);
 
         $cat->update([
             'status' => $data['next_status'] ?? 'foster',
         ]);
+
+        $this->logActivity('stay.created', $cat, 'Séjour enregistré chez ' . $stay->fosterFamily->name);
 
         return back()->with('status', 'Séjour enregistré.');
     }
@@ -178,6 +191,8 @@ class CatController extends Controller
         if ($data['next_status'] ?? false) {
             $cat->update(['status' => $data['next_status']]);
         }
+
+        $this->logActivity('stay.closed', $cat, 'Séjour clôturé');
 
         return back()->with('status', 'Séjour clôturé.');
     }
@@ -210,6 +225,8 @@ class CatController extends Controller
             ]);
         }
 
+        $this->logActivity('photo.added', $cat, 'Photo ajoutée au profil.');
+
         return back()->with('status', 'Photo(s) ajoutée(s) au profil du chat.');
     }
 
@@ -223,6 +240,8 @@ class CatController extends Controller
             Storage::disk('public')->delete($photo->path);
         }
         $photo->delete();
+
+        $this->logActivity('photo.deleted', $cat, 'Photo supprimée du profil.');
 
         return back()->with('status', 'Photo supprimée.');
     }

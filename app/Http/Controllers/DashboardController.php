@@ -8,6 +8,7 @@ use App\Models\CatVetRecord;
 use App\Models\Donation;
 use App\Models\FeedingPoint;
 use App\Models\FosterFamily;
+use App\Models\ActivityLog;
 use App\Models\StockItem;
 use App\Models\Volunteer;
 use Illuminate\Support\Facades\DB;
@@ -47,6 +48,7 @@ class DashboardController extends Controller
         $recentAdoptions = CatAdoption::with('cat')->latest('adopted_at')->take(5)->get();
         $recentDonations = Donation::with('donor')->latest('donated_at')->take(6)->get();
         $recentVetRecords = CatVetRecord::with('cat')->latest('visit_date')->take(5)->get();
+        $activities = ActivityLog::with('user')->latest()->take(8)->get();
 
         $months = collect(range(5, 0))->map(fn ($i) => Date::now()->startOfMonth()->subMonths($i));
         $donationsByMonth = Donation::selectRaw('DATE_FORMAT(donated_at, "%Y-%m") as month, SUM(amount) as total')
@@ -70,6 +72,7 @@ class DashboardController extends Controller
             'recentAdoptions' => $recentAdoptions,
             'recentDonations' => $recentDonations,
             'recentVetRecords' => $recentVetRecords,
+            'activities' => $activities,
             'donationChart' => $donationChart,
             'organization' => $this->organization(),
         ]);

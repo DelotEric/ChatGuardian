@@ -26,6 +26,20 @@ class Controller extends BaseController
         );
     }
 
+    /**
+     * Enregistrer une activité simple pour traçabilité.
+     */
+    protected function logActivity(string $action, $subject, ?string $description = null): void
+    {
+        \App\Models\ActivityLog::create([
+            'user_id' => auth()->id(),
+            'subject_type' => get_class($subject),
+            'subject_id' => $subject->getKey(),
+            'action' => $action,
+            'description' => $description,
+        ]);
+    }
+
     protected function organization(): Organization
     {
         return Organization::query()->first() ?? Organization::create(Organization::defaults());

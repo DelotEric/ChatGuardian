@@ -603,4 +603,36 @@
         </div>
     </div>
 </div>
+
+<div class="card shadow-sm border-0 mt-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+                <p class="text-muted mb-1">Traçabilité</p>
+                <h3 class="h6 fw-semibold mb-0">Journal du chat</h3>
+            </div>
+            <span class="badge bg-soft-primary text-primary">Historique</span>
+        </div>
+        <div class="list-group list-group-flush">
+            @forelse($activities as $activity)
+                <div class="list-group-item px-0 d-flex align-items-start gap-3">
+                    <div class="rounded-circle bg-soft-secondary text-muted d-flex align-items-center justify-content-center"
+                         style="width: 42px; height: 42px;">
+                        <i class="bi bi-activity"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="mb-1 fw-semibold text-capitalize">{{ str_replace('.', ' · ', $activity->action) }}</p>
+                            <small class="text-muted">{{ optional($activity->created_at)->diffForHumans() }}</small>
+                        </div>
+                        <p class="mb-1 text-muted">{{ $activity->description ?? 'Mise à jour enregistrée.' }}</p>
+                        <small class="text-muted">Par {{ optional($activity->user)->name ?? 'Système' }}</small>
+                    </div>
+                </div>
+            @empty
+                <p class="text-muted mb-0">Aucune activité enregistrée pour ce chat.</p>
+            @endforelse
+        </div>
+    </div>
+</div>
 @endsection

@@ -28,6 +28,8 @@ class CatAdoptionController extends Controller
         $adoption = $cat->adoption()->updateOrCreate([], $data);
         $cat->update(['status' => 'adopted']);
 
+        $this->logActivity('adoption.created', $cat, 'Adoption enregistrée pour ' . $adoption->adopter_name);
+
         return back()->with('status', 'Adoption enregistrée.');
     }
 
@@ -51,6 +53,8 @@ class CatAdoptionController extends Controller
         $adoption->update($data);
         $cat->update(['status' => 'adopted']);
 
+        $this->logActivity('adoption.updated', $cat, 'Adoption mise à jour.');
+
         return back()->with('status', 'Adoption mise à jour.');
     }
 
@@ -61,6 +65,8 @@ class CatAdoptionController extends Controller
 
         $adoption->delete();
         $cat->update(['status' => 'free']);
+
+        $this->logActivity('adoption.deleted', $cat, 'Adoption supprimée.');
 
         return back()->with('status', 'Adoption supprimée.');
     }

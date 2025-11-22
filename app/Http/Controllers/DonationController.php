@@ -42,7 +42,9 @@ class DonationController extends Controller
 
         $data['is_receipt_sent'] = $request->boolean('is_receipt_sent');
 
-        Donation::create($data);
+        $donation = Donation::create($data);
+
+        $this->logActivity('donation.created', $donation, 'Don enregistré pour ' . $donation->donor->full_name);
 
         return redirect()->route('donations.index')->with('status', 'Don enregistré.');
     }
@@ -64,6 +66,8 @@ class DonationController extends Controller
 
         $donation->update($data);
 
+        $this->logActivity('donation.updated', $donation, 'Don mis à jour.');
+
         return redirect()->route('donations.index')->with('status', 'Don mis à jour.');
     }
 
@@ -72,6 +76,8 @@ class DonationController extends Controller
         $this->authorizeRoles('admin');
 
         $donation->delete();
+
+        $this->logActivity('donation.deleted', $donation, 'Don supprimé.');
 
         return redirect()->route('donations.index')->with('status', 'Don supprimé.');
     }
@@ -94,6 +100,8 @@ class DonationController extends Controller
         $donation->save();
 
         Mail::to($donation->donor->email)->send(new DonationReceiptMail($donation));
+
+        $this->logActivity('donation.receipt_sent', $donation, 'Reçu fiscal envoyé par email.');
 
         return redirect()->route('donations.index')->with('status', 'Reçu fiscal envoyé par email.');
     }

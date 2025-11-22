@@ -32,6 +32,8 @@ class CatVetRecordController extends Controller
 
         $cat->vetRecords()->create($data);
 
+        $this->logActivity('vet.created', $cat, 'Visite vétérinaire ajoutée.');
+
         return back()->with('status', 'Visite vétérinaire enregistrée.');
     }
 
@@ -60,6 +62,8 @@ class CatVetRecordController extends Controller
 
         $vetRecord->update($data);
 
+        $this->logActivity('vet.updated', $cat, 'Visite vétérinaire mise à jour.');
+
         return back()->with('status', 'Visite mise à jour.');
     }
 
@@ -73,6 +77,8 @@ class CatVetRecordController extends Controller
         }
 
         $vetRecord->delete();
+
+        $this->logActivity('vet.deleted', $cat, 'Visite vétérinaire supprimée.');
 
         return back()->with('status', 'Visite supprimée.');
     }
