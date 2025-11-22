@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CatPhoto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,6 +40,11 @@ class Cat extends Model
     public function currentStay()
     {
         return $this->hasOne(CatStay::class)->whereNull('ended_at');
+    }
+
+    public function photos()
+    {
+        return $this->hasMany(CatPhoto::class);
     }
 
     public function fosterFamilies()

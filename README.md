@@ -12,10 +12,12 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - `resources/views/dashboard.blade.php` : accueil / aperçu rapide
 - `resources/views/volunteers/index.blade.php` : vue liste des bénévoles
 - `resources/views/cats/index.blade.php` : fiches chats avec formulaire rapide
+- `resources/views/cats/show.blade.php` : fiche chat détaillée (identité, séjours, galerie photos)
 - `resources/views/foster_families/index.blade.php` : familles d'accueil
 - `resources/views/donations/index.blade.php` : dons et reçus
 - `resources/views/feeding_points/index.blade.php` : points de nourrissage avec bénévoles
 - `database/migrations/*.php` : tables chats, familles, séjours, bénévoles, dons, donateurs, points de nourrissage
+- `database/migrations/2024_01_01_000008_create_cat_photos_table.php` : photos associées aux chats (max 3)
 - `app/Models/*` : modèles Eloquent avec relations
 - `app/Http/Controllers/*` : contrôleurs minimalistes pour les formulaires
 - `public/css/app.css` : palette et styles spécifiques ChatGuardian
@@ -27,6 +29,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Génération d'un PDF de contrat de famille d'accueil (barryvdh/laravel-dompdf)
 - Reçus fiscaux en PDF pour chaque don et export CSV des dons/donateurs
 - Réinitialisation de mot de passe Laravel (envoi d'email + formulaire de nouveau mot de passe)
+- Galerie photo par chat avec téléversement (3 Mo max par image, 3 photos par profil) et suppression
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -42,6 +45,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
    ```bash
    php artisan db:seed
    ```
+   (Les seeders ajoutent aussi quelques photos fictives de chats pour la démo.)
    Identifiants prêts à l'emploi :
    - admin@chatguardian.test / **password** (admin)
    - benevole@chatguardian.test / **password** (bénévole)
@@ -54,16 +58,23 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
    MAIL_FROM_ADDRESS=no-reply@chatguardian.test
    MAIL_FROM_NAME="ChatGuardian"
    ```
-5. Se connecter via `/login` puis accéder au tableau de bord `/` (toutes les routes sont protégées par auth).
-6. Tester la génération de contrat :
+5. Créer le lien de stockage public pour les photos uploadées :
+   ```bash
+   php artisan storage:link
+   ```
+6. Se connecter via `/login` puis accéder au tableau de bord `/` (toutes les routes sont protégées par auth).
+7. Tester la génération de contrat :
    - Créer au moins une famille d'accueil via `/foster-families`
    - Télécharger le PDF : `/foster-families/{id}/contract`
-7. Générer un reçu fiscal PDF :
+8. Générer un reçu fiscal PDF :
    - Enregistrer un don via `/donations`
    - Télécharger le reçu : `/donations/{id}/receipt`
-8. Exporter un CSV des dons : `/donations/export`
-9. Visualiser les points de nourrissage avec Leaflet : `/feeding-points`
-10. Réinitialiser un mot de passe :
+9. Exporter un CSV des dons : `/donations/export`
+10. Visualiser les points de nourrissage avec Leaflet : `/feeding-points`
+11. Charger des photos pour un chat (admin ou bénévole) :
+    - Ouvrir la fiche : `/cats/{id}`
+    - Téléverser jusqu'à 3 images, supprimer au besoin
+12. Réinitialiser un mot de passe :
    - Demander un lien : `/forgot-password`
    - Ouvrir le lien reçu, saisir le nouveau mot de passe : `/reset-password/{token}`
 

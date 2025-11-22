@@ -101,6 +101,7 @@
                         <th>Famille actuelle</th>
                         <th>FIV/FELV</th>
                         <th>Dernière mise à jour</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,10 +112,13 @@
                             <td>{{ optional($cat->currentStay?->fosterFamily)->name ?? '—' }}</td>
                             <td>{{ $cat->fiv_status }}/{{ $cat->felv_status }}</td>
                             <td class="text-muted small">{{ $cat->updated_at?->diffForHumans() }}</td>
+                            <td class="text-end">
+                                <a href="{{ route('cats.show', $cat) }}" class="btn btn-sm btn-outline-primary">Fiche</a>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">Aucun chat saisi pour le moment.</td>
+                            <td colspan="6" class="text-center text-muted py-4">Aucun chat saisi pour le moment.</td>
                         </tr>
                     @endforelse
                 </tbody>
