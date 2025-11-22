@@ -7,6 +7,7 @@ use App\Services\StockAlertService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class StockItemController extends Controller
 {
@@ -71,6 +72,34 @@ class StockItemController extends Controller
         }
 
         return redirect()->route('stocks.index')->with('status', "Alerte envoyée à {$sentCount} destinataire(s) pour {$itemsCount} article(s) faible(s).");
+    }
+
+    public function export(): StreamedResponse
+    {
+        $this->authorizeRoles('admin');
+
+        $filename = 'stocks_' . now()->format('Ymd_His') . '.csv';
+
+        return response()->streamDownload(function () {
+            $handle = fopen('php://output', 'wb');
+            fputcsv($handle, ['Article', 'Catégorie', 'Quantité', 'Unité', 'Seuil', 'Localisation', 'Notes']);
+
+            StockItem::orderBy('name')->chunk(200, function ($items) use ($handle) {
+                foreach ($items as $item) {
+                    fputcsv($handle, [
+                        $item->name,
+                        $item->category,
+                        $item->quantity,
+                        $item->unit,
+                        $item->restock_threshold,
+                        $item->location,
+                        $item->notes,
+                    ]);
+                }
+            });
+
+            fclose($handle);
+        }, $filename, ['Content-Type' => 'text/csv']);
     }
 
     private function validateData(Request $request): array

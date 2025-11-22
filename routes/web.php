@@ -98,12 +98,14 @@ Route::get('/donations/{donation}/receipt', [PdfController::class, 'donationRece
     Route::post('/feeding-points', [FeedingPointController::class, 'store'])->name('feeding-points.store');
     Route::patch('/feeding-points/{feedingPoint}', [FeedingPointController::class, 'update'])->name('feeding-points.update');
     Route::delete('/feeding-points/{feedingPoint}', [FeedingPointController::class, 'destroy'])->name('feeding-points.destroy');
+    Route::get('/feeding-points/export', [FeedingPointController::class, 'export'])->name('feeding-points.export');
 
     Route::get('/stocks', [StockItemController::class, 'index'])->name('stocks.index');
     Route::post('/stocks', [StockItemController::class, 'store'])->name('stocks.store');
     Route::patch('/stocks/{stockItem}', [StockItemController::class, 'update'])->name('stocks.update');
     Route::delete('/stocks/{stockItem}', [StockItemController::class, 'destroy'])->name('stocks.destroy');
     Route::post('/stocks/alert', [StockItemController::class, 'sendAlert'])->name('stocks.alert');
+    Route::get('/stocks/export', [StockItemController::class, 'export'])->name('stocks.export');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');

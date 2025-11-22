@@ -8,6 +8,7 @@
         </div>
         @if(auth()->user()->role === 'admin')
             <div class="d-flex gap-2">
+                <a class="btn btn-outline-secondary" href="{{ route('stocks.export') }}">Exporter CSV</a>
                 <form method="POST" action="{{ route('stocks.alert') }}">
                     @csrf
                     <button type="submit" class="btn btn-outline-danger">Alerte stocks faibles</button>
