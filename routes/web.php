@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CatController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FeedingPointController;
 use App\Http\Controllers\FosterFamilyController;
@@ -8,7 +9,7 @@ use App\Http\Controllers\PdfController;
 use App\Http\Controllers\VolunteerController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'dashboard')->name('dashboard');
+Route::get('/', DashboardController::class)->name('dashboard');
 Route::view('/login', 'auth.login')->name('login');
 
 Route::get('/volunteers', [VolunteerController::class, 'index'])->name('volunteers.index');

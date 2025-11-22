@@ -37,14 +37,20 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
    php artisan migrate
    php artisan serve
    ```
-3. Tester la génération de contrat :
+3. Alimenter la base avec un jeu de données démo :
+   ```bash
+   php artisan db:seed
+   ```
+4. Tester la génération de contrat :
    - Créer au moins une famille d'accueil via `/foster-families`
    - Télécharger le PDF : `/foster-families/{id}/contract`
-4. Générer un reçu fiscal PDF :
+5. Générer un reçu fiscal PDF :
    - Enregistrer un don via `/donations`
    - Télécharger le reçu : `/donations/{id}/receipt`
-5. Exporter un CSV des dons : `/donations/export`
-6. Visualiser les points de nourrissage avec Leaflet : `/feeding-points`
+6. Exporter un CSV des dons : `/donations/export`
+7. Visualiser les points de nourrissage avec Leaflet : `/feeding-points`
+
+Le dashboard (`/`) s'appuie désormais sur les statistiques réelles (chats par statut, dons du mois, familles, bénévoles, points de nourrissage) et affiche les derniers chats/dons ajoutés.
 
 ## Prochaines étapes suggérées
 1. Installer un vrai projet Laravel (Composer) et brancher ces vues sur l'auth Laravel.
