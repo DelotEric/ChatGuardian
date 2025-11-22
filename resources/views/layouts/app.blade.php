@@ -36,6 +36,9 @@
                         @if(in_array($role, ['admin', 'benevole']))
                             <li class="nav-item"><a class="nav-link" href="{{ route('feeding-points.index') }}">Points de nourrissage</a></li>
                         @endif
+                        @if(in_array($role, ['admin', 'benevole']))
+                            <li class="nav-item"><a class="nav-link" href="{{ route('stocks.index') }}">Stocks</a></li>
+                        @endif
                         @if($role === 'admin')
                             <li class="nav-item"><a class="nav-link" href="{{ route('donors.index') }}">Donateurs</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('donations.index') }}">Dons</a></li>

@@ -6,6 +6,7 @@ use App\Models\Cat;
 use App\Models\Donation;
 use App\Models\FeedingPoint;
 use App\Models\FosterFamily;
+use App\Models\StockItem;
 use App\Models\Volunteer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -26,6 +27,8 @@ class DashboardController extends Controller
                 ->whereYear('donated_at', now()->year)
                 ->sum('amount'),
             'feeding_points' => FeedingPoint::count(),
+            'stock_items' => StockItem::count(),
+            'stock_low' => StockItem::whereColumn('quantity', '<=', 'restock_threshold')->count(),
         ];
 
         $recentCats = Cat::latest()->take(6)->get();

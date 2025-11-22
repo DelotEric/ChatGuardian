@@ -17,8 +17,10 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - `resources/views/donations/index.blade.php` : dons et reçus
 - `resources/views/donors/index.blade.php` : gestion des donateurs
 - `resources/views/feeding_points/index.blade.php` : points de nourrissage avec bénévoles
+- `resources/views/stocks/index.blade.php` : suivi des stocks (croquettes, litière, soins, matériel)
 - `database/migrations/*.php` : tables chats, familles, séjours, bénévoles, dons, donateurs, points de nourrissage
 - `database/migrations/2024_01_01_000008_create_cat_photos_table.php` : photos associées aux chats (max 3)
+- `database/migrations/2024_01_01_000009_create_stock_items_table.php` : articles de stock avec seuil de réappro
 - `app/Models/*` : modèles Eloquent avec relations
 - `app/Http/Controllers/*` : contrôleurs minimalistes pour les formulaires
 - `public/css/app.css` : palette et styles spécifiques ChatGuardian
@@ -36,6 +38,8 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Édition complète d'une fiche chat (statut, santé) et mise à jour du statut directement lors de l'ajout ou la clôture d'un séjour
 - Édition/suppression des bénévoles, familles d'accueil, dons et points de nourrissage via formulaires préremplis (modals) et
   contrôles de rôle admin
+- Module stocks : inventaire des fournitures (cartes d'alerte, tableau, formulaires d'ajout/édition/suppression) et page HTML de
+  démonstration
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -51,7 +55,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
    ```bash
    php artisan db:seed
    ```
-   (Les seeders ajoutent aussi quelques photos fictives de chats pour la démo.)
+   (Les seeders ajoutent aussi quelques photos fictives de chats pour la démo et un inventaire de base pour les stocks.)
    Identifiants prêts à l'emploi :
    - admin@chatguardian.test / **password** (admin)
    - benevole@chatguardian.test / **password** (bénévole)
@@ -90,6 +94,9 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 14. Réinitialiser un mot de passe :
    - Demander un lien : `/forgot-password`
    - Ouvrir le lien reçu, saisir le nouveau mot de passe : `/reset-password/{token}`
+15. Suivre les stocks (admin/bénévole en lecture, admin en édition) :
+   - Ouvrir l'inventaire : `/stocks`
+   - Ajouter ou éditer un article avec quantité/unité, seuil d'alerte, localisation et notes
 
 Le dashboard (`/`) s'appuie désormais sur les statistiques réelles (chats par statut, dons du mois, familles, bénévoles, points de nourrissage) et affiche les derniers chats/dons ajoutés.
 

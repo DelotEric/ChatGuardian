@@ -44,6 +44,22 @@
                     </div>
                 </div>
                 <div class="row g-3 mb-3">
+                    <div class="col-12 col-md-3">
+                        <div class="stat-card">
+                            <p class="text-muted mb-1">Articles de stock</p>
+                            <p class="h4 mb-0">{{ $metrics['stock_items'] }}</p>
+                            <small class="text-muted">inventaire suivi</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <div class="stat-card {{ $metrics['stock_low'] ? 'border-warning' : '' }}">
+                            <p class="text-muted mb-1">Alertes stock</p>
+                            <p class="h4 mb-0">{{ $metrics['stock_low'] }}</p>
+                            <small class="text-muted">à réapprovisionner</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
                     @php
                         $labels = [
                             'free' => 'Chats libres',
@@ -90,6 +106,9 @@
                         </a>
                         <a class="list-group-item list-group-item-action d-flex align-items-center" href="/feeding-points">
                             <span class="quick-icon me-3">🧭</span> Configurer un point de nourrissage
+                        </a>
+                        <a class="list-group-item list-group-item-action d-flex align-items-center" href="/stocks">
+                            <span class="quick-icon me-3">📦</span> Vérifier les stocks
                         </a>
                     @endif
                     @if($role === 'admin')

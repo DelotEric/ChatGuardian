@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             DonorSeeder::class,
             DonationSeeder::class,
             FeedingPointSeeder::class,
+            StockItemSeeder::class,
         ]);
     }
 }
