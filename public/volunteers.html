@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGuardian — Bénévoles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(150deg, #f7faff 0%, #eef4ff 50%, #f6f4ff 100%); }
+        .card-soft { border: none; border-radius: 16px; background: rgba(255,255,255,0.92); box-shadow: 0 18px 45px rgba(99,102,241,0.1); backdrop-filter: blur(6px); }
+        .sidebar { border-radius: 16px; background: #fff; border: 1px solid #eef2ff; }
+        .sidebar a { color: #374151; text-decoration: none; padding: 10px 14px; border-radius: 12px; display: flex; align-items: center; gap: 10px; }
+        .sidebar a.active, .sidebar a:hover { background: var(--cg-primary-soft); color: #4c1d95; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container py-4 py-lg-5">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                <div class="sidebar p-3 p-lg-4 shadow-sm h-100">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="brand-circle me-2">🐾</div>
+                        <div>
+                            <p class="text-muted small mb-0">Admin</p>
+                            <strong>ChatGuardian</strong>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="/admin-home.html"><span>🏠</span> Accueil</a>
+                        <a href="/chats.html"><span>🐈</span> Chats</a>
+                        <a href="/foster-families.html"><span>🏡</span> Familles d'accueil</a>
+                        <a class="active" href="#"><span>🤝</span> Bénévoles</a>
+                        <a href="/donations.html"><span>💝</span> Dons</a>
+                        <a href="/feeding-points.html"><span>📍</span> Points de nourrissage</a>
+                        <a href="#"><span>⚙️</span> Paramètres</a>
+                    </div>
+                    <div class="mt-4 p-3 rounded-3" style="background: var(--cg-primary-soft);">
+                        <p class="mb-1 fw-semibold">Affectations</p>
+                        <p class="mb-2 small text-muted">Associer un bénévole à une tournée.</p>
+                        <button class="btn btn-primary w-100">Planifier</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+                    <div>
+                        <p class="text-muted mb-1">Ressources humaines</p>
+                        <h1 class="h3 fw-bold mb-2">Bénévoles</h1>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-soft-primary">19 actifs</span>
+                            <small class="text-muted">6 responsables de zone</small>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 mt-3 mt-md-0">
+                        <button class="btn btn-outline-secondary">Export</button>
+                        <button class="btn btn-primary">Ajouter</button>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="card card-soft h-100">
+                            <div class="card-body">
+                                <p class="text-muted small mb-1">Disponibilités</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h2 class="h4 fw-bold mb-0">72%</h2>
+                                    <div class="quick-icon">📅</div>
+                                </div>
+                                <p class="mb-0 small text-muted">Moyenne déclarée cette semaine</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-soft h-100">
+                            <div class="card-body">
+                                <p class="text-muted small mb-1">Formations</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h2 class="h4 fw-bold mb-0">5</h2>
+                                    <div class="quick-icon">🎓</div>
+                                </div>
+                                <p class="mb-0 small text-muted">Modules complétés</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-soft h-100">
+                            <div class="card-body">
+                                <p class="text-muted small mb-1">Tournées assignées</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h2 class="h4 fw-bold mb-0">12</h2>
+                                    <div class="quick-icon">🗺️</div>
+                                </div>
+                                <p class="mb-0 small text-muted">Pour les 7 prochains jours</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-soft mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <p class="text-muted small mb-0">Planning</p>
+                                <h3 class="h5 fw-bold mb-0">Disponibilités & rôles</h3>
+                            </div>
+                            <button class="btn btn-outline-secondary btn-sm">Exporter</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0">
+                                <thead class="text-muted small">
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Zone</th>
+                                        <th>Disponibilités</th>
+                                        <th>Rôle</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Sarah L.</strong><br><small class="text-muted">Référente Nord</small></td>
+                                        <td>Nord</td>
+                                        <td><span class="badge bg-soft-success">Lun · Mer · Sam</span></td>
+                                        <td><span class="badge bg-soft-primary">Admin asso</span></td>
+                                        <td class="text-end"><button class="btn btn-outline-secondary btn-sm">Affecter</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Hugo P.</strong><br><small class="text-muted">Disponibilités flex</small></td>
+                                        <td>Centre</td>
+                                        <td><span class="badge bg-soft-primary">Mar · Jeu</span></td>
+                                        <td><span class="badge bg-soft-success">Bénévole</span></td>
+                                        <td class="text-end"><button class="btn btn-outline-secondary btn-sm">Affecter</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Anaïs R.</strong><br><small class="text-muted">Secours véto</small></td>
+                                        <td>Ouest</td>
+                                        <td><span class="badge bg-soft-warning">Week-end</span></td>
+                                        <td><span class="badge bg-soft-primary">Famille d'accueil</span></td>
+                                        <td class="text-end"><button class="btn btn-outline-secondary btn-sm">Affecter</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-soft">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <p class="text-muted small mb-0">Notes</p>
+                                <h3 class="h6 fw-bold mb-0">Tournées à confirmer</h3>
+                            </div>
+                            <button class="btn btn-outline-secondary btn-sm">Marquer fait</button>
+                        </div>
+                        <ul class="list-unstyled mb-0 d-grid gap-2">
+                            <li class="d-flex align-items-start gap-2">
+                                <span class="status-dot status-warning mt-2"></span>
+                                <div>
+                                    <strong>Zone Sud — samedi 16h</strong><br>
+                                    <small class="text-muted">Besoin de 2 bénévoles</small>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-start gap-2">
+                                <span class="status-dot status-info mt-2"></span>
+                                <div>
+                                    <strong>Collecte magasins</strong><br>
+                                    <small class="text-muted">Valider la logistique</small>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-start gap-2">
+                                <span class="status-dot status-success mt-2"></span>
+                                <div>
+                                    <strong>Brief nouveaux bénévoles</strong><br>
+                                    <small class="text-muted">Mardi 18h en visio</small>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p class="text-center text-muted small mt-4 mb-0">Prototype visuel — l'intégration Laravel viendra ensuite.</p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

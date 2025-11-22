@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGuardian — Dons</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(155deg, #f8f7ff 0%, #eef3ff 55%, #f9fdff 100%); }
+        .card-soft { border: none; border-radius: 16px; background: rgba(255,255,255,0.92); box-shadow: 0 18px 45px rgba(99,102,241,0.12); backdrop-filter: blur(6px); }
+        .sidebar { border-radius: 16px; background: #fff; border: 1px solid #eef2ff; }
+        .sidebar a { color: #374151; text-decoration: none; padding: 10px 14px; border-radius: 12px; display: flex; align-items: center; gap: 10px; }
+        .sidebar a.active, .sidebar a:hover { background: var(--cg-primary-soft); color: #4c1d95; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container py-4 py-lg-5">
+        <div class="row g-4">
+            <div class="col-lg-3">
+                <div class="sidebar p-3 p-lg-4 shadow-sm h-100">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="brand-circle me-2">🐾</div>
+                        <div>
+                            <p class="text-muted small mb-0">Admin</p>
+                            <strong>ChatGuardian</strong>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="/admin-home.html"><span>🏠</span> Accueil</a>
+                        <a href="/chats.html"><span>🐈</span> Chats</a>
+                        <a href="/foster-families.html"><span>🏡</span> Familles d'accueil</a>
+                        <a href="/volunteers.html"><span>🤝</span> Bénévoles</a>
+                        <a class="active" href="#"><span>💝</span> Dons</a>
+                        <a href="/feeding-points.html"><span>📍</span> Points de nourrissage</a>
+                        <a href="#"><span>⚙️</span> Paramètres</a>
+                    </div>
+                    <div class="mt-4 p-3 rounded-3" style="background: var(--cg-primary-soft);">
+                        <p class="mb-1 fw-semibold">Reçus fiscaux</p>
+                        <p class="mb-2 small text-muted">Générer les reçus en PDF automatiquement.</p>
+                        <button class="btn btn-primary w-100">Générer</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+                    <div>
+                        <p class="text-muted mb-1">Finances</p>
+                        <h1 class="h3 fw-bold mb-2">Dons & Donateurs</h1>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-soft-primary">€3 240 ce mois</span>
+                            <small class="text-muted">27 reçus générés</small>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 mt-3 mt-md-0">
+                        <button class="btn btn-outline-secondary">Exporter</button>
+                        <button class="btn btn-primary">Nouveau don</button>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="card card-soft h-100">
+                            <div class="card-body">
+                                <p class="text-muted small mb-1">Dons mensuels</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h2 class="h4 fw-bold mb-0">€3 240</h2>
+                                    <div class="quick-icon">📈</div>
+                                </div>
+                                <p class="mb-0 small text-muted">+12% vs mois dernier</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-soft h-100">
+                            <div class="card-body">
+                                <p class="text-muted small mb-1">Donateurs actifs</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h2 class="h4 fw-bold mb-0">64</h2>
+                                    <div class="quick-icon">🙌</div>
+                                </div>
+                                <p class="mb-0 small text-muted">18 récurrents</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-soft h-100">
+                            <div class="card-body">
+                                <p class="text-muted small mb-1">Reçus à envoyer</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h2 class="h4 fw-bold mb-0">3</h2>
+                                    <div class="quick-icon">📩</div>
+                                </div>
+                                <p class="mb-0 small text-muted">Dons du 5 mars</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-soft mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <p class="text-muted small mb-0">Donateurs</p>
+                                <h3 class="h5 fw-bold mb-0">Liste principale</h3>
+                            </div>
+                            <button class="btn btn-outline-secondary btn-sm">Filtres</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0">
+                                <thead class="text-muted small">
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Contact</th>
+                                        <th>Total donné</th>
+                                        <th>Dernier don</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Emma Leroy</strong><br><small class="text-muted">Donatrice récurrente</small></td>
+                                        <td>emma@mail.fr<br><small class="text-muted">06 87 22 45 11</small></td>
+                                        <td><span class="badge bg-soft-primary">€480</span></td>
+                                        <td>02/03/2024</td>
+                                        <td class="text-end"><button class="btn btn-outline-secondary btn-sm">Fiche</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Assoc. Soleil</strong><br><small class="text-muted">Mécénat</small></td>
+                                        <td>contact@soleil.org<br><small class="text-muted">05 12 88 41 20</small></td>
+                                        <td><span class="badge bg-soft-success">€1 250</span></td>
+                                        <td>25/02/2024</td>
+                                        <td class="text-end"><button class="btn btn-outline-secondary btn-sm">Fiche</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Lucas M.</strong><br><small class="text-muted">Donateur unique</small></td>
+                                        <td>lucas@mail.fr<br><small class="text-muted">07 44 21 87 54</small></td>
+                                        <td><span class="badge bg-soft-warning">€50</span></td>
+                                        <td>10/02/2024</td>
+                                        <td class="text-end"><button class="btn btn-outline-secondary btn-sm">Fiche</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-soft">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <p class="text-muted small mb-0">Dons récents</p>
+                                <h3 class="h6 fw-bold mb-0">En attente de reçu</h3>
+                            </div>
+                            <button class="btn btn-outline-secondary btn-sm">Tout marquer</button>
+                        </div>
+                        <div class="d-grid gap-3">
+                            <div class="d-flex align-items-start justify-content-between">
+                                <div>
+                                    <strong>€120</strong> — Virement <span class="badge bg-soft-primary">Emma Leroy</span><br>
+                                    <small class="text-muted">05/03 · Reçu à envoyer</small>
+                                </div>
+                                <button class="btn btn-outline-secondary btn-sm">Reçu</button>
+                            </div>
+                            <div class="d-flex align-items-start justify-content-between">
+                                <div>
+                                    <strong>€300</strong> — Carte <span class="badge bg-soft-success">Assoc. Soleil</span><br>
+                                    <small class="text-muted">01/03 · Merci envoyé</small>
+                                </div>
+                                <button class="btn btn-outline-secondary btn-sm">Reçu</button>
+                            </div>
+                            <div class="d-flex align-items-start justify-content-between">
+                                <div>
+                                    <strong>€25</strong> — Espèces <span class="badge bg-soft-primary">Lucas M.</span><br>
+                                    <small class="text-muted">28/02 · À vérifier</small>
+                                </div>
+                                <button class="btn btn-outline-secondary btn-sm">Reçu</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-center text-muted small mt-4 mb-0">Prototype visuel — l'intégration Laravel viendra ensuite.</p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
