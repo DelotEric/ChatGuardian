@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cat;
 use App\Models\CatAdoption;
 use App\Models\CatVetRecord;
+use App\Models\CatReminder;
 use App\Models\Donation;
 use App\Models\FeedingPoint;
 use App\Models\FosterFamily;
@@ -48,6 +49,11 @@ class DashboardController extends Controller
         $recentAdoptions = CatAdoption::with('cat')->latest('adopted_at')->take(5)->get();
         $recentDonations = Donation::with('donor')->latest('donated_at')->take(6)->get();
         $recentVetRecords = CatVetRecord::with('cat')->latest('visit_date')->take(5)->get();
+        $upcomingReminders = CatReminder::with('cat')
+            ->where('status', 'pending')
+            ->orderBy('due_date')
+            ->take(6)
+            ->get();
         $activities = ActivityLog::with('user')->latest()->take(8)->get();
 
         $months = collect(range(5, 0))->map(fn ($i) => Date::now()->startOfMonth()->subMonths($i));
@@ -72,6 +78,7 @@ class DashboardController extends Controller
             'recentAdoptions' => $recentAdoptions,
             'recentDonations' => $recentDonations,
             'recentVetRecords' => $recentVetRecords,
+            'upcomingReminders' => $upcomingReminders,
             'activities' => $activities,
             'donationChart' => $donationChart,
             'organization' => $this->organization(),

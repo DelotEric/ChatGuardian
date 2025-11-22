@@ -28,7 +28,7 @@ class CatController extends Controller
     {
         $this->authorizeRoles(['admin', 'benevole', 'famille']);
 
-        $cat->load(['photos', 'stays.fosterFamily', 'vetRecords', 'adoption']);
+        $cat->load(['photos', 'stays.fosterFamily', 'vetRecords', 'adoption', 'reminders.user']);
         $families = FosterFamily::query()->where('is_active', true)->orderBy('name')->get();
         $activities = ActivityLog::query()
             ->where('subject_type', Cat::class)
@@ -37,7 +37,9 @@ class CatController extends Controller
             ->limit(10)
             ->get();
 
-        return view('cats.show', compact('cat', 'families', 'activities'));
+        $reminders = $cat->reminders()->orderBy('due_date')->get();
+
+        return view('cats.show', compact('cat', 'families', 'activities', 'reminders'));
     }
 
     public function export(): StreamedResponse

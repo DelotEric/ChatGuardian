@@ -51,6 +51,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Recherche globale : barre de recherche dans la navigation (connecté) pour retrouver rapidement chats, familles, bénévoles et donateurs.
 - Fiche PDF par chat + export CSV complet des chats (statut, santé, séjours, adoption) pour partager ou sauvegarder les dossiers.
 - Journal d'activités : traçabilité des actions clés (création/édition de chat, séjours, visites véto, dons, reçus envoyés) visible sur le dashboard et la fiche chat.
+- Rappels de suivi par chat : création/édition/suppression de rappels (vaccins, suivi adoption, visites véto) avec tableau dédié sur la fiche chat, cartes sur le dashboard et données démo.
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -133,6 +134,9 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 23. Consulter le journal d'activités :
    - Accès global depuis le tableau de bord (section « Journal des activités »)
    - Historique ciblé sur chaque fiche chat (section « Journal du chat »)
+24. Planifier des rappels :
+   - Ouvrir une fiche chat puis utiliser le formulaire « Programmer un rappel » (admin/bénévole)
+   - Suivre les rappels en attente via la section dédiée sur la fiche ou la carte « Rappels à venir » du dashboard
 
 Le dashboard affiche également les dépenses vétérinaires et le nombre de visites du mois, ainsi qu'un aperçu des dernières visites enregistrées.
 

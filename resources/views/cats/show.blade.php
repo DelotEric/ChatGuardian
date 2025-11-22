@@ -346,6 +346,159 @@
 
 <div class="card shadow-sm border-0 mt-4">
     <div class="card-body">
+        @php
+            $pendingReminders = $reminders->where('status', 'pending');
+            $completedReminders = $reminders->where('status', 'done');
+        @endphp
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2 class="h6 text-uppercase text-muted mb-0">Rappels & suivis</h2>
+                <p class="text-muted small mb-0">Vaccins, visites, contrôles à planifier</p>
+            </div>
+            <div class="text-end">
+                <span class="badge bg-soft-warning text-warning me-2">{{ $pendingReminders->count() }} à faire</span>
+                <span class="badge bg-soft-success text-success">{{ $completedReminders->count() }} terminé(s)</span>
+            </div>
+        </div>
+
+        @if(in_array($role, ['admin', 'benevole']))
+            <div class="border rounded p-3 bg-light mb-3">
+                <h3 class="h6 fw-semibold mb-2">Programmer un rappel</h3>
+                <form class="row g-3" method="POST" action="{{ route('cats.reminders.store', $cat) }}">
+                    @csrf
+                    <div class="col-md-4">
+                        <label class="form-label">Titre</label>
+                        <input type="text" name="title" class="form-control" placeholder="Rappel vaccin, contrôle..." required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Échéance</label>
+                        <input type="date" name="due_date" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Type</label>
+                        <select name="type" class="form-select" required>
+                            <option value="vet">Visite véto</option>
+                            <option value="vaccine">Vaccin</option>
+                            <option value="adoption_followup">Suivi adoption</option>
+                            <option value="health">Suivi santé</option>
+                            <option value="admin">Administratif</option>
+                            <option value="other" selected>Autre</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label">Notes (optionnel)</label>
+                        <textarea name="notes" class="form-control" rows="2" placeholder="Détail du rappel, coordonnées de la clinique..."></textarea>
+                    </div>
+                    <div class="col-12 text-end">
+                        <button class="btn btn-primary" type="submit">Ajouter le rappel</button>
+                    </div>
+                </form>
+            </div>
+        @endif
+
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Titre</th>
+                        <th>Échéance</th>
+                        <th>Type</th>
+                        <th>Notes</th>
+                        <th>Statut</th>
+                        @if(in_array($role, ['admin', 'benevole']))
+                            <th class="text-end">Actions</th>
+                        @endif
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($reminders as $reminder)
+                        <tr @class(['table-warning' => $reminder->status === 'pending' && $reminder->due_date->isPast()])>
+                            <td class="fw-semibold">{{ $reminder->title }}</td>
+                            <td>{{ $reminder->due_date?->format('d/m/Y') }}</td>
+                            <td>
+                                @php
+                                    $labels = [
+                                        'vet' => 'Visite véto',
+                                        'vaccine' => 'Vaccin',
+                                        'adoption_followup' => 'Suivi adoption',
+                                        'health' => 'Suivi santé',
+                                        'admin' => 'Administratif',
+                                        'other' => 'Autre',
+                                    ];
+                                @endphp
+                                <span class="badge bg-soft-secondary text-secondary">{{ $labels[$reminder->type] ?? $reminder->type }}</span>
+                            </td>
+                            <td class="text-muted small">{{ $reminder->notes ?: '—' }}</td>
+                            <td>
+                                @if($reminder->status === 'pending')
+                                    <span class="badge bg-soft-warning text-warning">À faire</span>
+                                @else
+                                    <span class="badge bg-soft-success text-success">Terminé</span>
+                                @endif
+                            </td>
+                            @if(in_array($role, ['admin', 'benevole']))
+                                <td class="text-end">
+                                    <div class="d-flex gap-2 justify-content-end">
+                                        @if($reminder->status === 'pending')
+                                            <form method="POST" action="{{ route('cats.reminders.complete', [$cat, $reminder]) }}">
+                                                @csrf
+                                                <button class="btn btn-sm btn-outline-success" type="submit">Marquer fait</button>
+                                            </form>
+                                        @endif
+                                        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#editReminder{{ $reminder->id }}">Éditer</button>
+                                        <form method="POST" action="{{ route('cats.reminders.destroy', [$cat, $reminder]) }}" onsubmit="return confirm('Supprimer ce rappel ?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                        </form>
+                                    </div>
+                                    <div id="editReminder{{ $reminder->id }}" class="collapse mt-2">
+                                        <form class="row g-2 border rounded p-3" method="POST" action="{{ route('cats.reminders.update', [$cat, $reminder]) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <div class="col-md-4">
+                                                <input type="text" name="title" class="form-control" value="{{ $reminder->title }}" required>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="date" name="due_date" class="form-control" value="{{ $reminder->due_date?->format('Y-m-d') }}" required>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select name="type" class="form-select" required>
+                                                    @foreach($labels as $value => $label)
+                                                        <option value="{{ $value }}" @selected($reminder->type === $value)>{{ $label }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <select name="status" class="form-select" required>
+                                                    <option value="pending" @selected($reminder->status === 'pending')>À faire</option>
+                                                    <option value="done" @selected($reminder->status === 'done')>Terminé</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <textarea name="notes" class="form-control" rows="2" placeholder="Notes">{{ $reminder->notes }}</textarea>
+                                            </div>
+                                            <div class="col-12 text-end">
+                                                <button class="btn btn-primary btn-sm" type="submit">Mettre à jour</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            @endif
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="{{ in_array($role, ['admin', 'benevole']) ? 6 : 5 }}" class="text-center text-muted py-3">Aucun rappel enregistré pour ce chat.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 mt-4">
+    <div class="card-body">
         @php($totalVetCosts = $cat->vetRecords->sum('amount'))
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>

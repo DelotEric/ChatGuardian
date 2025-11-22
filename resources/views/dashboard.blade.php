@@ -175,6 +175,31 @@
         <div class="card shadow-sm border-0 mt-3">
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h3 class="h6 fw-semibold mb-0">Rappels à venir</h3>
+                    <span class="badge bg-soft-warning text-warning">{{ $upcomingReminders->count() }}</span>
+                </div>
+                <p class="text-muted small mb-3">Vaccins, suivis santé et contrôles à planifier</p>
+                <div class="list-group list-group-flush">
+                    @forelse($upcomingReminders as $reminder)
+                        <div class="list-group-item px-0 d-flex align-items-start justify-content-between">
+                            <div>
+                                <p class="mb-0 fw-semibold">{{ $reminder->title }}</p>
+                                <p class="text-muted small mb-0">{{ $reminder->cat?->name }} · {{ $reminder->due_date?->format('d/m') }}</p>
+                            </div>
+                            <span class="badge bg-soft-secondary text-secondary text-uppercase">{{ $reminder->type }}</span>
+                        </div>
+                    @empty
+                        <p class="text-muted mb-0">Aucun rappel en attente.</p>
+                    @endforelse
+                </div>
+                <div class="text-end mt-2">
+                    <a class="btn btn-sm btn-outline-primary" href="/cats">Ouvrir les fiches chats</a>
+                </div>
+            </div>
+        </div>
+        <div class="card shadow-sm border-0 mt-3">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-2">
                     <h3 class="h6 fw-semibold mb-0">Coordonnées association</h3>
                     @if($role === 'admin')
                         <a href="{{ route('settings.organization') }}" class="btn btn-sm btn-outline-primary">Modifier</a>

@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             CatAdoptionSeeder::class,
             CatPhotoSeeder::class,
             CatVetRecordSeeder::class,
+            CatReminderSeeder::class,
             DonorSeeder::class,
             DonationSeeder::class,
             FeedingPointSeeder::class,

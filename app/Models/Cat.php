@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\CatPhoto;
 use App\Models\CatAdoption;
 use App\Models\CatVetRecord;
+use App\Models\CatReminder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -57,6 +58,11 @@ class Cat extends Model
     public function adoption()
     {
         return $this->hasOne(CatAdoption::class);
+    }
+
+    public function reminders()
+    {
+        return $this->hasMany(CatReminder::class);
     }
 
     public function fosterFamilies()

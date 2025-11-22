@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CatController;
 use App\Http\Controllers\CatAdoptionController;
+use App\Http\Controllers\CatReminderController;
 use App\Http\Controllers\CatVetRecordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonationController;
@@ -51,6 +52,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/cats/{cat}/adoptions', [CatAdoptionController::class, 'store'])->name('cats.adoptions.store');
     Route::patch('/cats/{cat}/adoptions/{adoption}', [CatAdoptionController::class, 'update'])->name('cats.adoptions.update');
     Route::delete('/cats/{cat}/adoptions/{adoption}', [CatAdoptionController::class, 'destroy'])->name('cats.adoptions.destroy');
+    Route::post('/cats/{cat}/reminders', [CatReminderController::class, 'store'])->name('cats.reminders.store');
+    Route::patch('/cats/{cat}/reminders/{reminder}', [CatReminderController::class, 'update'])->name('cats.reminders.update');
+    Route::post('/cats/{cat}/reminders/{reminder}/complete', [CatReminderController::class, 'complete'])->name('cats.reminders.complete');
+    Route::delete('/cats/{cat}/reminders/{reminder}', [CatReminderController::class, 'destroy'])->name('cats.reminders.destroy');
     Route::post('/cats/{cat}/vet-records', [CatVetRecordController::class, 'store'])->name('cats.vet-records.store');
     Route::patch('/cats/{cat}/vet-records/{vetRecord}', [CatVetRecordController::class, 'update'])->name('cats.vet-records.update');
     Route::delete('/cats/{cat}/vet-records/{vetRecord}', [CatVetRecordController::class, 'destroy'])->name('cats.vet-records.destroy');
