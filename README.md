@@ -28,7 +28,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 ### Nouveautés
 - Carte Leaflet intégrée sur la page "Points de nourrissage" (affiche les marqueurs depuis la base)
 - Génération d'un PDF de contrat de famille d'accueil (barryvdh/laravel-dompdf)
-- Reçus fiscaux en PDF pour chaque don et export CSV des dons/donateurs
+- Reçus fiscaux en PDF pour chaque don et export CSV des dons/donateurs (liste donateurs via `/donors/export`)
 - Écran dédié aux donateurs (création, édition, suppression protégée si dons liés)
 - Réinitialisation de mot de passe Laravel (envoi d'email + formulaire de nouveau mot de passe)
 - Galerie photo par chat avec téléversement (3 Mo max par image, 3 photos par profil) et suppression

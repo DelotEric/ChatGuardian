@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Donor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\View\View;
 
 class DonorController extends Controller
@@ -69,5 +70,44 @@ class DonorController extends Controller
         $donor->delete();
 
         return redirect()->route('donors.index')->with('status', 'Donateur supprimé.');
+    }
+
+    public function exportCsv(): StreamedResponse
+    {
+        $this->authorizeRoles('admin');
+
+        $donors = Donor::query()
+            ->withCount('donations')
+            ->withSum('donations', 'amount')
+            ->orderBy('name')
+            ->get();
+
+        $filename = 'donors_' . now()->format('Ymd_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ];
+
+        $callback = static function () use ($donors): void {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['Nom', 'Email', 'Adresse', 'Ville', 'Code postal', 'Nombre de dons', 'Total dons (€)']);
+
+            foreach ($donors as $donor) {
+                fputcsv($handle, [
+                    $donor->name,
+                    $donor->email,
+                    $donor->address,
+                    $donor->city,
+                    $donor->postal_code,
+                    $donor->donations_count,
+                    number_format((float) ($donor->donations_sum_amount ?? 0), 2, '.', ''),
+                ]);
+            }
+
+            fclose($handle);
+        };
+
+        return response()->streamDownload($callback, $filename, $headers);
     }
 }

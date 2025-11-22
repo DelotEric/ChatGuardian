@@ -7,6 +7,7 @@
         <h1 class="h4 fw-bold">Donateurs</h1>
     </div>
     <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary" href="{{ route('donors.export') }}">Exporter CSV</a>
         <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#donorForm">Ajouter</button>
     </div>
 </div>

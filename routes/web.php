@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/donors', [DonorController::class, 'store'])->name('donors.store');
     Route::patch('/donors/{donor}', [DonorController::class, 'update'])->name('donors.update');
     Route::delete('/donors/{donor}', [DonorController::class, 'destroy'])->name('donors.destroy');
+    Route::get('/donors/export', [DonorController::class, 'exportCsv'])->name('donors.export');
 
     Route::get('/feeding-points', [FeedingPointController::class, 'index'])->name('feeding-points.index');
     Route::post('/feeding-points', [FeedingPointController::class, 'store'])->name('feeding-points.store');
