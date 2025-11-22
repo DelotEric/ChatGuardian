@@ -57,6 +57,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Envoi d'un email récapitulatif des rappels (aujourd'hui, 7 prochains jours ou en retard) pour les admins et bénévoles depuis `/reminders`.
 - Agenda centralisé : page `/calendar` (admin/bénévole) avec vue FullCalendar des rappels et visites véto, navigation rapide (aujourd'hui, mois précédent/suivant) et liste des 10 prochains événements, plus maquette statique `public/calendar.html` et export ICS.
 - Commande Artisan `reminders:digest` et planification quotidienne à 07h pour envoyer automatiquement le récapitulatif des rappels.
+- Journal d'activités dédié : écran `/activities` (admin/bénévole) avec filtres, pagination et export CSV, plus maquette statique `public/activities.html`.
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -150,6 +151,10 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
    - Planification incluse : la commande `reminders:digest today` est programmée chaque jour à 07h via le scheduler Laravel (voir `app/Console/Kernel.php`).
    - Alerte stocks faibles : la commande `stocks:alert` est planifiée à 06h50 pour prévenir les admins/bénévoles si des articles passent sous seuil.
    - Activer le scheduler côté serveur : tâche cron toutes les minutes `* * * * * php /chemin/vers/artisan schedule:run >> /dev/null 2>&1`.
+27. Consulter et exporter le journal d'activités :
+   - Accès : `/activities` (admin/bénévole) avec filtres (action, sujet, utilisateur, période)
+   - Export CSV filtré : `/activities/export`
+   - Maquette statique : `public/activities.html`
 
 Le dashboard affiche également les dépenses vétérinaires et le nombre de visites du mois, ainsi qu'un aperçu des dernières visites enregistrées.
 

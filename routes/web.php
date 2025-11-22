@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\CatController;
 use App\Http\Controllers\CatAdoptionController;
 use App\Http\Controllers\CatReminderController;
@@ -37,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/search', SearchController::class)->name('search');
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
     Route::get('/calendar/export', [CalendarController::class, 'exportIcs'])->name('calendar.export');
+    Route::get('/activities', [ActivityLogController::class, 'index'])->name('activities.index');
+    Route::get('/activities/export', [ActivityLogController::class, 'export'])->name('activities.export');
 
     Route::get('/volunteers', [VolunteerController::class, 'index'])->name('volunteers.index');
     Route::post('/volunteers', [VolunteerController::class, 'store'])->name('volunteers.store');

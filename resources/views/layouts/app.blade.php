@@ -49,6 +49,9 @@
                             <li class="nav-item"><a class="nav-link" href="{{ route('reminders.index') }}">Rappels</a></li>
                         @endif
                         @if(in_array($role, ['admin', 'benevole']))
+                            <li class="nav-item"><a class="nav-link" href="{{ route('activities.index') }}">Journal</a></li>
+                        @endif
+                        @if(in_array($role, ['admin', 'benevole']))
                             <li class="nav-item"><a class="nav-link" href="{{ route('feeding-points.index') }}">Points de nourrissage</a></li>
                         @endif
                         @if(in_array($role, ['admin', 'benevole']))
