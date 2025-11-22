@@ -93,15 +93,28 @@
                             <td>{{ \Illuminate\Support\Carbon::parse($donation->donated_at)->translatedFormat('d/m/Y') }}</td>
                             <td>{{ ucfirst($donation->payment_method) }}</td>
                             <td>
-                                @if($donation->receipt_number)
-                                    <span class="badge bg-soft-success text-success">#{{ $donation->receipt_number }}</span>
-                                @else
-                                    <span class="badge bg-soft-secondary text-muted">À générer</span>
-                                @endif
+                                <div class="d-flex flex-column gap-1">
+                                    @if($donation->receipt_number)
+                                        <span class="badge bg-soft-success text-success">#{{ $donation->receipt_number }}</span>
+                                    @else
+                                        <span class="badge bg-soft-secondary text-muted">À générer</span>
+                                    @endif
+                                    <span class="badge {{ $donation->is_receipt_sent ? 'bg-soft-success text-success' : 'bg-soft-secondary text-muted' }}">
+                                        {{ $donation->is_receipt_sent ? 'Email envoyé' : 'Email en attente' }}
+                                    </span>
+                                </div>
                             </td>
                             <td class="text-end">
                                 <div class="btn-group">
                                     <a class="btn btn-sm btn-outline-primary" href="{{ route('donations.receipt', $donation) }}">PDF</a>
+                                    @if($donation->donor->email)
+                                        <form method="POST" action="{{ route('donations.sendReceipt', $donation) }}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-outline-success">Email</button>
+                                        </form>
+                                    @else
+                                        <button class="btn btn-sm btn-outline-secondary" disabled title="Email non renseigné">Email</button>
+                                    @endif
                                     <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDonation{{ $donation->id }}">Modifier</button>
                                     <form method="POST" action="{{ route('donations.destroy', $donation) }}" onsubmit="return confirm('Supprimer ce don ?');">
                                         @csrf

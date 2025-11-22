@@ -48,12 +48,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/foster-families/{family}', [FosterFamilyController::class, 'destroy'])->name('foster-families.destroy');
     Route::get('/foster-families/{family}/contract', [PdfController::class, 'fosterContract'])->name('foster-families.contract');
 
-    Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
-    Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
-    Route::patch('/donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
-    Route::delete('/donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
-    Route::get('/donations/export', [DonationController::class, 'exportCsv'])->name('donations.export');
-    Route::get('/donations/{donation}/receipt', [PdfController::class, 'donationReceipt'])->name('donations.receipt');
+Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
+Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
+Route::patch('/donations/{donation}', [DonationController::class, 'update'])->name('donations.update');
+Route::delete('/donations/{donation}', [DonationController::class, 'destroy'])->name('donations.destroy');
+Route::get('/donations/export', [DonationController::class, 'exportCsv'])->name('donations.export');
+Route::post('/donations/{donation}/send-receipt', [DonationController::class, 'sendReceipt'])->name('donations.sendReceipt');
+Route::get('/donations/{donation}/receipt', [PdfController::class, 'donationReceipt'])->name('donations.receipt');
 
     Route::get('/donors', [DonorController::class, 'index'])->name('donors.index');
     Route::post('/donors', [DonorController::class, 'store'])->name('donors.store');

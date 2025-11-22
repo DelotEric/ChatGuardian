@@ -32,6 +32,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Carte Leaflet intégrée sur la page "Points de nourrissage" (affiche les marqueurs depuis la base)
 - Génération d'un PDF de contrat de famille d'accueil (barryvdh/laravel-dompdf)
 - Reçus fiscaux en PDF pour chaque don et export CSV des dons/donateurs (liste donateurs via `/donors/export`)
+- Envoi d'un reçu fiscal par email au donateur (PDF en pièce jointe depuis la liste des dons)
 - Écran dédié aux donateurs (création, édition, suppression protégée si dons liés)
 - Réinitialisation de mot de passe Laravel (envoi d'email + formulaire de nouveau mot de passe)
 - Galerie photo par chat avec téléversement (3 Mo max par image, 3 photos par profil) et suppression
@@ -102,6 +103,9 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 16. Gérer les utilisateurs (admin) :
    - Liste et métriques : `/users`
    - Créer un compte avec rôle, modifier email/nom/role, réinitialiser le mot de passe, supprimer un autre compte
+17. Envoyer un reçu fiscal par email :
+   - Vérifier que le donateur possède un email
+   - Dans `/donations`, cliquer sur **Email** pour envoyer le reçu PDF en pièce jointe (le statut « Email envoyé » sera mis à jour)
 
 Le dashboard (`/`) s'appuie désormais sur les statistiques réelles (chats par statut, dons du mois, familles, bénévoles, points de nourrissage) et affiche les derniers chats/dons ajoutés.
 

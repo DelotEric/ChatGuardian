@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\DonationReceiptMail;
 use App\Models\Donation;
 use App\Models\Donor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class DonationController extends Controller
@@ -72,6 +74,28 @@ class DonationController extends Controller
         $donation->delete();
 
         return redirect()->route('donations.index')->with('status', 'Don supprimé.');
+    }
+
+    public function sendReceipt(Donation $donation): RedirectResponse
+    {
+        $this->authorizeRoles('admin');
+
+        $donation->load('donor');
+
+        if (!$donation->donor || !$donation->donor->email) {
+            return redirect()->route('donations.index')->with('status', "Impossible d'envoyer le reçu : aucun email pour ce donateur.");
+        }
+
+        if (!$donation->receipt_number) {
+            $donation->receipt_number = 'REC-' . str_pad((string) $donation->id, 5, '0', STR_PAD_LEFT);
+        }
+
+        $donation->is_receipt_sent = true;
+        $donation->save();
+
+        Mail::to($donation->donor->email)->send(new DonationReceiptMail($donation));
+
+        return redirect()->route('donations.index')->with('status', 'Reçu fiscal envoyé par email.');
     }
 
     public function exportCsv(): \Symfony\Component\HttpFoundation\StreamedResponse
