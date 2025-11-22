@@ -16,6 +16,7 @@ class PdfController extends Controller
         $pdf = Pdf::loadView('pdf.foster_contract', [
             'family' => $family,
             'today' => now()->format('d/m/Y'),
+            'organization' => $this->organization(),
         ])->setPaper('a4');
 
         return $pdf->download("contrat-famille-{$family->id}.pdf");
@@ -28,6 +29,7 @@ class PdfController extends Controller
         $pdf = Pdf::loadView('pdf.donation_receipt', [
             'donation' => $donation->load('donor'),
             'today' => now()->format('d/m/Y'),
+            'organization' => $this->organization(),
         ])->setPaper('a4');
 
         $number = $donation->receipt_number ?: 'recu-' . $donation->id;

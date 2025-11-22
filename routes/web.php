@@ -8,6 +8,7 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DonorController;
 use App\Http\Controllers\FeedingPointController;
 use App\Http\Controllers\FosterFamilyController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\UserController;
@@ -76,4 +77,7 @@ Route::get('/donations/{donation}/receipt', [PdfController::class, 'donationRece
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
     Route::patch('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    Route::get('/settings/organization', [OrganizationController::class, 'edit'])->name('settings.organization');
+    Route::patch('/settings/organization', [OrganizationController::class, 'update'])->name('settings.organization.update');
 });

@@ -56,6 +56,7 @@ class DashboardController extends Controller
             'recentCats' => $recentCats,
             'recentDonations' => $recentDonations,
             'donationChart' => $donationChart,
+            'organization' => $this->organization(),
         ]);
     }
 }

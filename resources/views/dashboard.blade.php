@@ -142,6 +142,20 @@
                 </div>
             </div>
         </div>
+        <div class="card shadow-sm border-0 mt-3">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h3 class="h6 fw-semibold mb-0">Coordonnées association</h3>
+                    @if($role === 'admin')
+                        <a href="{{ route('settings.organization') }}" class="btn btn-sm btn-outline-primary">Modifier</a>
+                    @endif
+                </div>
+                <p class="mb-1 fw-semibold">{{ $organization->name }}</p>
+                <p class="mb-1 text-muted">{{ $organization->legal_name }}</p>
+                <p class="mb-1">{{ $organization->address }}<br>{{ $organization->postal_code }} {{ $organization->city }}</p>
+                <p class="mb-0 text-muted small">{{ $organization->email }} · {{ $organization->phone }}</p>
+            </div>
+        </div>
     </div>
 </div>
 

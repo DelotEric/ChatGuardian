@@ -21,8 +21,8 @@
 <body>
     <div class="header">
         <div>
-            <div class="brand">ChatGuardian</div>
-            <div class="muted">Association de protection féline</div>
+            <div class="brand">{{ $organization->name }}</div>
+            <div class="muted">{{ $organization->legal_name ?? 'Association de protection féline' }}</div>
         </div>
         <div class="badge">Reçu fiscal</div>
     </div>
@@ -62,9 +62,9 @@
     <div class="section row">
         <div class="col card">
             <strong>Association</strong><br>
-            ChatGuardian<br>
-            123 Rue des Chats Libres<br>
-            75000 Paris
+            {{ $organization->legal_name ?? $organization->name }}<br>
+            {{ $organization->address }}<br>
+            {{ $organization->postal_code }} {{ $organization->city }}
         </div>
         <div class="col card">
             <strong>Certification</strong><br>

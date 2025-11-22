@@ -43,6 +43,7 @@
                             <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">Utilisateurs</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('donors.index') }}">Donateurs</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('donations.index') }}">Dons</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('settings.organization') }}">Association</a></li>
                         @endif
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">

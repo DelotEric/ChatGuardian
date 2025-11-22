@@ -44,6 +44,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
   démonstration
 - Administration des utilisateurs : création/édition/suppression des comptes et rôles (admin, bénévole, famille) et maquette HTML dédiée
 - Dashboard enrichi : graphiques Chart.js pour la répartition des statuts des chats et l'évolution mensuelle des dons (données réelles)
+- Profil association éditable : page `/settings/organization` (admin) pour saisir coordonnées/SIRET/IBAN/BIC, injectés automatiquement dans les reçus fiscaux PDF, contrats et emails + maquette statique `public/settings.html`.
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -59,7 +60,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
    ```bash
    php artisan db:seed
    ```
-   (Les seeders ajoutent aussi quelques photos fictives de chats pour la démo et un inventaire de base pour les stocks.)
+    (Les seeders ajoutent aussi quelques photos fictives de chats pour la démo, un inventaire de base pour les stocks et un profil d'association par défaut modifiable.)
    Identifiants prêts à l'emploi :
    - admin@chatguardian.test / **password** (admin)
    - benevole@chatguardian.test / **password** (bénévole)

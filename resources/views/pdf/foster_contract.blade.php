@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1>Contrat de famille d'accueil</h1>
-    <p class="muted">Émis le {{ $today }} — ChatGuardian</p>
+    <p class="muted">Émis le {{ $today }} — {{ $organization->name }}</p>
 
     <div class="section">
         <h2>Famille d'accueil</h2>
@@ -50,7 +50,7 @@
     </div>
 
     <div class="footer">
-        ChatGuardian — Prototype de contrat PDF. Généré via Laravel + DomPDF.
+        {{ $organization->legal_name ?? $organization->name }} — {{ $organization->address }}, {{ $organization->postal_code }} {{ $organization->city }} · {{ $organization->email }}
     </div>
 </body>
 </html>
