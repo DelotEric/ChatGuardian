@@ -46,6 +46,13 @@
                 <div class="row g-3 mb-3">
                     <div class="col-12 col-md-3">
                         <div class="stat-card">
+                            <p class="text-muted mb-1">Adoptions (mois)</p>
+                            <p class="h4 mb-0">{{ $metrics['adoptions_month'] }}</p>
+                            <small class="text-muted">confirmées</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <div class="stat-card">
                             <p class="text-muted mb-1">Soins véto (mois)</p>
                             <p class="h4 mb-0">{{ number_format($metrics['vet_month'], 2, ',', ' ') }} €</p>
                             <small class="text-muted">dépensés</small>
@@ -58,6 +65,15 @@
                             <small class="text-muted">enregistrées</small>
                         </div>
                     </div>
+                    <div class="col-12 col-md-3">
+                        <div class="stat-card">
+                            <p class="text-muted mb-1">Points de nourrissage</p>
+                            <p class="h4 mb-0">{{ $metrics['feeding_points'] }}</p>
+                            <small class="text-muted">sites suivis</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
                     <div class="col-12 col-md-3">
                         <div class="stat-card">
                             <p class="text-muted mb-1">Articles de stock</p>
@@ -209,7 +225,39 @@
         </div>
     </div>
     @if($role === 'admin')
-        <div class="col-12 col-lg-5">
+        <div class="col-12 col-lg-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h3 class="h6 fw-semibold mb-0">Dernières adoptions</h3>
+                        <a href="/cats" class="btn btn-sm btn-outline-secondary">Voir les chats</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Chat</th>
+                                    <th>Adoptant</th>
+                                    <th class="text-end">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($recentAdoptions as $adoption)
+                                    <tr>
+                                        <td class="fw-semibold">{{ optional($adoption->cat)->name ?? 'Chat inconnu' }}</td>
+                                        <td class="text-muted">{{ $adoption->adopter_name }}</td>
+                                        <td class="text-end text-muted">{{ optional($adoption->adopted_at)->format('d/m/Y') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr><td colspan="3" class="text-center text-muted py-4">Aucune adoption récente.</td></tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between mb-3">
@@ -241,7 +289,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-lg-5">
+        <div class="col-12 col-lg-4">
             <div class="card shadow-sm border-0 h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between mb-3">

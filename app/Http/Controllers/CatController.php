@@ -26,7 +26,7 @@ class CatController extends Controller
     {
         $this->authorizeRoles(['admin', 'benevole', 'famille']);
 
-        $cat->load(['photos', 'stays.fosterFamily', 'vetRecords']);
+        $cat->load(['photos', 'stays.fosterFamily', 'vetRecords', 'adoption']);
         $families = FosterFamily::query()->where('is_active', true)->orderBy('name')->get();
 
         return view('cats.show', compact('cat', 'families'));

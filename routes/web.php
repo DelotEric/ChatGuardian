@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CatController;
+use App\Http\Controllers\CatAdoptionController;
 use App\Http\Controllers\CatVetRecordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DonationController;
@@ -43,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cats/{cat}/photos/{photo}', [CatController::class, 'destroyPhoto'])->name('cats.photos.destroy');
     Route::post('/cats/{cat}/stays', [CatController::class, 'storeStay'])->name('cats.stays.store');
     Route::post('/cats/{cat}/stays/{stay}/close', [CatController::class, 'closeStay'])->name('cats.stays.close');
+    Route::post('/cats/{cat}/adoptions', [CatAdoptionController::class, 'store'])->name('cats.adoptions.store');
+    Route::patch('/cats/{cat}/adoptions/{adoption}', [CatAdoptionController::class, 'update'])->name('cats.adoptions.update');
+    Route::delete('/cats/{cat}/adoptions/{adoption}', [CatAdoptionController::class, 'destroy'])->name('cats.adoptions.destroy');
     Route::post('/cats/{cat}/vet-records', [CatVetRecordController::class, 'store'])->name('cats.vet-records.store');
     Route::patch('/cats/{cat}/vet-records/{vetRecord}', [CatVetRecordController::class, 'update'])->name('cats.vet-records.update');
     Route::delete('/cats/{cat}/vet-records/{vetRecord}', [CatVetRecordController::class, 'destroy'])->name('cats.vet-records.destroy');
@@ -53,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/foster-families/{family}', [FosterFamilyController::class, 'update'])->name('foster-families.update');
     Route::delete('/foster-families/{family}', [FosterFamilyController::class, 'destroy'])->name('foster-families.destroy');
     Route::get('/foster-families/{family}/contract', [PdfController::class, 'fosterContract'])->name('foster-families.contract');
+    Route::get('/cats/{cat}/adoptions/{adoption}/contract', [PdfController::class, 'adoptionContract'])->name('cats.adoptions.contract');
 
 Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
 Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');

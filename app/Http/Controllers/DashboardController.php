@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cat;
+use App\Models\CatAdoption;
 use App\Models\CatVetRecord;
 use App\Models\Donation;
 use App\Models\FeedingPoint;
@@ -28,6 +29,9 @@ class DashboardController extends Controller
             'donations_month' => Donation::whereMonth('donated_at', now()->month)
                 ->whereYear('donated_at', now()->year)
                 ->sum('amount'),
+            'adoptions_month' => CatAdoption::whereMonth('adopted_at', now()->month)
+                ->whereYear('adopted_at', now()->year)
+                ->count(),
             'vet_month' => CatVetRecord::whereMonth('visit_date', now()->month)
                 ->whereYear('visit_date', now()->year)
                 ->sum('amount'),
@@ -40,6 +44,7 @@ class DashboardController extends Controller
         ];
 
         $recentCats = Cat::latest()->take(6)->get();
+        $recentAdoptions = CatAdoption::with('cat')->latest('adopted_at')->take(5)->get();
         $recentDonations = Donation::with('donor')->latest('donated_at')->take(6)->get();
         $recentVetRecords = CatVetRecord::with('cat')->latest('visit_date')->take(5)->get();
 
@@ -62,6 +67,7 @@ class DashboardController extends Controller
             'metrics' => $metrics,
             'catTotals' => $catTotals,
             'recentCats' => $recentCats,
+            'recentAdoptions' => $recentAdoptions,
             'recentDonations' => $recentDonations,
             'recentVetRecords' => $recentVetRecords,
             'donationChart' => $donationChart,

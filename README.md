@@ -47,6 +47,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Profil association éditable : page `/settings/organization` (admin) pour saisir coordonnées/SIRET/IBAN/BIC, injectés automatiquement dans les reçus fiscaux PDF, contrats et emails + maquette statique `public/settings.html`.
 - Suivi vétérinaire par chat : visites, coûts, notes et pièces jointes (PDF/image) avec formulaire d'ajout/édition/suppression depuis la fiche.
 - Export CSV des visites vétérinaires par chat (admin/bénévole) et KPIs dédiés sur le tableau de bord (coûts et visites du mois + dernières visites).
+- Gestion des adoptions : enregistrement d'un adoptant, génération du contrat PDF, mise à jour du statut du chat et KPIs/dernières adoptions sur le dashboard.
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -115,6 +116,10 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
    - Renseigner la date, le motif, le montant et (optionnel) un document PDF ou une photo (admin/bénévole)
    - Modifier ou supprimer une visite via le tableau dédié
    - Exporter l'historique des visites en CSV : bouton **Export CSV** dans la section santé
+19. Finaliser une adoption :
+   - Ouvrir la fiche chat : `/cats/{id}`
+   - Dans la section Adoption (admin), saisir les coordonnées de l'adoptant et la participation
+   - Télécharger le contrat PDF via le bouton **Télécharger le contrat**
 
 Le dashboard affiche également les dépenses vétérinaires et le nombre de visites du mois, ainsi qu'un aperçu des dernières visites enregistrées.
 

@@ -15,6 +15,136 @@
             <span class="text-muted small">Dernière mise à jour {{ $cat->updated_at?->diffForHumans() }}</span>
         </div>
     </div>
+
+    <div class="col-12">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h6 text-uppercase text-muted mb-0">Adoption</h2>
+                    @if($cat->adoption)
+                        <span class="badge bg-soft-success text-success">Enregistrée</span>
+                    @else
+                        <span class="badge bg-soft-secondary text-secondary">A enregistrer</span>
+                    @endif
+                </div>
+
+                @if($cat->adoption)
+                    <div class="mb-3">
+                        <p class="text-muted small mb-1">Adoptant</p>
+                        <p class="fw-semibold mb-0">{{ $cat->adoption->adopter_name }}</p>
+                        <p class="text-muted mb-0">{{ $cat->adoption->adopter_email }} · {{ $cat->adoption->adopter_phone }}</p>
+                        <p class="text-muted mb-0">{{ $cat->adoption->adopter_address }}</p>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <p class="text-muted small mb-1">Date d'adoption</p>
+                            <p class="fw-semibold mb-0">{{ $cat->adoption->adopted_at?->format('d/m/Y') }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-muted small mb-1">Participation</p>
+                            <p class="fw-semibold mb-0">{{ number_format($cat->adoption->fee, 2, ',', ' ') }} €</p>
+                        </div>
+                    </div>
+                    @if($cat->adoption->notes)
+                        <p class="text-muted small mb-1">Notes</p>
+                        <p class="mb-3">{{ $cat->adoption->notes }}</p>
+                    @endif
+
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <a href="{{ route('cats.adoptions.contract', [$cat, $cat->adoption]) }}" class="btn btn-outline-primary btn-sm">Télécharger le contrat</a>
+                        @if($role === 'admin')
+                            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#editAdoption">Modifier</button>
+                            <form method="POST" action="{{ route('cats.adoptions.destroy', [$cat, $cat->adoption]) }}" onsubmit="return confirm('Supprimer l\'adoption ?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                            </form>
+                        @endif
+                    </div>
+
+                    @if($role === 'admin')
+                        <div id="editAdoption" class="collapse">
+                            <hr>
+                            <h3 class="h6 fw-semibold mb-3">Mettre à jour l'adoption</h3>
+                            <form class="row g-3" method="POST" action="{{ route('cats.adoptions.update', [$cat, $cat->adoption]) }}">
+                                @csrf
+                                @method('PATCH')
+                                <div class="col-md-6">
+                                    <label class="form-label">Nom complet</label>
+                                    <input type="text" name="adopter_name" class="form-control" value="{{ $cat->adoption->adopter_name }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="adopter_email" class="form-control" value="{{ $cat->adoption->adopter_email }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Téléphone</label>
+                                    <input type="text" name="adopter_phone" class="form-control" value="{{ $cat->adoption->adopter_phone }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Adresse</label>
+                                    <input type="text" name="adopter_address" class="form-control" value="{{ $cat->adoption->adopter_address }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Date d'adoption</label>
+                                    <input type="date" name="adopted_at" class="form-control" value="{{ optional($cat->adoption->adopted_at)->format('Y-m-d') }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Participation (€)</label>
+                                    <input type="number" step="0.01" min="0" name="fee" class="form-control" value="{{ $cat->adoption->fee }}">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Notes</label>
+                                    <textarea name="notes" class="form-control" rows="2">{{ $cat->adoption->notes }}</textarea>
+                                </div>
+                                <div class="col-12 text-end">
+                                    <button class="btn btn-primary" type="submit">Mettre à jour</button>
+                                </div>
+                            </form>
+                        </div>
+                    @endif
+                @elseif($role === 'admin')
+                    <div class="alert alert-light">Aucune adoption enregistrée pour ce chat. Renseignez l'adoptant et générez un contrat.</div>
+                    <form class="row g-3" method="POST" action="{{ route('cats.adoptions.store', $cat) }}">
+                        @csrf
+                        <div class="col-md-6">
+                            <label class="form-label">Nom complet</label>
+                            <input type="text" name="adopter_name" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="adopter_email" class="form-control" placeholder="optionnel">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Téléphone</label>
+                            <input type="text" name="adopter_phone" class="form-control" placeholder="optionnel">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Adresse</label>
+                            <input type="text" name="adopter_address" class="form-control" placeholder="Rue, ville">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Date d'adoption</label>
+                            <input type="date" name="adopted_at" class="form-control" value="{{ now()->format('Y-m-d') }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Participation (€)</label>
+                            <input type="number" step="0.01" min="0" name="fee" class="form-control" placeholder="0.00">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Notes</label>
+                            <textarea name="notes" class="form-control" rows="2" placeholder="Conditions, suivi..."></textarea>
+                        </div>
+                        <div class="col-12 text-end">
+                            <button class="btn btn-primary" type="submit">Enregistrer l'adoption</button>
+                        </div>
+                    </form>
+                @else
+                    <p class="text-muted mb-0">Aucune adoption enregistrée.</p>
+                @endif
+            </div>
+        </div>
+    </div>
     <div class="d-flex gap-2">
         <a href="{{ route('cats.index') }}" class="btn btn-outline-secondary">Retour à la liste</a>
     </div>
