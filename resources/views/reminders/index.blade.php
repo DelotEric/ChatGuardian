@@ -74,6 +74,7 @@
             <div>
                 <h5 class="mb-1">Rappels</h5>
                 <p class="text-muted small mb-0">Filtrer par statut, échéance ou type d'action.</p>
+                <p class="text-muted small mb-0">Astuce : le récapitulatif quotidien est aussi planifié à 07h (commande `php artisan reminders:digest today`).</p>
             </div>
             <div class="d-flex align-items-center gap-2">
                 <form method="POST" action="{{ route('reminders.send_digest') }}" class="d-flex align-items-center gap-2">

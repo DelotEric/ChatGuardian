@@ -55,6 +55,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Vue consolidée des rappels : écran `/reminders` (admin/bénévole) avec filtres statut/échéance/type, actions de clôture et lien direct vers chaque fiche chat, plus maquette statique `public/reminders.html`.
 - Envoi d'un email récapitulatif des rappels (aujourd'hui, 7 prochains jours ou en retard) pour les admins et bénévoles depuis `/reminders`.
 - Agenda centralisé : page `/calendar` (admin/bénévole) avec vue FullCalendar des rappels et visites véto, navigation rapide (aujourd'hui, mois précédent/suivant) et liste des 10 prochains événements, plus maquette statique `public/calendar.html` et export ICS.
+- Commande Artisan `reminders:digest` et planification quotidienne à 07h pour envoyer automatiquement le récapitulatif des rappels.
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -143,6 +144,10 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 25. Envoyer un email récapitulatif des rappels (admin/bénévole) :
    - Aller sur `/reminders`, choisir la plage (7 prochains jours, aujourd'hui ou en retard)
    - Cliquer sur **Envoyer par email** pour diffuser le récap aux admins/bénévoles disposant d'un email
+26. Automatiser l'envoi du récapitulatif des rappels :
+   - Commande manuelle : `php artisan reminders:digest today|week|overdue`
+   - Planification incluse : la commande `reminders:digest today` est programmée chaque jour à 07h via le scheduler Laravel (voir `app/Console/Kernel.php`).
+   - Activer le scheduler côté serveur : tâche cron toutes les minutes `* * * * * php /chemin/vers/artisan schedule:run >> /dev/null 2>&1`.
 
 Le dashboard affiche également les dépenses vétérinaires et le nombre de visites du mois, ainsi qu'un aperçu des dernières visites enregistrées.
 
