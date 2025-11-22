@@ -60,6 +60,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Agenda centralisé : page `/calendar` (admin/bénévole) avec vue FullCalendar des rappels et visites véto, navigation rapide (aujourd'hui, mois précédent/suivant) et liste des 10 prochains événements, plus maquette statique `public/calendar.html` et export ICS.
 - Commande Artisan `reminders:digest` et planification quotidienne à 07h pour envoyer automatiquement le récapitulatif des rappels.
 - Journal d'activités dédié : écran `/activities` (admin/bénévole) avec filtres, pagination et export CSV, plus maquette statique `public/activities.html`.
+- API JSON légère protégée par clé (`X-Api-Key`) pour exposer le dashboard, les chats, les points de nourrissage et les rappels.
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
@@ -168,6 +169,23 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 Le dashboard affiche également les dépenses vétérinaires et le nombre de visites du mois, ainsi qu'un aperçu des dernières visites enregistrées.
 
 Le dashboard (`/`) s'appuie désormais sur les statistiques réelles (chats par statut, dons du mois, familles, bénévoles, points de nourrissage) et affiche les derniers chats/dons ajoutés.
+
+## API JSON (clé partagée)
+
+Pour exposer quelques données aux usages mobiles ou automatisations légères :
+
+1. Définir une clé dans votre `.env` :
+   ```env
+   API_TOKEN=demo-api-key
+   ```
+2. Appeler les endpoints en envoyant l'en-tête `X-Api-Key: <votre_clé>` (ou le paramètre `api_token` en secours) :
+   - `GET /api/dashboard` : métriques clés, histogramme des dons, rappels à venir, journal récent.
+   - `GET /api/cats` : liste paginée des chats avec statut, séjours en cours, rappels ouverts.
+   - `GET /api/cats/{id}` : fiche détaillée (photos, séjours, visites véto, rappels).
+   - `GET /api/feeding-points` : points de nourrissage avec coordonnées et bénévoles associés.
+   - `GET /api/reminders` : rappels en attente (stats retard/du jour/semaine + liste chronologique).
+
+Les routes API utilisent un middleware simple pour refuser les requêtes sans clé ou avec clé invalide.
 
 ### Rôles et accès (prototype)
 
