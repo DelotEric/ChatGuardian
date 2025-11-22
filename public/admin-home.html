@@ -138,6 +138,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-6">
+                        <div class="card card-soft h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h2 class="h6 fw-semibold mb-0">Statuts des chats</h2>
+                                    <span class="badge bg-soft-primary text-primary">Temps réel</span>
+                                </div>
+                                <canvas id="catStatusChart" height="170"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card card-soft h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h2 class="h6 fw-semibold mb-0">Dons (6 mois)</h2>
+                                    <span class="badge bg-soft-success text-success">€</span>
+                                </div>
+                                <canvas id="donationsChart" height="170"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row g-3">
                     <div class="col-lg-7">
@@ -242,5 +266,50 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        const statusCtx = document.getElementById('catStatusChart');
+        if (statusCtx) {
+            new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Chats libres', 'En famille', 'Adoptés', 'Décédés'],
+                    datasets: [{
+                        data: [32, 18, 24, 2],
+                        backgroundColor: ['#6C5CE7', '#4ECDC4', '#FEB85B', '#E66767'],
+                        borderWidth: 0,
+                    }],
+                },
+                options: {
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, usePointStyle: true } } },
+                    cutout: '62%',
+                },
+            });
+        }
+
+        const donationsCtx = document.getElementById('donationsChart');
+        if (donationsCtx) {
+            new Chart(donationsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Nov', 'Déc', 'Jan', 'Fév', 'Mar', 'Avr'],
+                    datasets: [{
+                        label: 'Dons €',
+                        data: [1800, 2200, 3100, 2600, 3240, 2880],
+                        backgroundColor: '#6C5CE7',
+                        borderRadius: 6,
+                        borderSkipped: false,
+                    }],
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#eef2ff' }, ticks: { callback: v => `${v} €` } },
+                        x: { grid: { display: false } },
+                    },
+                },
+            });
+        }
+    </script>
 </body>
 </html>

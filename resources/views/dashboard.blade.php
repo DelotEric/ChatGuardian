@@ -82,8 +82,31 @@
                         </div>
                     @endforeach
                 </div>
-                <p class="text-muted small mb-0">Cette page affiche désormais des données issues des tables chats, bénévoles,
- familles, dons et points de nourrissage.</p>
+                <div class="row g-3 mb-2">
+                    <div class="col-12 col-lg-6">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <h3 class="h6 fw-semibold mb-0">Répartition des statuts</h3>
+                                    <span class="badge bg-soft-primary text-primary">Temps réel</span>
+                                </div>
+                                <canvas id="catStatusChart" height="180"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <h3 class="h6 fw-semibold mb-0">Dons des 6 derniers mois</h3>
+                                    <span class="badge bg-soft-success text-success">€</span>
+                                </div>
+                                <canvas id="donationsChart" height="180"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-muted small mb-0">Cette page affiche désormais des données issues des tables chats, bénévoles, familles, dons et points de nourrissage avec des graphiques de suivi.</p>
             </div>
         </div>
     </div>
@@ -193,3 +216,67 @@
     @endif
 </div>
 @endsection
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        const statusCtx = document.getElementById('catStatusChart');
+        if (statusCtx) {
+            new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Chats libres', 'En famille d\'accueil', 'Adoptés', 'Décédés'],
+                    datasets: [{
+                        data: [
+                            {{ $catTotals['free'] ?? 0 }},
+                            {{ $catTotals['fostered'] ?? 0 }},
+                            {{ $catTotals['adopted'] ?? 0 }},
+                            {{ $catTotals['deceased'] ?? 0 }},
+                        ],
+                        backgroundColor: ['#6C5CE7', '#4ECDC4', '#FEB85B', '#E66767'],
+                        borderWidth: 0,
+                    }],
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, usePointStyle: true },
+                        },
+                    },
+                    cutout: '60%',
+                },
+            });
+        }
+
+        const donationsCtx = document.getElementById('donationsChart');
+        if (donationsCtx) {
+            new Chart(donationsCtx, {
+                type: 'bar',
+                data: {
+                    labels: @json($donationChart->pluck('label')),
+                    datasets: [{
+                        label: 'Dons (€)',
+                        data: @json($donationChart->pluck('value')),
+                        backgroundColor: '#6C5CE7',
+                        borderRadius: 6,
+                        borderSkipped: false,
+                    }],
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: (value) => `${value} €`,
+                            },
+                            grid: { color: '#f1f3f5' },
+                        },
+                        x: { grid: { display: false } },
+                    },
+                },
+            });
+        }
+    </script>
+@endpush

@@ -43,6 +43,7 @@ Cette branche contient un prototype statique (HTML/Blade + Bootstrap) et un sque
 - Module stocks : inventaire des fournitures (cartes d'alerte, tableau, formulaires d'ajout/édition/suppression) et page HTML de
   démonstration
 - Administration des utilisateurs : création/édition/suppression des comptes et rôles (admin, bénévole, famille) et maquette HTML dédiée
+- Dashboard enrichi : graphiques Chart.js pour la répartition des statuts des chats et l'évolution mensuelle des dons (données réelles)
 
 ### Intégration rapide
 1. Installer Laravel et les dépendances PDF :
