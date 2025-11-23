@@ -14,12 +14,12 @@
 ## 🔴 Priorité HAUTE
 
 ### 1. Authentification et sécurité
-- [ ] Installer Laravel Breeze ou Laravel UI pour l'authentification
-- [ ] Créer le modèle User et migration
-- [ ] Implémenter la connexion/déconnexion
-- [ ] Protéger les routes avec middleware `auth`
-- [ ] Créer les vues d'authentification (login, register, password reset)
-- [ ] Gérer les sessions utilisateur
+- [x] Installer Laravel Breeze ou Laravel UI pour l'authentification
+- [x] Créer le modèle User et migration
+- [x] Implémenter la connexion/déconnexion
+- [x] Protéger les routes avec middleware `auth` ✅ **FAIT**
+- [x] Créer les vues d'authentification (login, register, password reset)
+- [x] Gérer les sessions utilisateur
 - [ ] Ajouter la vérification email (optionnel)
 
 ### 2. CRUD complet pour tous les contrôleurs

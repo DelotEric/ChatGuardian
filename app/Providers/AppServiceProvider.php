@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Enregistrer la gate pour la gestion des utilisateurs
+        \Illuminate\Support\Facades\Gate::define('manage-users', function ($user) {
+            return $user->isAdmin();
+        });
     }
 }
