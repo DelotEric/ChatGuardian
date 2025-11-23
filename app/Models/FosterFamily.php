@@ -14,6 +14,7 @@ class FosterFamily extends Model
         'email',
         'phone',
         'address',
+        'postal_code',
         'city',
         'capacity',
         'preferences',

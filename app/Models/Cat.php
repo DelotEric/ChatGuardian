@@ -21,6 +21,9 @@ class Cat extends Model
         'fiv_status',
         'felv_status',
         'notes',
+        'photo_path',
+        'adopter_id',
+        'adopted_at',
     ];
 
     protected $casts = [
@@ -29,7 +32,23 @@ class Cat extends Model
         'sterilized_at' => 'date',
         'vaccinated' => 'boolean',
         'vaccinated_at' => 'date',
+        'adopted_at' => 'date',
     ];
+
+    public function adopter()
+    {
+        return $this->belongsTo(Adopter::class);
+    }
+
+    public function photos()
+    {
+        return $this->hasMany(CatPhoto::class);
+    }
+
+    public function medicalCares()
+    {
+        return $this->hasMany(MedicalCare::class);
+    }
 
     public function stays()
     {

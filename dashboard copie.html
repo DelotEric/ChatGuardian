@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGuardian - Tableau de Bord</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3a7e8c;
+            --primary-light: #5ca0ae;
+            --primary-dark: #2a6e7c;
+            --secondary-color: #f0803c;
+            --secondary-light: #f5a06c;
+            --secondary-dark: #d86a28;
+            --bg-color: #f7f9fc;
+            --text-color: #333;
+            --text-light: #6c757d;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+        }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        
+        /* Custom Styling */
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+        
+        .bg-primary-light {
+            background-color: var(--primary-light) !important;
+        }
+        
+        .bg-secondary {
+            background-color: var(--secondary-color) !important;
+        }
+        
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+        
+        .text-secondary {
+            color: var(--secondary-color) !important;
+        }
+        
+        .border-primary {
+            border-color: var(--primary-color) !important;
+        }
+        
+        .border-secondary {
+            border-color: var(--secondary-color) !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+        }
+        
+        /* Sidebar Styling */
+        .sidebar {
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            height: calc(100vh - 60px);
+            position: fixed;
+            width: 240px;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-link {
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            color: var(--text-color);
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: rgba(58, 126, 140, 0.1);
+            color: var(--primary-color);
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .sidebar-link i {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Header Styling */
+        .main-header {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            height: 60px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 20;
+        }
+        
+        /* Content area */
+        .main-content {
+            margin-left: 240px;
+            margin-top: 60px;
+            padding: 1.5rem;
+        }
+        
+        /* Widget styling */
+        .widget-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .widget-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .widget-body {
+            padding: 1rem;
+        }
+        
+        /* Task item styling */
+        .task-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .task-item:last-child {
+            border-bottom: none;
+        }
+        
+        .task-checkbox {
+            margin-right: 0.75rem;
+        }
+        
+        /* Alert styling */
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            border-left: 4px solid transparent;
+        }
+        
+        .alert-info {
+            background-color: rgba(58, 126, 140, 0.1);
+            border-left-color: var(--primary-color);
+        }
+        
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left-color: var(--warning-color);
+        }
+        
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+            border-left-color: var(--danger-color);
+        }
+        
+        /* Cat card styling */
+        .cat-card {
+            display: flex;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .cat-card:last-child {
+            border-bottom: none;
+        }
+        
+        .cat-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            background-color: var(--primary-light);
+            margin-right: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        /* News styling */
+        .news-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-date {
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+        
+        /* Stats card */
+        .stat-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+        }
+        
+        .stat-info h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .stat-info p {
+            margin: 0;
+            color: var(--text-light);
+        }
+        
+        /* Mobile responsive design */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 100%;
+                z-index: 30;
+                position: fixed;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .menu-toggle {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PHP Session Verification (commented) -->
+    <!--
+    <?php
+    session_start();
+    require_once 'config.php';
+    require_once 'functions.php';
+
+    // Vérifier si l'utilisateur est connecté
+    if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+        header("location: login.php");
+        exit;
+    }
+    
+    // Récupérer les informations de l'utilisateur
+    $user_id = $_SESSION["id"];
+    $user_role = $_SESSION["role"];
+    $username = $_SESSION["username"];
+    
+    // Fonction pour obtenir les tâches de l'utilisateur
+    function getUserTasks($conn, $user_id) {
+        $tasks = array();
+        $sql = "SELECT * FROM tasks WHERE assigned_to = ? AND status = 'pending' ORDER BY due_date ASC LIMIT 5";
+        if($stmt = mysqli_prepare($conn, $sql)) {
+            mysqli_stmt_bind_param($stmt, "i", $user_id);
+            if(mysqli_stmt_execute($stmt)) {
+                $result = mysqli_stmt_get_result($stmt);
+                while($row = mysqli_fetch_assoc($result)) {
+                    $tasks[] = $row;
+                }
+            }
+        }
+        return $tasks;
+    }
+    
+    // Fonction pour obtenir les activités d'aujourd'hui
+    function getTodayActivities($conn, $user_id) {
+        $activities = array();
+        $today = date('Y-m-d');
+        $sql = "SELECT * FROM activities WHERE user_id = ? AND DATE(activity_date) = ? ORDER BY activity_date ASC";
+        if($stmt = mysqli_prepare($conn, $sql)) {
+            mysqli_stmt_bind_param($stmt, "is", $user_id, $today);
+            if(mysqli_stmt_execute($stmt)) {
+                $result = mysqli_stmt_get_result($stmt);
+                while($row = mysqli_fetch_assoc($result)) {
+                    $activities[] = $row;
+                }
+            }
+        }
+        return $activities;
+    }
+    
+    // Fonction pour obtenir les derniers chats pris en charge
+    function getRecentCats($conn, $user_id) {
+        $cats = array();
+        $sql = "SELECT c.* FROM cats c 
+                JOIN cat_caretakers cc ON c.id = cc.cat_id 
+                WHERE cc.user_id = ? 
+                ORDER BY cc.assignment_date DESC LIMIT 3";
+        if($stmt = mysqli_prepare($conn, $sql)) {
+            mysqli_stmt_bind_param($stmt, "i", $user_id);
+            if(mysqli_stmt_execute($stmt)) {
+                $result = mysqli_stmt_get_result($stmt);
+                while($row = mysqli_fetch_assoc($result)) {
+                    $cats[] = $row;
+                }
+            }
+        }
+        return $cats;
+    }
+    
+    // Fonction pour obtenir les alertes de l'utilisateur
+    function getUserAlerts($conn, $user_id) {
+        $alerts = array();
+        $sql = "SELECT * FROM alerts WHERE user_id = ? AND is_read = 0 ORDER BY priority DESC, created_at DESC LIMIT 5";
+        if($stmt = mysqli_prepare($conn, $sql)) {
+            mysqli_stmt_bind_param($stmt, "i", $user_id);
+            if(mysqli_stmt_execute($stmt)) {
+                $result = mysqli_stmt_get_result($stmt);
+                while($row = mysqli_fetch_assoc($result)) {
+                    $alerts[] = $row;
+                }
+            }
+        }
+        return $alerts;
+    }
+    
+    // Fonction pour obtenir les statistiques
+    function getUserStats($conn, $user_id) {
+        $stats = array(
+            'week_cats' => 0,
+            'month_cats' => 0,
+            'pending_tasks' => 0,
+            'completed_tasks' => 0
+        );
+        
+        // Chats aidés cette semaine
+        $sql = "SELECT COUNT(*) as count FROM cats c 
+                JOIN cat_caretakers cc ON c.id = cc.cat_id 
+                WHERE cc.user_id = ? AND cc.assignment_date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+        if($stmt = mysqli_prepare($conn, $sql)) {
+            mysqli_stmt_bind_param($stmt, "i", $user_id);
+            if(mysqli_stmt_execute($stmt)) {
+                $result = mysqli_stmt_get_result($stmt);
+                if($row = mysqli_fetch_assoc($result)) {
+                    $stats['week_cats'] = $row['count'];
+                }
+            }
+        }
+        
+        // Chats aidés ce mois
+        $sql = "SELECT COUNT(*) as count FROM cats c 
+                JOIN cat_caretakers cc ON c.id = cc.cat_id 
+                WHERE cc.user_id = ? AND cc.assignment_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)";
+        if($stmt = mysqli_prepare($conn, $sql)) {
+            mysqli_stmt_bind_param($stmt, "i", $user_id);
+            if(mysqli_stmt_execute($stmt)) {
+                $result = mysqli_stmt_get_result($stmt);
+                if($row = mysqli_fetch_assoc($result)) {
+                    $stats['month_cats'] = $row['count'];
+                }
+            }
+        }
+        
+        // Tâches en attente
+        $sql = "SELECT COUNT(*) as count FROM tasks WHERE assigned_to = ? AND status = 'pending'";
+        if($stmt = mysqli_prepare($conn, $sql)) {
+            mysqli_stmt_bind_param($stmt, "i", $user_id);
+            if(mysqli_stmt_execute($stmt)) {
+                $result = mysqli_stmt_get_result($stmt);
+                if($row = mysqli_fetch_assoc($result)) {
+                    $stats['pending_tasks'] = $row['count'];
+                }
+            }
+        }
+        
+        // Tâches complétées
+        $sql = "SELECT COUNT(*) as count FROM tasks WHERE assigned_to = ? AND status = 'completed' AND completion_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)";
+        if($stmt = mysqli_prepare($conn, $sql)) {
+            mysqli_stmt_bind_param($stmt, "i", $user_id);
+            if(mysqli_stmt_execute($stmt)) {
+                $result = mysqli_stmt_get_result($stmt);
+                if($row = mysqli_fetch_assoc($result)) {
+                    $stats['completed_tasks'] = $row['count'];
+                }
+            }
+        }
+        
+        return $stats;
+    }
+    
+    // Fonction pour obtenir les actualités
+    function getNews($conn) {
+        $news = array();
+        $sql = "SELECT * FROM news ORDER BY publish_date DESC LIMIT 5";
+        if($result = mysqli_query($conn, $sql)) {
+            while($row = mysqli_fetch_assoc($result)) {
+                $news[] = $row;
+            }
+        }
+        return $news;
+    }
+    
+    // Récupérer les données pour le dashboard
+    $tasks = getUserTasks($conn, $user_id);
+    $activities = getTodayActivities($conn, $user_id);
+    $recent_cats = getRecentCats($conn, $user_id);
+    $alerts = getUserAlerts($conn, $user_id);
+    $stats = getUserStats($conn, $user_id);
+    $news = getNews($conn);
+    ?>
+    -->
+
+    <!-- Header -->
+    <header class="main-header flex items-center justify-between px-4">
+        <div class="flex items-center">
+            <button class="menu-toggle mr-3 focus:outline-none hidden" id="menu-toggle">
+                <i class="fas fa-bars text-xl text-primary"></i>
+            </button>
+            <div class="logo flex items-center">
+                <img src="https://via.placeholder.com/40x40" alt="ChatGuardian Logo" class="w-10 h-10 mr-2">
+                <span class="font-semibold text-lg text-primary">ChatGuardian</span>
+            </div>
+        </div>
+        
+        <div class="search-bar hidden md:block w-1/3">
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                    <i class="fas fa-search text-gray-400"></i>
+                </span>
+                <input type="text" class="w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:border-primary" placeholder="Rechercher...">
+            </div>
+        </div>
+        
+        <div class="user-menu flex items-center">
+            <div class="notifications relative mr-4">
+                <button class="focus:outline-none">
+                    <i class="fas fa-bell text-gray-600"></i>
+                    <span class="absolute -top-1 -right-1 bg-secondary text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">3</span>
+                </button>
+            </div>
+            
+            <div class="messages relative mr-4">
+                <button class="focus:outline-none">
+                    <i class="fas fa-envelope text-gray-600"></i>
+                    <span class="absolute -top-1 -right-1 bg-secondary text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">5</span>
+                </button>
+            </div>
+            
+            <div class="user-profile flex items-center">
+                <img src="https://via.placeholder.com/32x32" alt="User Avatar" class="w-8 h-8 rounded-full mr-2">
+                <span class="hidden md:inline-block">Marie Dupont</span>
+                <i class="fas fa-chevron-down ml-2 text-xs text-gray-500"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="py-2">
+            <div class="user-profile flex items-center p-4 border-b">
+                <img src="https://via.placeholder.com/50x50" alt="User Avatar" class="w-12 h-12 rounded-full mr-3">
+                <div>
+                    <div class="font-semibold">Marie Dupont</div>
+                    <div class="text-sm text-gray-500">Bénévole</div>
+                </div>
+            </div>
+            
+            <nav class="mt-4">
+                <a href="#" class="sidebar-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-cat"></i>
+                    <span>Chats</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-hands-helping"></i>
+                    <span>Interventions</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Planning</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Cartographie</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-comment-alt"></i>
+                    <span>Messages</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Rapports</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Paramètres</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="welcome-message mb-6">
+            <h1 class="text-2xl font-bold">Bonjour, Marie !</h1>
+            <p class="text-gray-600">Mardi 15 Août, 2023 | Voici votre résumé du jour</p>
+        </div>
+        
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="stat-card">
+                <div class="stat-icon bg-primary">
+                    <i class="fas fa-cat"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>12</h3>
+                    <p>Chats aidés cette semaine</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon bg-secondary">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>4</h3>
+                    <p>Interventions aujourd'hui</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color: var(--success-color);">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>7</h3>
+                    <p>Tâches en attente</p>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color: var(--warning-color);">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>28</h3>
+                    <p>Chats aidés ce mois</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Widget Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Column 1 -->
+            <div class="lg:col-span-2">
+                <!-- Tasks Widget -->
+                <div class="widget-card">
+                    <div class="widget-header">
+                        <span>Mes tâches à faire</span>
+                        <a href="#" class="text-primary text-sm">Voir tout</a>
+                    </div>
+                    <div class="widget-body">
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox">
+                            <div>
+                                <div class="font-medium">Intervention site Belleville</div>
+                                <div class="text-sm text-gray-500">Aujourd'hui - 14h30 | Urgent</div>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox">
+                            <div>
+                                <div class="font-medium">Visite vétérinaire pour Caramel</div>
+                                <div class="text-sm text-gray-500">Demain - 10h00</div>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox">
+                            <div>
+                                <div class="font-medium">Livraison nourriture colonie Parc</div>
+                                <div class="text-sm text-gray-500">Jeudi - 18h00</div>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox">
+                            <div>
+                                <div class="font-medium">Inspection famille d'accueil Mme Laurent</div>
+                                <div class="text-sm text-gray-500">Vendredi - 15h00</div>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" class="task-checkbox">
+                            <div>
+                                <div class="font-medium">Rappel vaccins portée chatons Rue Victor Hugo</div>
+                                <div class="text-sm text-gray-500">Samedi - 11h30</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's Activities -->
+                <div class="widget-card mt-6">
+                    <div class="widget-header">
+                        <span>Activités prévues aujourd'hui</span>
+                        <a href="#" class="text-primary text-sm">Calendrier</a>
+                    </div>
+                    <div class="widget-body">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-primary text-white rounded p-2 mr-3">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium">09:30 - 11:00</div>
+                                <div>Trappage chats errants - Quartier Saint Michel</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <div class="bg-secondary text-white rounded p-2 mr-3">
+                                <i class="fas fa-stethoscope"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium">14:30 - 15:30</div>
+                                <div>Rendez-vous vétérinaire - Clinique Dr. Martin</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-primary-light text-white rounded p-2 mr-3">
+                                <i class="fas fa-paw"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium">18:00 - 19:00</div>
+                                <div>Nourrissage colonie - Parc des Lilas</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Cats -->
+                <div class="widget-card mt-6">
+                    <div class="widget-header">
+                        <span>Derniers chats pris en charge</span>
+                        <a href="#" class="text-primary text-sm">Voir tous</a>
+                    </div>
+                    <div class="widget-body">
+                        <div class="cat-card">
+                            <div class="cat-image">
+                                <i class="fas fa-cat"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="font-medium">Caramel</div>
+                                <div class="text-sm">Mâle, 2 ans, Tabby roux</div>
+                                <div class="text-xs text-gray-500">En attente de stérilisation</div>
+                            </div>
+                            <div>
+                                <a href="#" class="text-primary">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="cat-card">
+                            <div class="cat-image" style="background-color: var(--secondary-color);">
+                                <i class="fas fa-cat"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="font-medium">Luna</div>
+                                <div class="text-sm">Femelle, 1 an, Noir et blanc</div>
+                                <div class="text-xs text-gray-500">Stérilisée, sociable</div>
+                            </div>
+                            <div>
+                                <a href="#" class="text-primary">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="cat-card">
+                            <div class="cat-image" style="background-color: var(--warning-color);">
+                                <i class="fas fa-cat"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <div class="font-medium">Félix</div>
+                                <div class="text-sm">Mâle, 3 ans, Gris</div>
+                                <div class="text-xs text-gray-500">Stérilisé, peu sociable</div>
+                            </div>
+                            <div>
+                                <a href="#" class="text-primary">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Column 2 -->
+            <div>
+                <!-- Alerts Widget -->
+                <div class="widget-card">
+                    <div class="widget-header">
+                        <span>Mes alertes</span>
+                        <a href="#" class="text-primary text-sm">Gérer</a>
+                    </div>
+                    <div class="widget-body">
+                        <div class="alert alert-danger">
+                            <div class="font-medium">Urgence vétérinaire</div>
+                            <div class="text-sm">Félix montre des signes de détresse respiratoire</div>
+                        </div>
+                        <div class="alert alert-warning">
+                            <div class="font-medium">Rappel de rendez-vous</div>
+                            <div class="text-sm">Vaccination de Caramel demain à 10h</div>
+                        </div>
+                        <div class="alert alert-info">
+                            <div class="font-medium">Stock en baisse</div>
+                            <div class="text-sm">Croquettes chaton bientôt épuisées</div>
+                        </div>
+                        <div class="alert alert-info">
+                            <div class="font-medium">Nouvelle mission</div>
+                            <div class="text-sm">Signalement de chats errants Rue Victor Hugo</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Association News -->
+                <div class="widget-card mt-6">
+                    <div class="widget-header">
+                        <span>Actualités de l'association</span>
+                        <a href="#" class="text-primary text-sm">Toutes</a>
+                    </div>
+                    <div class="widget-body">
+                        <div class="news-item">
+                            <div class="font-medium">Journée d'adoption réussie</div>
+                            <div class="text-sm">15 chats ont trouvé une famille ce week-end lors de notre événement annuel.</div>
+                            <div class="news-date">12 août 2023</div>
+                        </div>
+                        <div class="news-item">
+                            <div class="font-medium">Nouvelle convention vétérinaire</div>
+                            <div class="text-sm">ChatGuardian a signé un partenariat avec la clinique du Dr. Bernard.</div>
+                            <div class="news-date">8 août 2023</div>
+                        </div>
+                        <div class="news-item">
+                            <div class="font-medium">Recherche familles d'accueil</div>
+                            <div class="text-sm">Nous recherchons d'urgence des familles pour accueillir 5 chatons récemment sauvés.</div>
+                            <div class="news-date">5 août 2023</div>
+                        </div>
+                        <div class="news-item">
+                            <div class="font-medium">Formation trappage le 20/08</div>
+                            <div class="text-sm">Inscrivez-vous à notre prochaine formation sur les techniques de trappage humanitaire.</div>
+                            <div class="news-date">1 août 2023</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Upcoming Events Quick View -->
+                <div class="widget-card mt-6">
+                    <div class="widget-header">
+                        <span>Événements à venir</span>
+                        <a href="#" class="text-primary text-sm">Agenda</a>
+                    </div>
+                    <div class="widget-body">
+                        <div class="p-2 border border-primary rounded-lg mb-3 bg-primary bg-opacity-5">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-medium">Journée d'adoption</span>
+                                <span class="text-xs px-2 py-1 bg-primary text-white rounded-full">20 Août</span>
+                            </div>
+                            <div class="text-sm">Place de la Mairie, 10h-18h</div>
+                        </div>
+                        <div class="p-2 border border-secondary rounded-lg mb-3 bg-secondary bg-opacity-5">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-medium">Formation bénévoles</span>
+                                <span class="text-xs px-2 py-1 bg-secondary text-white rounded-full">27 Août</span>
+                            </div>
+                            <div class="text-sm">Siège de l'association, 14h</div>
+                        </div>
+                        <div class="p-2 border rounded-lg border-gray-300">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-medium">Réunion mensuelle</span>
+                                <span class="text-xs px-2 py-1 bg-gray-500 text-white rounded-full">5 Sept</span>
+                            </div>
+                            <div class="text-sm">Visioconférence, 19h30</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Toggle sidebar on mobile
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !menuToggle.contains(event.target) &&
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+        
+        // Responsive adjustments
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        });
+        
+        // Task checkbox interaction
+        const checkboxes = document.querySelectorAll('.task-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const taskItem = this.closest('.task-item');
+                if (this.checked) {
+                    taskItem.style.opacity = '0.6';
+                    taskItem.style.textDecoration = 'line-through';
+                } else {
+                    taskItem.style.opacity = '1';
+                    taskItem.style.textDecoration = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

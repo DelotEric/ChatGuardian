@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
+            $table->string('postal_code')->nullable();
             $table->string('city')->nullable();
             $table->unsignedTinyInteger('capacity')->default(1);
             $table->string('preferences')->nullable();
