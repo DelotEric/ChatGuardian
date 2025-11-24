@@ -65,6 +65,21 @@ class Cat extends Model
         return $this->belongsToMany(FosterFamily::class, 'cat_stays')->withPivot(['started_at', 'ended_at', 'outcome']);
     }
 
+    public function weightRecords()
+    {
+        return $this->hasMany(WeightRecord::class)->orderBy('measured_at', 'desc');
+    }
+
+    public function getLatestWeightAttribute()
+    {
+        return $this->weightRecords()->first()?->weight;
+    }
+
+    public function weightHistory()
+    {
+        return $this->weightRecords()->orderBy('measured_at', 'asc')->get();
+    }
+
     public function getStatusLabelAttribute()
     {
         return match ($this->status) {

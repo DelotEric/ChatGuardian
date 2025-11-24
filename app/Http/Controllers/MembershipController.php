@@ -65,6 +65,38 @@ class MembershipController extends Controller
         return view('memberships.show', compact('membership'));
     }
 
+    public function edit(Membership $membership): View
+    {
+        $members = Member::orderBy('last_name')->get();
+        return view('memberships.edit', compact('membership', 'members'));
+    }
+
+    public function update(Request $request, Membership $membership): RedirectResponse
+    {
+        $data = $request->validate([
+            'member_id' => ['required', 'exists:members,id'],
+            'year' => ['required', 'integer', 'min:2000', 'max:2100'],
+            'amount' => ['required', 'numeric', 'min:0'],
+            'payment_date' => ['required', 'date'],
+            'payment_method' => ['required', 'in:cash,check,transfer,card,other'],
+            'receipt_number' => ['nullable', 'string', 'max:255'],
+            'receipt_issued' => ['boolean'],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $membership->update($data);
+
+        return redirect()->route('members.show', $membership->member_id)->with('status', 'Adhésion mise à jour avec succès.');
+    }
+
+    public function destroy(Membership $membership): RedirectResponse
+    {
+        $memberId = $membership->member_id;
+        $membership->delete();
+
+        return redirect()->route('members.show', $memberId)->with('status', 'Adhésion supprimée avec succès.');
+    }
+
     public function generateReceipt(Membership $membership): View
     {
         $membership->load('member');

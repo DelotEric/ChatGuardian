@@ -373,6 +373,10 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person"></i>
                             Profil</a></li>
+                    @if(Auth::user()->isAdmin())
+                        <li><a class="dropdown-item" href="{{ route('users.index') }}"><i class="bi bi-person-gear"></i>
+                                Utilisateurs</a></li>
+                    @endif
                     <li>
                         <hr class="dropdown-divider">
                     </li>
@@ -514,6 +518,17 @@
                         @endif
                     </a>
                 </li>
+
+                @if(Auth::user()->isAdmin())
+                    <div class="nav-section-title">Administration</div>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
+                            href="{{ route('users.index') }}">
+                            <i class="bi bi-person-gear"></i>
+                            <span>Utilisateurs</span>
+                        </a>
+                    </li>
+                @endif
 
                 <div class="nav-section-title">Support</div>
 

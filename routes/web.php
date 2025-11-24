@@ -47,6 +47,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Chats
     Route::resource('cats', CatController::class);
+    Route::get('cats/{cat}/medical-history', [CatController::class, 'medicalHistory'])->name('cats.medical-history');
+    Route::get('cats/{cat}/health-record', [CatController::class, 'generateHealthRecord'])->name('cats.health-record');
+    Route::get('cats/{cat}/health-record/download', [CatController::class, 'downloadHealthRecord'])->name('cats.health-record.download');
+    Route::post('cats/{cat}/weight-records', [App\Http\Controllers\WeightRecordController::class, 'store'])->name('cats.weight-records.store');
+    Route::put('cats/{cat}/weight-records/{weightRecord}', [App\Http\Controllers\WeightRecordController::class, 'update'])->name('cats.weight-records.update');
+    Route::delete('cats/{cat}/weight-records/{weightRecord}', [App\Http\Controllers\WeightRecordController::class, 'destroy'])->name('cats.weight-records.destroy');
+
+
 
     // Familles d'accueil
     Route::resource('foster-families', FosterFamilyController::class);

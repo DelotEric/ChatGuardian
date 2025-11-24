@@ -8,6 +8,9 @@
             <h1 class="h3 fw-bold">{{ $cat->name }}</h1>
         </div>
         <div class="d-flex gap-2">
+            <a href="{{ route('cats.medical-history', $cat) }}" class="btn btn-info">
+                <i class="bi bi-clipboard2-pulse"></i> Historique médical
+            </a>
             <a href="{{ route('cats.edit', $cat) }}" class="btn btn-outline-primary">
                 <i class="bi bi-pencil"></i> Modifier
             </a>

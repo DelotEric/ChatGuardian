@@ -112,6 +112,70 @@
                         <h6 class="fw-bold mt-3">📊 Alertes Dashboard</h6>
                         <p class="small">• <span class="badge bg-danger">Soins en retard</span> affichés en rouge</p>
                         <p class="small">• <span class="badge bg-warning">Soins cette semaine</span> affichés en jaune</p>
+
+                        <h6 class="fw-bold mt-3">🔔 Rappels automatiques <span
+                                class="feature-badge bg-success text-white">Nouveau</span></h6>
+                        <div class="action-step">
+                            Le système envoie automatiquement des rappels par email :<br>
+                            • <strong>7 jours avant</strong> le soin prévu<br>
+                            • <strong>3 jours avant</strong> le soin prévu<br>
+                            • <strong>Le jour même</strong> du soin<br>
+                            • <strong>Alerte urgente</strong> pour les soins en retard
+                        </div>
+                        <p class="small text-info">✨ Les rappels sont envoyés quotidiennement à 9h00 au responsable assigné
+                        </p>
+                    </div>
+
+                    <!-- Historique médical -->
+                    <div class="help-section">
+                        <h4 class="text-primary mb-3"><i class="bi bi-clipboard2-pulse"></i> Historique Médical <span
+                                class="feature-badge bg-success text-white">Nouveau</span></h4>
+
+                        <h6 class="fw-bold">📋 Consulter l'historique</h6>
+                        <div class="action-step">
+                            Fiche du chat → <span class="badge bg-info">📋 Historique médical</span> → Vue complète avec
+                            :<br>
+                            • <strong>Statistiques</strong> : Total soins, dernière vaccination, prochain soin, poids
+                            actuel<br>
+                            • <strong>Courbe de poids</strong> : Graphique d'évolution<br>
+                            • <strong>Timeline médicale</strong> : Tous les soins avec prescriptions
+                        </div>
+
+                        <h6 class="fw-bold mt-3">⚖️ Ajouter une pesée</h6>
+                        <div class="action-step">
+                            Historique médical → Section "Historique des pesées" → <span class="badge bg-primary">+
+                                Ajouter</span> →<br>
+                            Remplir : Poids (kg), Date, Mesuré par, Notes<br>
+                            <small class="text-muted">Les champs "Date" et "Mesuré par" sont pré-remplis</small>
+                        </div>
+
+                        <h6 class="fw-bold mt-3">✏️ Modifier/Supprimer une pesée</h6>
+                        <div class="action-step">
+                            Chaque pesée a des boutons <span class="badge bg-primary">✏️</span> Modifier et <span
+                                class="badge bg-danger">🗑️</span> Supprimer
+                        </div>
+
+                        <h6 class="fw-bold mt-3">💊 Enregistrer une prescription</h6>
+                        <div class="action-step">
+                            Lors de la création/modification d'un soin → Remplir :<br>
+                            • <strong>Prescription</strong> : Détails du traitement/médicament<br>
+                            • <strong>Dosage</strong> : Instructions de dosage<br>
+                            • <strong>Durée</strong> : Durée du traitement<br>
+                            • <strong>Poids lors de la visite</strong> : Poids mesuré
+                        </div>
+
+                        <h6 class="fw-bold mt-3">📄 Générer le carnet de santé PDF</h6>
+                        <div class="action-step">
+                            Historique médical → <span class="badge bg-primary">📥 Télécharger carnet de santé PDF</span>
+                            →<br>
+                            Le PDF contient :<br>
+                            • Informations du chat (nom, âge, stérilisation, FIV/FELV)<br>
+                            • Historique du poids (tableau)<br>
+                            • Vaccinations avec rappels<br>
+                            • Timeline médicale complète avec prescriptions<br>
+                            • Coordonnées des vétérinaires
+                        </div>
+                        <p class="small text-success">✨ Parfait pour les adoptions ou les visites vétérinaires !</p>
                     </div>
 
                     <!-- Points de nourrissage -->
@@ -146,7 +210,8 @@
                                 <li>Cliquez sur les chiffres en haut du menu (ex: <code>48.8566, 2.3522</code>).</li>
                                 <li>Cela copie automatiquement les coordonnées dans votre presse-papier !</li>
                                 <li>Collez-les dans le champ <strong>Latitude</strong> (1er chiffre) et
-                                    <strong>Longitude</strong> (2ème chiffre).</li>
+                                    <strong>Longitude</strong> (2ème chiffre).
+                                </li>
                             </ol>
                         </div>
                     </div>
@@ -471,6 +536,63 @@
                                 <div class="accordion-body">
                                     Menu <strong>Chats</strong> → Filtrer par statut "À l'adoption". Le dashboard affiche
                                     aussi le nombre total sur la carte statistique.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q8 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq8">
+                                    Comment ajouter une pesée pour un chat ?
+                                </button>
+                            </h2>
+                            <div id="faq8" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    Allez sur la fiche du chat → <span class="badge bg-info">📋 Historique médical</span> →
+                                    Dans la section "Historique des pesées", cliquez sur <span class="badge bg-primary">+
+                                        Ajouter</span>.<br>
+                                    Remplissez le poids, la date (pré-remplie avec aujourd'hui), qui a mesuré (pré-rempli
+                                    avec votre nom),
+                                    et des notes optionnelles.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q9 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq9">
+                                    Comment générer un carnet de santé PDF pour un chat ?
+                                </button>
+                            </h2>
+                            <div id="faq9" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    Fiche du chat → <span class="badge bg-info">📋 Historique médical</span> →
+                                    <span class="badge bg-primary">📥 Télécharger carnet de santé PDF</span>.<br>
+                                    Le PDF contient toutes les informations médicales : vaccinations, soins, poids,
+                                    prescriptions,
+                                    et coordonnées des vétérinaires. Parfait pour les adoptions !
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q10 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#faq10">
+                                    Les rappels automatiques de soins sont-ils activés ?
+                                </button>
+                            </h2>
+                            <div id="faq10" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    Oui ! Le système envoie automatiquement des rappels par email à 7 jours, 3 jours,
+                                    et le jour même du soin prévu. Les soins en retard génèrent une alerte urgente.<br>
+                                    Les rappels sont envoyés quotidiennement à 9h00 au responsable assigné au soin
+                                    (ou à la famille d'accueil si le chat est en séjour).
                                 </div>
                             </div>
                         </div>

@@ -126,4 +126,68 @@ class CatController extends Controller
 
         return redirect()->route('cats.index')->with('status', 'Chat supprimé avec succès.');
     }
+
+    public function medicalHistory(Cat $cat): View
+    {
+        $cat->load([
+            'medicalCares' => function ($query) {
+                $query->with('partner')->orderBy('care_date', 'desc');
+            },
+            'weightRecords' => function ($query) {
+                $query->orderBy('measured_at', 'desc');
+            }
+        ]);
+
+        // Statistiques rapides
+        $stats = [
+            'total_cares' => $cat->medicalCares->count(),
+            'last_vaccination' => $cat->medicalCares()
+                ->where('type', 'vaccination')
+                ->where('status', 'completed')
+                ->latest('care_date')
+                ->first(),
+            'next_care' => $cat->medicalCares()
+                ->where('status', 'scheduled')
+                ->where('care_date', '>=', now())
+                ->orderBy('care_date')
+                ->first(),
+            'latest_weight' => $cat->latest_weight,
+        ];
+
+        return view('cats.medical-history', compact('cat', 'stats'));
+    }
+
+    public function generateHealthRecord(Cat $cat): View
+    {
+        $cat->load([
+            'medicalCares' => function ($query) {
+                $query->with('partner')->orderBy('care_date', 'desc');
+            },
+            'weightRecords' => function ($query) {
+                $query->orderBy('measured_at', 'asc');
+            },
+            'photos'
+        ]);
+
+        return view('cats.health-record', compact('cat'));
+    }
+
+    public function downloadHealthRecord(Cat $cat)
+    {
+        $cat->load([
+            'medicalCares' => function ($query) {
+                $query->with('partner')->orderBy('care_date', 'desc');
+            },
+            'weightRecords' => function ($query) {
+                $query->orderBy('measured_at', 'asc');
+            },
+            'photos'
+        ]);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('cats.health-record-pdf', compact('cat'));
+
+        $filename = 'carnet_sante_' . \Str::slug($cat->name) . '_' . now()->format('Y-m-d') . '.pdf';
+
+        return $pdf->download($filename);
+    }
 }

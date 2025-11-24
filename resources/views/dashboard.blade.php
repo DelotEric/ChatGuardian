@@ -62,6 +62,54 @@
         <p class="text-muted">Bienvenue, {{ Auth::user()->name }}. Voici un aperçu de l'activité.</p>
     </div>
 
+    <!-- Urgent Items Summary -->
+    @if($urgentItemsCount > 0)
+        <div class="alert alert-danger border-0 shadow-sm mb-4" style="border-left: 5px solid #dc3545;">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h5 class="alert-heading mb-2">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <strong>{{ $urgentItemsCount }} élément(s) nécessitant une attention immédiate</strong>
+                    </h5>
+                    <div class="d-flex gap-4 flex-wrap">
+                        @if($overdueCare->count() > 0)
+                            <div>
+                                <i class="bi bi-clock-history text-danger"></i>
+                                <strong>{{ $overdueCare->count() }}</strong> soin(s) en retard
+                            </div>
+                        @endif
+                        @if($upcomingCareWeek->count() > 0)
+                            <div>
+                                <i class="bi bi-calendar-check text-warning"></i>
+                                <strong>{{ $upcomingCareWeek->count() }}</strong> soin(s) cette semaine
+                            </div>
+                        @endif
+                        @if($lowStockItems->count() > 0)
+                            <div>
+                                <i class="bi bi-box-seam text-warning"></i>
+                                <strong>{{ $lowStockItems->count() }}</strong> article(s) en stock faible
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <div class="d-flex gap-2 justify-content-md-end flex-wrap">
+                        @if($overdueCare->count() > 0 || $upcomingCareWeek->count() > 0)
+                            <a href="{{ route('medical-cares.index') }}" class="btn btn-light btn-sm">
+                                <i class="bi bi-clipboard2-pulse"></i> Voir soins
+                            </a>
+                        @endif
+                        @if($lowStockItems->count() > 0)
+                            <a href="{{ route('inventory-items.index') }}?low_stock=1" class="btn btn-light btn-sm">
+                                <i class="bi bi-box-seam"></i> Voir stock
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- Cartes de statistiques -->
     <div class="row g-4 mb-4">
         <!-- Chats -->
@@ -104,20 +152,30 @@
             </div>
         </div>
 
-        <!-- Familles d'accueil -->
+        <!-- Taux d'occupation -->
         <div class="col-md-6 col-lg-3">
             <div class="card stat-card shadow-sm h-100">
-                <div class="card-body d-flex align-items-center">
-                    <div class="stat-icon me-3"
-                        style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
-                        <i class="bi bi-house-heart-fill"></i>
-                    </div>
-                    <div class="flex-grow-1">
-                        <h6 class="text-muted text-uppercase small fw-bold mb-1">Familles</h6>
-                        <h2 class="display-6 fw-bold mb-0">{{ $totalFamilies }}</h2>
-                        <div class="mt-1 small">
-                            <span class="badge bg-warning text-dark">{{ $availableFamilies }}</span> disponibles
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="stat-icon me-3"
+                            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                            <i class="bi bi-house-heart-fill"></i>
                         </div>
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted text-uppercase small fw-bold mb-1">Taux d'occupation</h6>
+                            <h2 class="display-6 fw-bold mb-0">{{ $occupancyRate }}%</h2>
+                        </div>
+                    </div>
+                    <div class="progress mb-2" style="height: 8px;">
+                        <div class="progress-bar {{ $occupancyRate >= 90 ? 'bg-danger' : ($occupancyRate >= 70 ? 'bg-warning' : 'bg-success') }}"
+                            role="progressbar" style="width: {{ $occupancyRate }}%;" aria-valuenow="{{ $occupancyRate }}"
+                            aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                    </div>
+                    <div class="small text-muted">
+                        <i class="bi bi-check-circle"></i> {{ $availableSpots }} place(s) disponible(s)
+                        <br>
+                        <i class="bi bi-info-circle"></i> {{ $currentOccupancy }}/{{ $totalCapacity }} occupées
                     </div>
                 </div>
             </div>
@@ -200,6 +258,39 @@
             </div>
         </div>
     @endif
+
+    <!-- Quick Actions -->
+    <div class="row g-4 mb-4">
+        <div class="col-12">
+            <div class="card widget-card shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted text-uppercase small fw-bold mb-3">
+                        <i class="bi bi-lightning-fill text-warning"></i> Actions rapides
+                    </h6>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="{{ route('cats.index') }}" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-plus-circle"></i> Nouveau chat
+                        </a>
+                        <a href="{{ route('donations.index') }}" class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-gift"></i> Enregistrer un don
+                        </a>
+                        <a href="{{ route('medical-cares.create') }}" class="btn btn-outline-info btn-sm">
+                            <i class="bi bi-clipboard2-pulse"></i> Planifier un soin
+                        </a>
+                        <a href="{{ route('volunteers.index') }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-person-plus"></i> Ajouter bénévole
+                        </a>
+                        <a href="{{ route('foster-families.index') }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-house-add"></i> Ajouter famille
+                        </a>
+                        <a href="{{ route('inventory-items.index') }}" class="btn btn-outline-warning btn-sm">
+                            <i class="bi bi-box-seam"></i> Gérer inventaire
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Stock faible -->
     @if($lowStockItems->count() > 0)

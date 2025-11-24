@@ -65,21 +65,24 @@
                     <a class="nav-link {{ request()->routeIs('help') ? 'active' : '' }}" href="{{ route('help') }}"><i
                             class="bi bi-question-circle"></i> Aide</a>
                 </li>
-                @if(Auth::check() && Auth::user()->isAdmin())
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
-                            href="{{ route('users.index') }}">Utilisateurs</a>
-                    </li>
-                @endif
+
             </ul>
             <ul class="navbar-nav align-items-lg-center">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::user()->name }}
+                        {{ Auth::user()->name }} [{{ Auth::user()->role }}]
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a></li>
+
+                        @if(Auth::check() && Auth::user()->isAdmin())
+                            <li><a class="dropdown-item" href="{{ route('users.index') }}">Utilisateurs</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        @endif
+
                         <li>
                             <x-nav-link :href="route('members.index')" :active="request()->routeIs('members.*')">
                                 {{ __('Adhérents') }}

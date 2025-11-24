@@ -24,6 +24,12 @@ class MedicalCare extends Model
         'notes',
         'responsible_type',
         'responsible_id',
+        'reminder_sent_at',
+        'reminder_count',
+        'prescription',
+        'dosage',
+        'duration',
+        'weight_at_visit',
     ];
 
     protected $casts = [

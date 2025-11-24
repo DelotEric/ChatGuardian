@@ -37,6 +37,12 @@ class DashboardController extends Controller
             })
             ->count();
 
+        // Calcul du taux d'occupation
+        $totalCapacity = FosterFamily::where('is_active', true)->sum('capacity');
+        $currentOccupancy = \App\Models\CatStay::whereNull('ended_at')->count();
+        $occupancyRate = $totalCapacity > 0 ? round(($currentOccupancy / $totalCapacity) * 100, 1) : 0;
+        $availableSpots = max(0, $totalCapacity - $currentOccupancy);
+
         // Statistiques Dons (Mois en cours)
         $donationsThisMonth = Donation::whereMonth('donated_at', now()->month)
             ->whereYear('donated_at', now()->year)
@@ -76,6 +82,9 @@ class DashboardController extends Controller
         // Événements à venir
         $upcomingEvents = \App\Models\Event::upcoming(3)->get();
 
+        // Compteur d'urgences
+        $urgentItemsCount = $overdueCare->count() + $upcomingCareWeek->count() + $lowStockItems->count();
+
         return view('dashboard', compact(
             'totalCats',
             'catsForAdoption',
@@ -85,6 +94,10 @@ class DashboardController extends Controller
             'totalFamilies',
             'activeFamilies',
             'availableFamilies',
+            'totalCapacity',
+            'currentOccupancy',
+            'occupancyRate',
+            'availableSpots',
             'donationsThisMonth',
             'latestCats',
             'latestDonations',
@@ -92,6 +105,7 @@ class DashboardController extends Controller
             'upcomingCareWeek',
             'upcomingCareLater',
             'lowStockItems',
+            'urgentItemsCount',
             'recentNews',
             'upcomingEvents'
         ));

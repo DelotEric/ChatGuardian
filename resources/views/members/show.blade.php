@@ -57,12 +57,26 @@
                                     @endif
                                 </div>
                                 <div>
-                                    @if($membership->receipt_number)
-                                        <a href="{{ route('memberships.receipt', $membership) }}"
-                                            class="btn btn-sm btn-outline-primary" target="_blank">
-                                            <i class="bi bi-file-earmark-pdf"></i> Reçu fiscal
+                                    <div class="d-flex gap-2">
+                                        @if($membership->receipt_number)
+                                            <a href="{{ route('memberships.receipt', $membership) }}"
+                                                class="btn btn-sm btn-outline-primary" target="_blank">
+                                                <i class="bi bi-file-earmark-pdf"></i> Reçu
+                                            </a>
+                                        @endif
+                                        <a href="{{ route('memberships.edit', $membership) }}"
+                                            class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-pencil"></i>
                                         </a>
-                                    @endif
+                                        <form action="{{ route('memberships.destroy', $membership) }}" method="POST"
+                                            onsubmit="return confirm('Supprimer cette cotisation ?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
