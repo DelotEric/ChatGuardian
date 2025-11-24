@@ -64,4 +64,35 @@ class Cat extends Model
     {
         return $this->belongsToMany(FosterFamily::class, 'cat_stays')->withPivot(['started_at', 'ended_at', 'outcome']);
     }
+
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'free' => 'Libre',
+            'foster' => 'En famille d\'accueil',
+            'adopted' => 'Adopté',
+            'deceased' => 'Décédé',
+            default => $this->status,
+        };
+    }
+
+    public function getFivLabelAttribute()
+    {
+        return match ($this->fiv_status) {
+            'positive' => 'Positif',
+            'negative' => 'Négatif',
+            'unknown' => 'Inconnu',
+            default => 'Inconnu',
+        };
+    }
+
+    public function getFelvLabelAttribute()
+    {
+        return match ($this->felv_status) {
+            'positive' => 'Positif',
+            'negative' => 'Négatif',
+            'unknown' => 'Inconnu',
+            default => 'Inconnu',
+        };
+    }
 }

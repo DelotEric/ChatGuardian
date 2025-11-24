@@ -1,0 +1,2 @@
+#!/bin/bash
+/Applications/MAMP/bin/php/php8.3.14/bin/php artisan serve

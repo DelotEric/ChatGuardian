@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Force Carbon locale to French
+        \Carbon\Carbon::setLocale('fr');
+
         // Enregistrer la gate pour la gestion des utilisateurs
         \Illuminate\Support\Facades\Gate::define('manage-users', function ($user) {
             return $user->isAdmin();

@@ -96,7 +96,7 @@
                             <th>Famille actuelle</th>
                             <th>FIV/FELV</th>
                             <th>Dernière mise à jour</th>
-                        <th class="text-end">Actions</th>
+                            <th class="text-end">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -107,9 +107,9 @@
                                         {{ $cat->name }}
                                     </a>
                                 </td>
-                                <td><span class="badge bg-soft-primary text-primary">{{ ucfirst($cat->status) }}</span></td>
+                                <td><span class="badge bg-soft-primary text-primary">{{ $cat->status_label }}</span></td>
                                 <td>{{ optional($cat->currentStay?->fosterFamily)->name ?? '—' }}</td>
-                                <td>{{ $cat->fiv_status }}/{{ $cat->felv_status }}</td>
+                                <td>{{ $cat->fiv_label }}/{{ $cat->felv_label }}</td>
                                 <td class="text-muted small">{{ $cat->updated_at?->diffForHumans() }}</td>
                                 <td class="text-end">
                                     <div class="d-flex justify-content-end gap-2">
